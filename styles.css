@@ -230,22 +230,90 @@ main {
 
 @media (max-width: 560px) {
   .topbar {
-    padding: 10px 18px;
+    display: none;
   }
 
-  .logo img {
-    width: 128px;
+  main {
+    padding-bottom: 0;
   }
 
-  .promo-grid {
-    grid-template-columns: 1fr;
+  .hero-banner,
+  .promo-section {
+    display: none;
+  }
+
+  .category-section {
+    width: 100%;
+    margin: 0;
+  }
+
+  .category-section h2 {
+    margin: 0 0 8px;
+    font-size: clamp(54px, 18vw, 86px);
+    line-height: 0.92;
+    text-align: left;
   }
 
   .category-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 26px 24px;
+    padding: 0 0 22px;
   }
 
   .category-card {
-    min-height: 240px;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .category-card img {
+    aspect-ratio: 1 / 1.25;
+  }
+
+  .category-card span {
+    padding: 2px 0 0;
+    font-size: clamp(22px, 6vw, 34px);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .contact {
+    width: calc(100% - 48px);
+    margin: 0 auto 28px;
+    padding: 46px 22px 42px;
+    border-radius: 10px;
+    background: #151e2a;
+  }
+
+  .contact p {
+    margin-bottom: 72px;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.72);
+    text-transform: none;
+  }
+
+  .contact h2 {
+    margin-left: 56%;
+    margin-bottom: 104px;
+    font-size: clamp(44px, 14vw, 74px);
+    line-height: 1.02;
+  }
+
+  .contact span {
+    font-size: clamp(18px, 5vw, 28px);
+    font-weight: 700;
+  }
+
+  .contact-actions {
+    justify-content: flex-end;
+    margin-top: 34px;
+  }
+
+  .contact-actions a {
+    min-width: 172px;
+    min-height: 56px;
+    font-size: 22px;
+    background: #12877d;
   }
 }
