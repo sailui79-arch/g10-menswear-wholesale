@@ -227,9 +227,9 @@ main {
   }
 
   .category-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px 18px;
-    padding: 0 0 22px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 22px 18px;
+    padding: 0 0 18px;
   }
 
   .category-card {
@@ -240,12 +240,12 @@ main {
   }
 
   .category-card img {
-    aspect-ratio: 1 / 1.25;
+    aspect-ratio: 1 / 1.1;
   }
 
   .category-card span {
-    padding: 2px 0 0;
-    font-size: clamp(22px, 6vw, 34px);
+    padding: 3px 0 0;
+    font-size: clamp(15px, 3.5vw, 24px);
     line-height: 1.2;
     white-space: nowrap;
   }
@@ -287,5 +287,15 @@ main {
     min-height: 56px;
     font-size: 22px;
     background: #12877d;
+  }
+}
+
+@media (max-width: 380px) {
+  .category-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .category-card span {
+    font-size: 20px;
   }
 }
