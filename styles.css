@@ -114,9 +114,7 @@ main {
 }
 
 .category-section h2 {
-  margin: 0 0 26px;
-  font-size: clamp(26px, 3vw, 34px);
-  text-align: center;
+  display: none;
 }
 
 .category-grid {
@@ -199,7 +197,7 @@ main {
 
 @media (max-width: 880px) {
   .category-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
@@ -227,9 +225,9 @@ main {
   }
 
   .category-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px 16px;
-    padding: 0 12px 18px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    padding: 0 6px 18px;
   }
 
   .category-card {
@@ -245,9 +243,9 @@ main {
 
   .category-card span {
     padding: 5px 0 0;
-    font-size: clamp(20px, 5.6vw, 30px);
+    font-size: clamp(13px, 3.8vw, 18px);
     line-height: 1.2;
-    white-space: normal;
+    white-space: nowrap;
   }
 
   .contact {
@@ -290,13 +288,68 @@ main {
   }
 }
 
-@media (min-width: 700px) and (max-width: 900px) {
+@media (min-width: 700px) and (max-width: 1200px) {
   .category-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .category-card span {
     font-size: 20px;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 1200px) {
+  .topbar,
+  .hero-banner {
+    display: none;
+  }
+
+  .category-section {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .category-section h2 {
+    display: none;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    padding: 0 0 20px;
+  }
+
+  .category-card {
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .category-card img {
+    aspect-ratio: 1 / 1.18;
+    object-fit: cover;
+  }
+
+  .category-card span {
+    padding: 4px 0 0;
+    font-size: clamp(18px, 3.1vw, 28px);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 560px) {
+  .category-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    padding: 0 6px 20px;
+  }
+
+  .category-card span {
+    font-size: clamp(13px, 3.8vw, 18px);
     white-space: nowrap;
   }
 }
