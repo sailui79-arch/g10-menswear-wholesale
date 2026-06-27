@@ -4,9 +4,9 @@ window.G10_ALBUM_PRODUCTS = Array.from({ length: 62 }, (_, index) => {
 
   return {
     id: `G10-0627-${serial}`,
-    name: "男士短袖 T 恤",
-    category: "T 恤",
-    note: "今日相册，欢迎截图询价",
+    name: "T-Shirt · တီရှပ်",
+    category: "T-Shirts",
+    note: "Save photo and ask price · ဓာတ်ပုံပို့ပြီး စျေးမေးပါ",
     image: `./${number}.JPG`
   };
 });
