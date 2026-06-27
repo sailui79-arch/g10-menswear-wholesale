@@ -20,4 +20,4 @@ function renderProducts(products) {
   grid.replaceChildren(fragment);
 }
 
-renderProducts(window.G10_PRODUCTS || []);
+renderProducts(window.G10_ALBUM_PRODUCTS || window.G10_PRODUCTS || []);
