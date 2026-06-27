@@ -130,15 +130,24 @@ img {
 }
 
 .poster-content p {
-  margin: 0 0 14px;
+  margin: 0 0 12px;
   color: rgba(255, 255, 255, 0.9);
   font-size: clamp(15px, 2vw, 22px);
   font-weight: 800;
 }
 
+.promo-meta {
+  margin-bottom: 16px;
+  padding: 6px 14px;
+  color: var(--dark);
+  background: rgba(255, 255, 255, 0.92);
+  font-size: clamp(14px, 2vw, 22px);
+  font-weight: 900;
+}
+
 .poster-content h1 {
   margin: 0;
-  font-size: clamp(42px, 8vw, 94px);
+  font-size: clamp(42px, 7.4vw, 88px);
   line-height: 1.04;
   letter-spacing: 0;
 }
@@ -220,6 +229,58 @@ img {
   background: #fff8f7;
 }
 
+.latest-section {
+  padding: clamp(18px, 3vw, 34px) clamp(14px, 4vw, 52px) clamp(28px, 4vw, 44px);
+  background: var(--panel);
+}
+
+.section-title {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 14px;
+}
+
+.section-title p {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(22px, 3vw, 34px);
+  font-weight: 900;
+}
+
+.section-title a {
+  color: var(--red);
+  font-weight: 900;
+}
+
+.latest-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.product-card {
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+  background: white;
+  border: 1px solid var(--line);
+}
+
+.product-card img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background: #eee8df;
+}
+
+.product-card span {
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 800;
+}
+
 .contact {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
@@ -294,6 +355,10 @@ img {
     grid-template-columns: 1fr;
   }
 
+  .latest-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .contact-actions {
     justify-content: flex-start;
   }
@@ -306,6 +371,11 @@ img {
 
   .poster-content a {
     min-width: min(260px, 100%);
+  }
+
+  .section-title {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .site-footer {
