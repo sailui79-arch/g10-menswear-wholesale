@@ -179,42 +179,42 @@ img {
 
 .category-strip {
   display: grid;
-  grid-template-columns: repeat(5, minmax(150px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(5, minmax(118px, 1fr));
+  gap: 10px;
   overflow-x: auto;
-  padding: clamp(22px, 4vw, 44px) clamp(14px, 4vw, 52px);
+  padding: clamp(14px, 2.4vw, 26px) clamp(14px, 4vw, 52px);
   background: var(--panel);
 }
 
 .category-card {
-  min-width: 150px;
+  min-width: 118px;
   display: grid;
   grid-template-rows: 1fr auto auto;
-  gap: 8px;
+  gap: 5px;
   align-items: end;
-  min-height: 196px;
-  padding: 12px 12px 16px;
+  min-height: 138px;
+  padding: 8px 8px 10px;
   background: white;
   border: 1px solid var(--line);
-  box-shadow: 0 12px 28px rgba(31, 26, 20, 0.08);
+  box-shadow: 0 8px 18px rgba(31, 26, 20, 0.07);
 }
 
 .category-card img {
   width: 100%;
-  aspect-ratio: 1 / 1.12;
+  aspect-ratio: 1 / 0.82;
   object-fit: cover;
   background: #eee8df;
 }
 
 .category-card span {
-  font-size: 17px;
+  font-size: 14px;
   font-weight: 800;
   text-align: center;
 }
 
 .category-card strong {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 11px;
   line-height: 1.35;
   text-align: center;
 }
