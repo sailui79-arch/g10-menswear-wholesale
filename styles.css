@@ -295,7 +295,8 @@ img {
 
 .product-card img {
   width: 100%;
-  aspect-ratio: 1 / 0.92;
+  height: clamp(96px, 30vw, 128px);
+  aspect-ratio: auto;
   object-fit: cover;
   background: #eef1f4;
 }
@@ -306,7 +307,14 @@ img {
 }
 
 .product-card.photo-only img {
-  aspect-ratio: 1 / 0.9;
+  height: clamp(96px, 30vw, 128px);
+  aspect-ratio: auto;
+}
+
+#categoryView .product-card img {
+  height: clamp(96px, 30vw, 128px) !important;
+  aspect-ratio: auto !important;
+  object-fit: cover !important;
 }
 
 .product-card span,
