@@ -29,6 +29,9 @@ let currentView = "home";
 let activeCategory = "";
 let activeProductId = "";
 let cart = [];
+let touchStartX = 0;
+let touchStartY = 0;
+let touchStartTime = 0;
 
 function showView(viewName) {
   currentView = viewName;
@@ -61,6 +64,17 @@ function showView(viewName) {
   }
 
   window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function goBack() {
+  if (currentView === "detail") {
+    openCategory(activeCategory);
+    return;
+  }
+
+  if (currentView !== "home") {
+    showView("home");
+  }
 }
 
 function getCategory(categoryId) {
@@ -266,14 +280,37 @@ cartItems.addEventListener("click", (event) => {
   }
 });
 
-backButton.addEventListener("click", () => {
-  if (currentView === "detail") {
-    openCategory(activeCategory);
-    return;
-  }
+backButton.addEventListener("click", goBack);
 
-  showView("home");
-});
+document.addEventListener(
+  "touchstart",
+  (event) => {
+    const touch = event.touches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+    touchStartTime = Date.now();
+  },
+  { passive: true }
+);
+
+document.addEventListener(
+  "touchend",
+  (event) => {
+    if (currentView === "home" || touchStartX > 36) {
+      return;
+    }
+
+    const touch = event.changedTouches[0];
+    const deltaX = touch.clientX - touchStartX;
+    const deltaY = Math.abs(touch.clientY - touchStartY);
+    const elapsed = Date.now() - touchStartTime;
+
+    if (deltaX > 72 && deltaY < 60 && elapsed < 700) {
+      goBack();
+    }
+  },
+  { passive: true }
+);
 
 document.querySelector("#homeNav").addEventListener("click", () => showView("home"));
 document.querySelector("#cartNav").addEventListener("click", () => showView("cart"));
