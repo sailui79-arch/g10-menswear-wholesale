@@ -317,6 +317,12 @@ img {
   object-fit: cover !important;
 }
 
+#categoryView .product-card span,
+#categoryView .product-card strong,
+#categoryView .product-card small {
+  display: none !important;
+}
+
 .product-card span,
 .product-card strong,
 .product-card small {
