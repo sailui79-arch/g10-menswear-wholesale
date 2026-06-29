@@ -98,11 +98,8 @@ function openCategory(categoryId) {
   productList.innerHTML = categoryProducts
     .map(
       (product) => `
-        <button class="product-card" type="button" data-product="${product.id}">
+        <button class="product-card photo-only" type="button" data-product="${product.id}" aria-label="${product.id}">
           <img src="${product.image}" alt="${product.id}" loading="lazy" width="480" height="620">
-          <span>${product.id}</span>
-          <strong>${product.name}</strong>
-          <small>View detail · အသေးစိတ်ကြည့်ရန်</small>
         </button>
       `
     )

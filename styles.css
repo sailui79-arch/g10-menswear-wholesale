@@ -285,19 +285,28 @@ img {
 .product-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 8px;
   padding: 12px;
 }
 
 .product-card {
-  padding: 0 0 10px;
+  padding: 0;
 }
 
 .product-card img {
   width: 100%;
-  aspect-ratio: 1 / 1.18;
+  aspect-ratio: 1 / 0.92;
   object-fit: cover;
   background: #eef1f4;
+}
+
+.product-card.photo-only {
+  border-radius: 10px;
+  box-shadow: none;
+}
+
+.product-card.photo-only img {
+  aspect-ratio: 1 / 0.9;
 }
 
 .product-card span,
