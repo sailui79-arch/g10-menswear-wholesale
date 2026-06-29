@@ -405,7 +405,7 @@ img {
 .detail-controls {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
+  gap: 8px;
 }
 
 .detail-controls label,
@@ -434,7 +434,7 @@ img {
 .detail-controls input,
 .customer-panel input {
   height: 46px;
-  padding: 0 12px;
+  padding: 0 8px;
 }
 
 .add-button {

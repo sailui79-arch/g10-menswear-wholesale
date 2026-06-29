@@ -122,16 +122,10 @@ function openProduct(productId) {
         </div>
         <strong>${product.categoryEnglish}</strong>
       </div>
-      <p>Choose size and quantity, then add to order. Size နှင့် Qty ရွေးပြီး အော်ဒါထည့်ပါ။</p>
+      <p>Choose color, size and quantity, then add to order. အရောင် / Size / Qty ရွေးပြီး အော်ဒါထည့်ပါ။</p>
       <div class="detail-controls">
         <label>
-          Size
-          <select data-size>
-            ${product.sizes.map((size) => `<option value="${size}">${size}</option>`).join("")}
-          </select>
-        </label>
-        <label>
-          Color
+          颜色
           <select data-color>
             <option value="1色">1色</option>
             <option value="2色">2色</option>
@@ -141,7 +135,13 @@ function openProduct(productId) {
           </select>
         </label>
         <label>
-          Quantity
+          尺码
+          <select data-size>
+            ${product.sizes.map((size) => `<option value="${size}">${size}</option>`).join("")}
+          </select>
+        </label>
+        <label>
+          数量
           <input data-qty type="number" min="${product.minQty}" value="${product.minQty}" inputmode="numeric">
         </label>
       </div>
