@@ -5,82 +5,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta
       name="description"
-      content="G-10 menswear wholesale mobile ordering page for Myanmar buyers."
+      content="G-10 menswear wholesale mobile order catalog for Myanmar buyers."
     />
     <title>G-10 Mobile Order</title>
-    <link rel="stylesheet" href="./styles.css?v=20260629-order" />
+    <link rel="stylesheet" href="./styles.css?v=20260629-catalog" />
   </head>
   <body>
     <main class="app-shell">
-      <header class="store-header">
-        <div class="brand-mark" aria-hidden="true">G-10</div>
+      <header class="app-header">
+        <button class="back-button" id="backButton" type="button" aria-label="Back">‹</button>
         <div>
-          <p>MEN'S WHOLESALE</p>
-          <h1>G-10</h1>
-          <span>မြန်မာလက်ကားဝယ်သူများအတွက် တိုက်ရိုက်အော်ဒါတင်ရန်</span>
+          <p id="pageKicker">MEN'S WHOLESALE</p>
+          <h1 id="pageTitle">G-10</h1>
         </div>
+        <button class="cart-icon" id="headerCart" type="button" aria-label="Order list">
+          <span id="headerCartCount">0</span>
+        </button>
       </header>
 
-      <section class="order-note" aria-label="Order steps">
-        <strong>Order Steps</strong>
-        <span>1. အမျိုးအစားရွေးပါ  2. Size / Qty ဖြည့်ပါ  3. Add နှိပ်ပါ  4. Send Order</span>
-      </section>
-
-      <nav class="category-tabs" aria-label="Product categories"></nav>
-
-      <section class="customer-panel" aria-label="Customer information">
-        <label>
-          Customer name
-          <input id="customerName" type="text" autocomplete="name" placeholder="နာမည်" />
-        </label>
-        <label>
-          Phone
-          <input id="customerPhone" type="tel" autocomplete="tel" placeholder="ဖုန်းနံပါတ်" />
-        </label>
-      </section>
-
-      <section class="toolbar" aria-label="Product tools">
-        <div>
-          <strong id="activeCategoryName">All</strong>
-          <span id="productCount">0 items</span>
-        </div>
-        <button class="ghost-button" id="clearFilter" type="button">All</button>
-      </section>
-
-      <section class="product-list" id="productList" aria-label="Products"></section>
-
-      <section class="cart-panel" id="cartPanel" aria-label="Order cart">
-        <div class="cart-head">
+      <section class="view active" id="homeView" aria-label="Home">
+        <div class="hero-card">
+          <div class="brand-mark">G-10</div>
           <div>
-            <span>My Order</span>
-            <strong id="cartSummary">0 items</strong>
+            <strong>Mobile Order Catalog</strong>
+            <span>မြန်မာလက်ကားဝယ်သူများအတွက် အမျိုးအစားရွေးပြီး အော်ဒါတင်ပါ</span>
           </div>
-          <button id="clearCart" type="button">Clear</button>
         </div>
-        <div class="cart-items" id="cartItems">
-          <p class="empty-cart">Select products above. အပေါ်မှ ပစ္စည်းရွေးပါ။</p>
+
+        <section class="order-steps" aria-label="Order steps">
+          <span>1. Category</span>
+          <span>2. Product</span>
+          <span>3. Detail</span>
+          <span>4. Send</span>
+        </section>
+
+        <section class="home-section">
+          <div class="section-head">
+            <h2>Categories</h2>
+            <p>အမျိုးအစားရွေးပါ</p>
+          </div>
+          <div class="category-grid" id="categoryGrid"></div>
+        </section>
+      </section>
+
+      <section class="view" id="categoryView" aria-label="Products">
+        <div class="category-summary">
+          <strong id="categoryName">Category</strong>
+          <span id="categoryCount">0 products</span>
         </div>
-        <label class="order-message">
-          Note
-          <textarea id="orderNote" rows="2" placeholder="Color, address, delivery note..."></textarea>
-        </label>
-        <div class="send-actions">
-          <a id="sendWhatsapp" href="#" target="_blank" rel="noreferrer">WhatsApp Send Order</a>
-          <button id="copyOrder" type="button">Copy Order Text</button>
-        </div>
+        <div class="product-list" id="productList"></div>
+      </section>
+
+      <section class="view" id="detailView" aria-label="Product detail">
+        <article class="detail-card" id="detailCard"></article>
+      </section>
+
+      <section class="view" id="cartView" aria-label="Order cart">
+        <section class="customer-panel" aria-label="Customer information">
+          <label>
+            Customer name
+            <input id="customerName" type="text" autocomplete="name" placeholder="နာမည်" />
+          </label>
+          <label>
+            Phone
+            <input id="customerPhone" type="tel" autocomplete="tel" placeholder="ဖုန်းနံပါတ်" />
+          </label>
+        </section>
+
+        <section class="cart-panel" id="cartPanel" aria-label="Order cart">
+          <div class="cart-head">
+            <div>
+              <span>My Order</span>
+              <strong id="cartSummary">0 items</strong>
+            </div>
+            <button id="clearCart" type="button">Clear</button>
+          </div>
+          <div class="cart-items" id="cartItems">
+            <p class="empty-cart">Select products first. အရင်ဆုံး ပစ္စည်းရွေးပါ။</p>
+          </div>
+          <label class="order-message">
+            Note
+            <textarea id="orderNote" rows="3" placeholder="Color, address, delivery note..."></textarea>
+          </label>
+          <div class="send-actions">
+            <a id="sendWhatsapp" href="#" target="_blank" rel="noreferrer">WhatsApp Send Order</a>
+            <button id="copyOrder" type="button">Copy Order Text</button>
+          </div>
+        </section>
       </section>
 
       <div class="bottom-spacer" aria-hidden="true"></div>
     </main>
 
-    <div class="sticky-order">
-      <button id="openCart" type="button">
-        <span>Order List</span>
-        <strong id="stickyCount">0</strong>
-      </button>
-    </div>
+    <nav class="bottom-nav" aria-label="Main navigation">
+      <button id="homeNav" type="button">Home</button>
+      <button id="cartNav" type="button">Order <strong id="stickyCount">0</strong></button>
+    </nav>
 
-    <script src="./products.js?v=20260629-order"></script>
-    <script src="./script.js?v=20260629-order"></script>
+    <script src="./products.js?v=20260629-catalog"></script>
+    <script src="./script.js?v=20260629-catalog"></script>
   </body>
 </html>

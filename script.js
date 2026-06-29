@@ -1,93 +1,155 @@
-const categories = window.G10_CATEGORIES || [];
+const categories = (window.G10_CATEGORIES || []).filter((category) => category.id !== "all");
 const products = window.G10_PRODUCTS || [];
-const tabs = document.querySelector(".category-tabs");
-const list = document.querySelector("#productList");
-const activeCategoryName = document.querySelector("#activeCategoryName");
-const productCount = document.querySelector("#productCount");
+
+const views = {
+  home: document.querySelector("#homeView"),
+  category: document.querySelector("#categoryView"),
+  detail: document.querySelector("#detailView"),
+  cart: document.querySelector("#cartView")
+};
+
+const pageKicker = document.querySelector("#pageKicker");
+const pageTitle = document.querySelector("#pageTitle");
+const backButton = document.querySelector("#backButton");
+const categoryGrid = document.querySelector("#categoryGrid");
+const categoryName = document.querySelector("#categoryName");
+const categoryCount = document.querySelector("#categoryCount");
+const productList = document.querySelector("#productList");
+const detailCard = document.querySelector("#detailCard");
 const cartItems = document.querySelector("#cartItems");
 const cartSummary = document.querySelector("#cartSummary");
 const stickyCount = document.querySelector("#stickyCount");
-const cartPanel = document.querySelector("#cartPanel");
+const headerCartCount = document.querySelector("#headerCartCount");
 const customerName = document.querySelector("#customerName");
 const customerPhone = document.querySelector("#customerPhone");
 const orderNote = document.querySelector("#orderNote");
 const sendWhatsapp = document.querySelector("#sendWhatsapp");
 
-let activeCategory = "all";
+let currentView = "home";
+let activeCategory = "";
+let activeProductId = "";
 let cart = [];
 
-function renderTabs() {
-  const fragment = document.createDocumentFragment();
+function showView(viewName) {
+  currentView = viewName;
 
-  categories.forEach((category) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = category.id === activeCategory ? "active" : "";
-    button.dataset.category = category.id;
-    button.innerHTML = `<strong>${category.label}</strong><span>${category.english}</span>`;
-    fragment.appendChild(button);
+  Object.entries(views).forEach(([name, element]) => {
+    element.classList.toggle("active", name === viewName);
   });
 
-  tabs.replaceChildren(fragment);
-}
+  backButton.classList.toggle("visible", viewName !== "home");
 
-function getVisibleProducts() {
-  if (activeCategory === "all") {
-    return products;
+  if (viewName === "home") {
+    pageKicker.textContent = "MEN'S WHOLESALE";
+    pageTitle.textContent = "G-10";
   }
 
-  return products.filter((product) => product.category === activeCategory);
+  if (viewName === "category") {
+    const category = getCategory(activeCategory);
+    pageKicker.textContent = "Products";
+    pageTitle.textContent = category ? category.label : "Products";
+  }
+
+  if (viewName === "detail") {
+    pageKicker.textContent = "Product Detail";
+    pageTitle.textContent = activeProductId || "Detail";
+  }
+
+  if (viewName === "cart") {
+    pageKicker.textContent = "Send Order";
+    pageTitle.textContent = "My Order";
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function renderProducts() {
-  const visibleProducts = getVisibleProducts();
-  const active = categories.find((category) => category.id === activeCategory);
-  const fragment = document.createDocumentFragment();
+function getCategory(categoryId) {
+  return categories.find((category) => category.id === categoryId);
+}
 
-  activeCategoryName.textContent = active ? active.label : "All";
-  productCount.textContent = `${visibleProducts.length} items`;
+function getCategoryProducts(categoryId) {
+  return products.filter((product) => product.category === categoryId);
+}
 
-  visibleProducts.forEach((product) => {
-    const card = document.createElement("article");
-    card.className = "product-card";
-    card.dataset.id = product.id;
-    card.innerHTML = `
-      <img src="${product.image}" alt="${product.id}" loading="lazy" width="480" height="620">
-      <div class="product-body">
-        <div class="product-title">
-          <h2>${product.name}</h2>
+function renderCategories() {
+  categoryGrid.innerHTML = categories
+    .map((category) => {
+      const categoryProducts = getCategoryProducts(category.id);
+      const cover = categoryProducts[0] ? categoryProducts[0].image : "";
+
+      return `
+        <button class="category-card" type="button" data-category="${category.id}">
+          <img src="${cover}" alt="${category.english}" loading="lazy">
+          <span>${category.label}</span>
+          <small>${category.english} · ${categoryProducts.length}</small>
+        </button>
+      `;
+    })
+    .join("");
+}
+
+function openCategory(categoryId) {
+  activeCategory = categoryId;
+  const category = getCategory(categoryId);
+  const categoryProducts = getCategoryProducts(categoryId);
+
+  categoryName.textContent = category.label;
+  categoryCount.textContent = `${categoryProducts.length} products`;
+  productList.innerHTML = categoryProducts
+    .map(
+      (product) => `
+        <button class="product-card" type="button" data-product="${product.id}">
+          <img src="${product.image}" alt="${product.id}" loading="lazy" width="480" height="620">
           <span>${product.id}</span>
-        </div>
-        <div class="product-meta">
-          <span>${product.categoryEnglish}</span>
-          <span>Wholesale</span>
-        </div>
-        <div class="product-controls">
-          <label>
-            Size
-            <select data-size>
-              ${product.sizes.map((size) => `<option value="${size}">${size}</option>`).join("")}
-            </select>
-          </label>
-          <label>
-            Qty
-            <input data-qty type="number" min="${product.minQty}" value="${product.minQty}" inputmode="numeric">
-          </label>
-        </div>
-        <button class="add-button" type="button" data-add="${product.id}">Add to Order</button>
-      </div>
-    `;
-    fragment.appendChild(card);
-  });
+          <strong>${product.name}</strong>
+          <small>View detail · အသေးစိတ်ကြည့်ရန်</small>
+        </button>
+      `
+    )
+    .join("");
 
-  list.replaceChildren(fragment);
+  showView("category");
+}
+
+function openProduct(productId) {
+  activeProductId = productId;
+  const product = products.find((item) => item.id === productId);
+
+  detailCard.innerHTML = `
+    <img class="detail-image" src="${product.image}" alt="${product.id}">
+    <div class="detail-body" data-id="${product.id}">
+      <div class="detail-title">
+        <div>
+          <span>${product.categoryLabel}</span>
+          <h2>${product.id}</h2>
+        </div>
+        <strong>${product.categoryEnglish}</strong>
+      </div>
+      <p>Choose size and quantity, then add to order. Size နှင့် Qty ရွေးပြီး အော်ဒါထည့်ပါ။</p>
+      <div class="detail-controls">
+        <label>
+          Size
+          <select data-size>
+            ${product.sizes.map((size) => `<option value="${size}">${size}</option>`).join("")}
+          </select>
+        </label>
+        <label>
+          Quantity
+          <input data-qty type="number" min="${product.minQty}" value="${product.minQty}" inputmode="numeric">
+        </label>
+      </div>
+      <button class="add-button" type="button" data-add="${product.id}">Add to Order</button>
+    </div>
+  `;
+
+  showView("detail");
 }
 
 function addToCart(productId) {
   const product = products.find((item) => item.id === productId);
-  const card = document.querySelector(`[data-id="${productId}"]`);
-  const size = card.querySelector("[data-size]").value;
-  const qtyValue = Number(card.querySelector("[data-qty]").value);
+  const detail = detailCard.querySelector(`[data-id="${productId}"]`);
+  const size = detail.querySelector("[data-size]").value;
+  const qtyValue = Number(detail.querySelector("[data-qty]").value);
   const qty = Number.isFinite(qtyValue) && qtyValue > 0 ? qtyValue : 1;
   const existing = cart.find((item) => item.id === product.id && item.size === size);
 
@@ -104,6 +166,7 @@ function addToCart(productId) {
   }
 
   renderCart();
+  showView("cart");
 }
 
 function removeCartItem(index) {
@@ -143,9 +206,10 @@ function renderCart() {
   const totalQty = getTotalQty();
   cartSummary.textContent = `${cart.length} products · ${totalQty} pcs`;
   stickyCount.textContent = totalQty;
+  headerCartCount.textContent = totalQty;
 
   if (cart.length === 0) {
-    cartItems.innerHTML = '<p class="empty-cart">Select products above. အပေါ်မှ ပစ္စည်းရွေးပါ။</p>';
+    cartItems.innerHTML = '<p class="empty-cart">Select products first. အရင်ဆုံး ပစ္စည်းရွေးပါ။</p>';
   } else {
     cartItems.innerHTML = cart
       .map(
@@ -165,49 +229,49 @@ function renderCart() {
   sendWhatsapp.href = `https://wa.me/?text=${encodeURIComponent(buildOrderText())}`;
 }
 
-tabs.addEventListener("click", (event) => {
-  const button = event.target.closest("button");
-  if (!button) {
-    return;
+categoryGrid.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-category]");
+  if (button) {
+    openCategory(button.dataset.category);
   }
-
-  activeCategory = button.dataset.category;
-  renderTabs();
-  renderProducts();
 });
 
-list.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-add]");
-  if (!button) {
-    return;
+productList.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-product]");
+  if (button) {
+    openProduct(button.dataset.product);
   }
+});
 
-  addToCart(button.dataset.add);
-  cartPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+detailCard.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-add]");
+  if (button) {
+    addToCart(button.dataset.add);
+  }
 });
 
 cartItems.addEventListener("click", (event) => {
   const button = event.target.closest("[data-remove]");
-  if (!button) {
+  if (button) {
+    removeCartItem(Number(button.dataset.remove));
+  }
+});
+
+backButton.addEventListener("click", () => {
+  if (currentView === "detail") {
+    openCategory(activeCategory);
     return;
   }
 
-  removeCartItem(Number(button.dataset.remove));
+  showView("home");
 });
 
-document.querySelector("#clearFilter").addEventListener("click", () => {
-  activeCategory = "all";
-  renderTabs();
-  renderProducts();
-});
-
+document.querySelector("#homeNav").addEventListener("click", () => showView("home"));
+document.querySelector("#cartNav").addEventListener("click", () => showView("cart"));
+document.querySelector("#headerCart").addEventListener("click", () => showView("cart"));
 document.querySelector("#clearCart").addEventListener("click", () => {
   cart = [];
   renderCart();
-});
-
-document.querySelector("#openCart").addEventListener("click", () => {
-  cartPanel.scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
 document.querySelector("#copyOrder").addEventListener("click", async () => {
@@ -228,6 +292,6 @@ document.querySelector("#copyOrder").addEventListener("click", async () => {
   field.addEventListener("input", renderCart);
 });
 
-renderTabs();
-renderProducts();
+renderCategories();
 renderCart();
+showView("home");
