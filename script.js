@@ -131,6 +131,16 @@ function openProduct(productId) {
           </select>
         </label>
         <label>
+          Color
+          <select data-color>
+            <option value="1色">1色</option>
+            <option value="2色">2色</option>
+            <option value="3色">3色</option>
+            <option value="4色">4色</option>
+            <option value="5色">5色</option>
+          </select>
+        </label>
+        <label>
           Quantity
           <input data-qty type="number" min="${product.minQty}" value="${product.minQty}" inputmode="numeric">
         </label>
@@ -146,9 +156,10 @@ function addToCart(productId) {
   const product = products.find((item) => item.id === productId);
   const detail = detailCard.querySelector(`[data-id="${productId}"]`);
   const size = detail.querySelector("[data-size]").value;
+  const color = detail.querySelector("[data-color]").value;
   const qtyValue = Number(detail.querySelector("[data-qty]").value);
   const qty = Number.isFinite(qtyValue) && qtyValue > 0 ? qtyValue : 1;
-  const existing = cart.find((item) => item.id === product.id && item.size === size);
+  const existing = cart.find((item) => item.id === product.id && item.size === size && item.color === color);
 
   if (existing) {
     existing.qty += qty;
@@ -158,6 +169,7 @@ function addToCart(productId) {
       name: product.name,
       category: product.categoryLabel,
       size,
+      color,
       qty
     });
   }
@@ -187,7 +199,7 @@ function buildOrderText() {
     lines.push("No products selected.");
   } else {
     cart.forEach((item, index) => {
-      lines.push(`${index + 1}. ${item.id} | ${item.category} | Size ${item.size} | Qty ${item.qty}`);
+      lines.push(`${index + 1}. ${item.id} | ${item.category} | Size ${item.size} | Color ${item.color} | Qty ${item.qty}`);
     });
   }
 
@@ -214,7 +226,7 @@ function renderCart() {
           <div class="cart-item">
             <div>
               <strong>${item.id}</strong>
-              <span>${item.category} · Size ${item.size} · Qty ${item.qty}</span>
+              <span>${item.category} · Size ${item.size} · Color ${item.color} · Qty ${item.qty}</span>
             </div>
             <button type="button" data-remove="${index}">Remove</button>
           </div>
