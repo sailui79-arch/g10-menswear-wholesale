@@ -2,115 +2,85 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta
       name="description"
-      content="G-10 menswear wholesale for Myanmar buyers. Browse clothing categories and new arrivals."
+      content="G-10 menswear wholesale mobile ordering page for Myanmar buyers."
     />
-    <title>G-10 Menswear Wholesale</title>
-    <link rel="preconnect" href="https://images.unsplash.com" />
-    <link rel="stylesheet" href="./styles.css?v=20260627-mobile4" />
+    <title>G-10 Mobile Order</title>
+    <link rel="stylesheet" href="./styles.css?v=20260629-order" />
   </head>
   <body>
-    <header class="topbar">
-      <a class="logo" href="#top" aria-label="G-10 home">
-        <img src="./assets/g10-logo.svg" alt="G-10 Menswear" />
-      </a>
-      <nav aria-label="Main navigation">
-        <a href="#top">Home</a>
-      </nav>
-    </header>
+    <main class="app-shell">
+      <header class="store-header">
+        <div class="brand-mark" aria-hidden="true">G-10</div>
+        <div>
+          <p>MEN'S WHOLESALE</p>
+          <h1>G-10</h1>
+          <span>မြန်မာလက်ကားဝယ်သူများအတွက် တိုက်ရိုက်အော်ဒါတင်ရန်</span>
+        </div>
+      </header>
 
-    <main id="top">
-      <section class="hero-banner">
-        <img
-          src="./assets/hero/g10-store-hero.jpg"
-          alt="G-10 menswear wholesale store"
-          fetchpriority="high"
-        />
-        <div class="hero-copy">
-          <p>G-10 MENSWEAR</p>
-          <h1>NEW SEASON</h1>
-          <span>Wholesale clothing for Myanmar buyers · မြန်မာလက်ကားဝယ်သူများအတွက်</span>
+      <section class="order-note" aria-label="Order steps">
+        <strong>Order Steps</strong>
+        <span>1. အမျိုးအစားရွေးပါ  2. Size / Qty ဖြည့်ပါ  3. Add နှိပ်ပါ  4. Send Order</span>
+      </section>
+
+      <nav class="category-tabs" aria-label="Product categories"></nav>
+
+      <section class="customer-panel" aria-label="Customer information">
+        <label>
+          Customer name
+          <input id="customerName" type="text" autocomplete="name" placeholder="နာမည်" />
+        </label>
+        <label>
+          Phone
+          <input id="customerPhone" type="tel" autocomplete="tel" placeholder="ဖုန်းနံပါတ်" />
+        </label>
+      </section>
+
+      <section class="toolbar" aria-label="Product tools">
+        <div>
+          <strong id="activeCategoryName">All</strong>
+          <span id="productCount">0 items</span>
+        </div>
+        <button class="ghost-button" id="clearFilter" type="button">All</button>
+      </section>
+
+      <section class="product-list" id="productList" aria-label="Products"></section>
+
+      <section class="cart-panel" id="cartPanel" aria-label="Order cart">
+        <div class="cart-head">
+          <div>
+            <span>My Order</span>
+            <strong id="cartSummary">0 items</strong>
+          </div>
+          <button id="clearCart" type="button">Clear</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+          <p class="empty-cart">Select products above. အပေါ်မှ ပစ္စည်းရွေးပါ။</p>
+        </div>
+        <label class="order-message">
+          Note
+          <textarea id="orderNote" rows="2" placeholder="Color, address, delivery note..."></textarea>
+        </label>
+        <div class="send-actions">
+          <a id="sendWhatsapp" href="#" target="_blank" rel="noreferrer">WhatsApp Send Order</a>
+          <button id="copyOrder" type="button">Copy Order Text</button>
         </div>
       </section>
 
-      <section class="category-section" aria-label="Product categories">
-        <h2>Categories</h2>
-        <div class="category-grid">
-          <a class="category-card" href="#contact">
-            <img
-              src="https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=720&q=72"
-              alt="Jeans"
-              loading="lazy"
-            />
-            <span>ဂျင်းဘောင်းဘီ</span>
-          </a>
-          <a class="category-card" href="#contact">
-            <img
-              src="https://images.unsplash.com/photo-1511105043137-7e66f28270e3?auto=format&fit=crop&w=720&q=72"
-              alt="Casual pants"
-              loading="lazy"
-            />
-            <span>ပေါ့ပေါ့ပါးပါး ဘောင်းဘီ</span>
-          </a>
-          <a class="category-card" href="./products/2026-06-27/">
-            <img src="./products/2026-06-27/22145.JPG" alt="T-shirt" loading="lazy" />
-            <span>တီရှပ်</span>
-          </a>
-          <a class="category-card" href="#contact">
-            <img
-              src="https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?auto=format&fit=crop&w=720&q=72"
-              alt="Polo shirt"
-              loading="lazy"
-            />
-            <span>ပိုလိုရှပ်</span>
-          </a>
-          <a class="category-card" href="#contact">
-            <img
-              src="https://images.unsplash.com/photo-1603252109303-2751441dd157?auto=format&fit=crop&w=720&q=72"
-              alt="Shirt"
-              loading="lazy"
-            />
-            <span>ရှပ်အင်္ကျီ</span>
-          </a>
-          <a class="category-card" href="#contact">
-            <img
-              src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=720&q=72"
-              alt="Outerwear"
-              loading="lazy"
-            />
-            <span>အပေါ်ထပ်အင်္ကျီ</span>
-          </a>
-          <a class="category-card" href="#contact">
-            <img
-              src="https://images.unsplash.com/photo-1614975059251-992f11792b9f?auto=format&fit=crop&w=720&q=72"
-              alt="Sweater"
-              loading="lazy"
-            />
-            <span>ဆွယ်တာ</span>
-          </a>
-          <a class="category-card" href="#contact">
-            <img
-              src="https://images.unsplash.com/photo-1516762689617-e1cffcef479d?auto=format&fit=crop&w=720&q=72"
-              alt="Winter clothing"
-              loading="lazy"
-            />
-            <span>ဆောင်းရာသီဝတ်စုံ</span>
-          </a>
-        </div>
-      </section>
-
-      <section class="contact" id="contact">
-        <p>Contact · ဆက်သွယ်ရန်</p>
-        <h2>Ask Wholesale Price</h2>
-        <span>Send product screenshots or IDs. ဓာတ်ပုံ Screenshot သို့မဟုတ် Product ID ပို့ပြီး စျေးမေးနိုင်ပါသည်။</span>
-        <div class="contact-actions">
-          <a href="https://wa.me/" target="_blank" rel="noreferrer">WhatsApp</a>
-          <a href="https://www.facebook.com/" target="_blank" rel="noreferrer">Facebook</a>
-          <a href="weixin://" aria-label="Open WeChat">WeChat</a>
-        </div>
-      </section>
+      <div class="bottom-spacer" aria-hidden="true"></div>
     </main>
+
+    <div class="sticky-order">
+      <button id="openCart" type="button">
+        <span>Order List</span>
+        <strong id="stickyCount">0</strong>
+      </button>
+    </div>
+
+    <script src="./products.js?v=20260629-order"></script>
+    <script src="./script.js?v=20260629-order"></script>
   </body>
 </html>
