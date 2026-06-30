@@ -22,6 +22,7 @@ body {
   margin: 0;
   color: var(--ink);
   background: var(--paper);
+  overscroll-behavior-x: contain;
 }
 
 button,
@@ -50,6 +51,7 @@ img {
   min-height: 100vh;
   margin: 0 auto;
   background: var(--paper);
+  touch-action: pan-y;
 }
 
 .app-header {

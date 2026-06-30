@@ -33,6 +33,7 @@ let touchStartX = 0;
 let touchStartY = 0;
 let touchStartTime = 0;
 let touchStartedOnControl = false;
+let touchSwipeLocked = false;
 
 function showView(viewName) {
   currentView = viewName;
@@ -295,8 +296,29 @@ document.addEventListener(
     touchStartY = touch.clientY;
     touchStartTime = Date.now();
     touchStartedOnControl = isInteractiveElement(event.target);
+    touchSwipeLocked = false;
   },
   { passive: true }
+);
+
+document.addEventListener(
+  "touchmove",
+  (event) => {
+    if (currentView === "home" || touchStartedOnControl) {
+      return;
+    }
+
+    const touch = event.touches[0];
+    const deltaX = touch.clientX - touchStartX;
+    const deltaY = Math.abs(touch.clientY - touchStartY);
+    const allowedStartArea = touchStartX < Math.min(window.innerWidth * 0.82, 340);
+
+    if (allowedStartArea && deltaX > 18 && Math.abs(deltaX) > deltaY * 1.15) {
+      touchSwipeLocked = true;
+      event.preventDefault();
+    }
+  },
+  { passive: false }
 );
 
 document.addEventListener(
@@ -310,9 +332,9 @@ document.addEventListener(
     const deltaX = touch.clientX - touchStartX;
     const deltaY = Math.abs(touch.clientY - touchStartY);
     const elapsed = Date.now() - touchStartTime;
-    const allowedStartArea = touchStartX < Math.min(window.innerWidth * 0.72, 280);
+    const allowedStartArea = touchStartX < Math.min(window.innerWidth * 0.82, 340);
 
-    if (allowedStartArea && deltaX > 48 && deltaY < 80 && elapsed < 1000) {
+    if (allowedStartArea && (touchSwipeLocked || deltaX > 42) && deltaY < 96 && elapsed < 1200) {
       goBack();
     }
   },
