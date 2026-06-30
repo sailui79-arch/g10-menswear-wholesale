@@ -286,9 +286,9 @@ img {
 
 .product-list {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  padding: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  padding: 10px;
 }
 
 .product-card {
@@ -297,8 +297,8 @@ img {
 
 .product-card img {
   width: 100%;
-  height: clamp(96px, 30vw, 128px);
-  aspect-ratio: auto;
+  height: auto;
+  aspect-ratio: 3 / 4;
   object-fit: cover;
   background: #eef1f4;
 }
@@ -309,13 +309,13 @@ img {
 }
 
 .product-card.photo-only img {
-  height: clamp(96px, 30vw, 128px);
-  aspect-ratio: auto;
+  height: auto;
+  aspect-ratio: 3 / 4;
 }
 
 #categoryView .product-card img {
-  height: clamp(96px, 30vw, 128px) !important;
-  aspect-ratio: auto !important;
+  height: auto !important;
+  aspect-ratio: 3 / 4 !important;
   object-fit: cover !important;
 }
 
