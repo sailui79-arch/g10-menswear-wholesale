@@ -263,6 +263,17 @@ img {
   background: #eef1f4;
 }
 
+.category-placeholder {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 1 / 1.06;
+  background: linear-gradient(135deg, #151a24, #2b313c);
+  color: var(--gold);
+  font-size: 20px;
+  font-weight: 900;
+}
+
 .category-card span,
 .category-card small {
   display: block;
@@ -291,6 +302,18 @@ img {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 3px;
   padding: 5px;
+}
+
+.empty-products {
+  grid-column: 1 / -1;
+  margin: 16px 7px;
+  padding: 18px;
+  border-radius: 14px;
+  background: white;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
 }
 
 .product-card {

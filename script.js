@@ -100,11 +100,10 @@ function renderCategories() {
   categoryGrid.innerHTML = categories
     .map((category) => {
       const categoryProducts = getCategoryProducts(category.id);
-      const cover = categoryProducts[0] ? categoryProducts[0].image : "";
 
       return `
         <button class="category-card" type="button" data-category="${category.id}">
-          <img src="${cover}" alt="${category.english}" loading="lazy">
+          <div class="category-placeholder" aria-hidden="true">G10</div>
           <span>${category.label}</span>
           <small>${category.english} · ${categoryProducts.length}</small>
         </button>
@@ -120,15 +119,18 @@ function openCategory(categoryId) {
 
   categoryName.textContent = category.label;
   categoryCount.textContent = `${categoryProducts.length} products`;
-  productList.innerHTML = categoryProducts
-    .map(
-      (product) => `
+  productList.innerHTML =
+    categoryProducts.length === 0
+      ? '<p class="empty-products">Photos are currently off shelf. ဓာတ်ပုံများ ယာယီဖြုတ်ထားပါသည်။</p>'
+      : categoryProducts
+          .map(
+            (product) => `
         <button class="product-card photo-only" type="button" data-product="${product.id}" aria-label="${product.id}">
           <img src="${product.image}" alt="${product.id}" loading="lazy" width="480" height="620">
         </button>
       `
-    )
-    .join("");
+          )
+          .join("");
 
   showView("category");
 }
