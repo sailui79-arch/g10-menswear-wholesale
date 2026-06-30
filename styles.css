@@ -287,8 +287,8 @@ img {
 .product-list {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 6px;
-  padding: 10px;
+  gap: 3px;
+  padding: 5px;
 }
 
 .product-card {
@@ -304,7 +304,7 @@ img {
 }
 
 .product-card.photo-only {
-  border-radius: 10px;
+  border-radius: 5px;
   box-shadow: none;
 }
 
