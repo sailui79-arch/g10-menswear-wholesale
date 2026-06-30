@@ -100,10 +100,15 @@ function renderCategories() {
   categoryGrid.innerHTML = categories
     .map((category) => {
       const categoryProducts = getCategoryProducts(category.id);
+      const cover = categoryProducts[0] ? categoryProducts[0].image : "";
 
       return `
         <button class="category-card" type="button" data-category="${category.id}">
-          <div class="category-placeholder" aria-hidden="true">G10</div>
+          ${
+            cover
+              ? `<img src="${cover}" alt="${category.english}" loading="lazy">`
+              : '<div class="category-placeholder" aria-hidden="true">G10</div>'
+          }
           <span>${category.label}</span>
           <small>${category.english} · ${categoryProducts.length}</small>
         </button>

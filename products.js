@@ -13,6 +13,565 @@ const G10_CATEGORIES = [
 
 window.G10_CATEGORIES = G10_CATEGORIES;
 
-const G10_CATEGORY_ROTATION = G10_CATEGORIES.filter((category) => category.id !== "all");
-
-window.G10_PRODUCTS = [];
+window.G10_PRODUCTS = [
+  {
+    id: "G10-M001",
+    name: "ပိုလိုရှပ်",
+    category: "polo",
+    categoryLabel: "ပိုလိုရှပ်",
+    categoryEnglish: "POLO",
+    image: "./products/2026-06-29-model-style/IMG_2091_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M002",
+    name: "ပိုလိုရှပ်",
+    category: "polo",
+    categoryLabel: "ပိုလိုရှပ်",
+    categoryEnglish: "POLO",
+    image: "./products/2026-06-29-model-style/IMG_2092_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M003",
+    name: "ပိုလိုရှပ်",
+    category: "polo",
+    categoryLabel: "ပိုလိုရှပ်",
+    categoryEnglish: "POLO",
+    image: "./products/2026-06-29-model-style/IMG_2093_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M004",
+    name: "ပိုလိုရှပ်",
+    category: "polo",
+    categoryLabel: "ပိုလိုရှပ်",
+    categoryEnglish: "POLO",
+    image: "./products/2026-06-29-model-style/IMG_2094_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M005",
+    name: "ပိုလိုရှပ်",
+    category: "polo",
+    categoryLabel: "ပိုလိုရှပ်",
+    categoryEnglish: "POLO",
+    image: "./products/2026-06-29-model-style/IMG_2095_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M006",
+    name: "ပိုလိုရှပ်",
+    category: "polo",
+    categoryLabel: "ပိုလိုရှပ်",
+    categoryEnglish: "POLO",
+    image: "./products/2026-06-29-model-style/IMG_2096_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M007",
+    name: "ပိုလိုရှပ်",
+    category: "polo",
+    categoryLabel: "ပိုလိုရှပ်",
+    categoryEnglish: "POLO",
+    image: "./products/2026-06-29-model-style/IMG_2097_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M008",
+    name: "ပိုလိုရှပ်",
+    category: "polo",
+    categoryLabel: "ပိုလိုရှပ်",
+    categoryEnglish: "POLO",
+    image: "./products/2026-06-29-model-style/IMG_2098_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M009",
+    name: "ပိုလိုရှပ်",
+    category: "polo",
+    categoryLabel: "ပိုလိုရှပ်",
+    categoryEnglish: "POLO",
+    image: "./products/2026-06-29-model-style/IMG_2134_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M010",
+    name: "ပိုလိုရှပ်",
+    category: "polo",
+    categoryLabel: "ပိုလိုရှပ်",
+    categoryEnglish: "POLO",
+    image: "./products/2026-06-29-model-style/IMG_2135_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M011",
+    name: "ပိုလိုရှပ်",
+    category: "polo",
+    categoryLabel: "ပိုလိုရှပ်",
+    categoryEnglish: "POLO",
+    image: "./products/2026-06-29-model-style/IMG_2136_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M012",
+    name: "ပိုလိုရှပ်",
+    category: "polo",
+    categoryLabel: "ပိုလိုရှပ်",
+    categoryEnglish: "POLO",
+    image: "./products/2026-06-29-model-style/IMG_2137_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M013",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2099_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M014",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2100_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M015",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2103_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M016",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2104_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M017",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2105_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M018",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2106_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M019",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2107_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M020",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2110_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M021",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2111_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M022",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2112_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M023",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2113_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M024",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2114_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M025",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2115_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M026",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2116_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M027",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2117_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M028",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2118_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M029",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2119_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M030",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2120_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M031",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2121_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M032",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2122_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M033",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2123_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M034",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2124_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M035",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2125_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M036",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2126_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M037",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2127_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M038",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2128_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M039",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2129_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M040",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2130_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M041",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2131_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M042",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2132_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M043",
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2133_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M044",
+    name: "ရှပ်အင်္ကျီ",
+    category: "shirt",
+    categoryLabel: "ရှပ်အင်္ကျီ",
+    categoryEnglish: "Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2101_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M045",
+    name: "ရှပ်အင်္ကျီ",
+    category: "shirt",
+    categoryLabel: "ရှပ်အင်္ကျီ",
+    categoryEnglish: "Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2102_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M046",
+    name: "ရှပ်အင်္ကျီ",
+    category: "shirt",
+    categoryLabel: "ရှပ်အင်္ကျီ",
+    categoryEnglish: "Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2108_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M047",
+    name: "ရှပ်အင်္ကျီ",
+    category: "shirt",
+    categoryLabel: "ရှပ်အင်္ကျီ",
+    categoryEnglish: "Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2109_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M048",
+    name: "ရှပ်အင်္ကျီ",
+    category: "shirt",
+    categoryLabel: "ရှပ်အင်္ကျီ",
+    categoryEnglish: "Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2139_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M049",
+    name: "ရှပ်အင်္ကျီ",
+    category: "shirt",
+    categoryLabel: "ရှပ်အင်္ကျီ",
+    categoryEnglish: "Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2141_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M050",
+    name: "ရှပ်အင်္ကျီ",
+    category: "shirt",
+    categoryLabel: "ရှပ်အင်္ကျီ",
+    categoryEnglish: "Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2142_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M051",
+    name: "ရှပ်အင်္ကျီ",
+    category: "shirt",
+    categoryLabel: "ရှပ်အင်္ကျီ",
+    categoryEnglish: "Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2144_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M052",
+    name: "ရှပ်အင်္ကျီ",
+    category: "shirt",
+    categoryLabel: "ရှပ်အင်္ကျီ",
+    categoryEnglish: "Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2145_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M053",
+    name: "ရှပ်အင်္ကျီ",
+    category: "shirt",
+    categoryLabel: "ရှပ်အင်္ကျီ",
+    categoryEnglish: "Shirts",
+    image: "./products/2026-06-29-model-style/IMG_2146_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M054",
+    name: "အပေါ်ထပ်အင်္ကျီ",
+    category: "outerwear",
+    categoryLabel: "အပေါ်ထပ်အင်္ကျီ",
+    categoryEnglish: "Jackets",
+    image: "./products/2026-06-29-model-style/IMG_2138_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M055",
+    name: "အပေါ်ထပ်အင်္ကျီ",
+    category: "outerwear",
+    categoryLabel: "အပေါ်ထပ်အင်္ကျီ",
+    categoryEnglish: "Jackets",
+    image: "./products/2026-06-29-model-style/IMG_2140_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-M056",
+    name: "အပေါ်ထပ်အင်္ကျီ",
+    category: "outerwear",
+    categoryLabel: "အပေါ်ထပ်အင်္ကျီ",
+    categoryEnglish: "Jackets",
+    image: "./products/2026-06-29-model-style/IMG_2143_model_style.png",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  }
+];
