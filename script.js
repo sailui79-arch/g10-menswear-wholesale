@@ -34,6 +34,7 @@ let touchStartY = 0;
 let touchStartTime = 0;
 let touchStartedOnControl = false;
 let touchSwipeLocked = false;
+let suppressNextClick = false;
 
 function showView(viewName) {
   currentView = viewName;
@@ -79,8 +80,12 @@ function goBack() {
   }
 }
 
-function isInteractiveElement(element) {
-  return Boolean(element.closest("button, a, input, select, textarea"));
+function isSwipeBlockingElement(element) {
+  return Boolean(
+    element.closest(
+      "a, input, select, textarea, .back-button, .cart-icon, .bottom-nav button, .add-button, [data-remove], #clearCart, #copyOrder"
+    )
+  );
 }
 
 function getCategory(categoryId) {
@@ -266,6 +271,12 @@ categoryGrid.addEventListener("click", (event) => {
 });
 
 productList.addEventListener("click", (event) => {
+  if (suppressNextClick) {
+    event.preventDefault();
+    suppressNextClick = false;
+    return;
+  }
+
   const button = event.target.closest("[data-product]");
   if (button) {
     openProduct(button.dataset.product);
@@ -295,7 +306,7 @@ document.addEventListener(
     touchStartX = touch.clientX;
     touchStartY = touch.clientY;
     touchStartTime = Date.now();
-    touchStartedOnControl = isInteractiveElement(event.target);
+    touchStartedOnControl = isSwipeBlockingElement(event.target);
     touchSwipeLocked = false;
   },
   { passive: true }
@@ -335,7 +346,11 @@ document.addEventListener(
     const allowedStartArea = touchStartX < Math.min(window.innerWidth * 0.82, 340);
 
     if (allowedStartArea && (touchSwipeLocked || deltaX > 42) && deltaY < 96 && elapsed < 1200) {
+      suppressNextClick = true;
       goBack();
+      setTimeout(() => {
+        suppressNextClick = false;
+      }, 350);
     }
   },
   { passive: true }
