@@ -32,6 +32,7 @@ let cart = [];
 let touchStartX = 0;
 let touchStartY = 0;
 let touchStartTime = 0;
+let touchStartedOnControl = false;
 
 function showView(viewName) {
   currentView = viewName;
@@ -75,6 +76,10 @@ function goBack() {
   if (currentView !== "home") {
     showView("home");
   }
+}
+
+function isInteractiveElement(element) {
+  return Boolean(element.closest("button, a, input, select, textarea"));
 }
 
 function getCategory(categoryId) {
@@ -289,6 +294,7 @@ document.addEventListener(
     touchStartX = touch.clientX;
     touchStartY = touch.clientY;
     touchStartTime = Date.now();
+    touchStartedOnControl = isInteractiveElement(event.target);
   },
   { passive: true }
 );
@@ -296,7 +302,7 @@ document.addEventListener(
 document.addEventListener(
   "touchend",
   (event) => {
-    if (currentView === "home" || touchStartX > 36) {
+    if (currentView === "home" || touchStartedOnControl) {
       return;
     }
 
@@ -304,8 +310,9 @@ document.addEventListener(
     const deltaX = touch.clientX - touchStartX;
     const deltaY = Math.abs(touch.clientY - touchStartY);
     const elapsed = Date.now() - touchStartTime;
+    const allowedStartArea = touchStartX < Math.min(window.innerWidth * 0.72, 280);
 
-    if (deltaX > 72 && deltaY < 60 && elapsed < 700) {
+    if (allowedStartArea && deltaX > 48 && deltaY < 80 && elapsed < 1000) {
       goBack();
     }
   },
