@@ -1,5 +1,7 @@
 const categories = (window.G10_CATEGORIES || []).filter((category) => category.id !== "all");
 const products = window.G10_PRODUCTS || [];
+const ORDERS_API_URL =
+  "https://script.google.com/macros/s/AKfycbwJcVoujktzyHrm_u-cBlejopXlvLteavvvB6p4G2ZJUCmyHADi8MPah3GiRXDr-3Wr/exec";
 
 const views = {
   home: document.querySelector("#homeView"),
@@ -24,6 +26,7 @@ const customerName = document.querySelector("#customerName");
 const customerPhone = document.querySelector("#customerPhone");
 const orderNote = document.querySelector("#orderNote");
 const sendWhatsapp = document.querySelector("#sendWhatsapp");
+const submitOrder = document.querySelector("#submitOrder");
 
 let currentView = "home";
 let activeCategory = "";
@@ -219,6 +222,38 @@ function getTotalQty() {
   return cart.reduce((total, item) => total + item.qty, 0);
 }
 
+function createOrderId() {
+  const now = new Date();
+  const pad = (value) => String(value).padStart(2, "0");
+  return [
+    "G10",
+    now.getFullYear(),
+    pad(now.getMonth() + 1),
+    pad(now.getDate()),
+    "-",
+    pad(now.getHours()),
+    pad(now.getMinutes()),
+    pad(now.getSeconds())
+  ].join("");
+}
+
+function buildItemsText() {
+  return cart
+    .map((item, index) => `${index + 1}. ${item.id} ${item.category} 颜色${item.color} 尺码${item.size} 数量${item.qty}`)
+    .join("; ");
+}
+
+function buildOrderPayload() {
+  return {
+    orderId: createOrderId(),
+    customerName: customerName.value.trim(),
+    customerPhone: customerPhone.value.trim(),
+    itemsText: buildItemsText(),
+    totalQty: getTotalQty(),
+    note: orderNote.value.trim()
+  };
+}
+
 function buildOrderText() {
   const lines = [
     "G-10 Wholesale Order",
@@ -268,6 +303,45 @@ function renderCart() {
   }
 
   sendWhatsapp.href = `https://wa.me/?text=${encodeURIComponent(buildOrderText())}`;
+}
+
+async function submitOrderToSheet() {
+  if (cart.length === 0) {
+    alert("请先选择商品 / Please select products first.");
+    return;
+  }
+
+  if (!customerName.value.trim() || !customerPhone.value.trim()) {
+    alert("请填写客户姓名和电话 / Please enter name and phone.");
+    showView("cart");
+    return;
+  }
+
+  const payload = buildOrderPayload();
+  submitOrder.disabled = true;
+  submitOrder.textContent = "Submitting...";
+
+  try {
+    await fetch(ORDERS_API_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    submitOrder.textContent = "Submitted";
+    alert("订单已提交 / Order submitted.");
+  } catch {
+    submitOrder.textContent = "Submit Order";
+    alert("提交失败，请复制订单发给我们 / Submit failed, please copy order text.");
+  } finally {
+    setTimeout(() => {
+      submitOrder.disabled = false;
+      submitOrder.textContent = "Submit Order";
+    }, 1800);
+  }
 }
 
 categoryGrid.addEventListener("click", (event) => {
@@ -370,6 +444,7 @@ document.querySelector("#clearCart").addEventListener("click", () => {
   cart = [];
   renderCart();
 });
+submitOrder.addEventListener("click", submitOrderToSheet);
 
 document.querySelector("#copyOrder").addEventListener("click", async () => {
   const text = buildOrderText();

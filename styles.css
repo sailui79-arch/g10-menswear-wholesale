@@ -606,6 +606,14 @@ img {
   background: var(--green);
 }
 
+.send-actions #submitOrder {
+  background: var(--green);
+}
+
+.send-actions #submitOrder:disabled {
+  opacity: 0.68;
+}
+
 .send-actions button {
   background: rgba(255, 255, 255, 0.16);
 }
