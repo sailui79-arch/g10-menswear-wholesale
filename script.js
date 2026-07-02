@@ -191,12 +191,14 @@ function addToCart(productId) {
   const detail = detailCard.querySelector(`[data-id="${productId}"]`);
   const size = detail.querySelector("[data-size]").value;
   const color = detail.querySelector("[data-color]").value;
+  const colorCount = getColorCount(color);
   const qtyValue = Number(detail.querySelector("[data-qty]").value);
   const qty = Number.isFinite(qtyValue) && qtyValue > 0 ? qtyValue : 1;
   const existing = cart.find((item) => item.id === product.id && item.size === size && item.color === color);
 
   if (existing) {
     existing.qty += qty;
+    existing.totalQty = existing.colorCount * existing.qty;
   } else {
     cart.push({
       id: product.id,
@@ -204,6 +206,8 @@ function addToCart(productId) {
       category: product.categoryLabel,
       size,
       color,
+      colorCount,
+      totalQty: colorCount * qty,
       qty
     });
   }
@@ -218,7 +222,12 @@ function removeCartItem(index) {
 }
 
 function getTotalQty() {
-  return cart.reduce((total, item) => total + item.qty, 0);
+  return cart.reduce((total, item) => total + item.totalQty, 0);
+}
+
+function getColorCount(color) {
+  const count = Number.parseInt(color, 10);
+  return Number.isFinite(count) && count > 0 ? count : 1;
 }
 
 function createOrderId() {
@@ -238,7 +247,10 @@ function createOrderId() {
 
 function buildItemsText() {
   return cart
-    .map((item, index) => `${index + 1}. ${item.id} ${item.category} 颜色${item.color} 尺码${item.size} 数量${item.qty}`)
+    .map(
+      (item, index) =>
+        `${index + 1}. ${item.id} ${item.category} 颜色${item.color} 尺码${item.size} 每色${item.qty}件 总数${item.totalQty}件`
+    )
     .join("; ");
 }
 
@@ -265,7 +277,9 @@ function buildOrderText() {
     lines.push("No products selected.");
   } else {
     cart.forEach((item, index) => {
-      lines.push(`${index + 1}. ${item.id} | ${item.category} | Size ${item.size} | Color ${item.color} | Qty ${item.qty}`);
+      lines.push(
+        `${index + 1}. ${item.id} | ${item.category} | Color ${item.color} | Size ${item.size} | Qty/Color ${item.qty} | Total ${item.totalQty}`
+      );
     });
   }
 
@@ -292,7 +306,7 @@ function renderCart() {
           <div class="cart-item">
             <div>
               <strong>${item.id}</strong>
-              <span>${item.category} · Size ${item.size} · Color ${item.color} · Qty ${item.qty}</span>
+              <span>${item.category} · 颜色 ${item.color} · 尺码 ${item.size} · 每色 ${item.qty} · 总数 ${item.totalQty}</span>
             </div>
             <button type="button" data-remove="${index}">Remove</button>
           </div>
