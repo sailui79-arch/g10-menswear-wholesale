@@ -157,7 +157,6 @@ function openProduct(productId) {
         </div>
         <strong>${product.categoryEnglish}</strong>
       </div>
-      <p>Choose color, size and quantity, then add to order. အရောင် / Size / Qty ရွေးပြီး အော်ဒါထည့်ပါ။</p>
       <div class="detail-controls">
         <label>
           颜色
