@@ -51,7 +51,7 @@ img {
   min-height: 100vh;
   margin: 0 auto;
   background: var(--paper);
-  touch-action: pan-y;
+  touch-action: pan-y pinch-zoom;
 }
 
 .app-header {
