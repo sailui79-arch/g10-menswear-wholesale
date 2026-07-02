@@ -51,7 +51,7 @@ img {
   min-height: 100vh;
   margin: 0 auto;
   background: var(--paper);
-  touch-action: pan-y pinch-zoom;
+  touch-action: pan-x pan-y pinch-zoom;
 }
 
 .app-header {
@@ -394,6 +394,7 @@ img {
   aspect-ratio: 1 / 1.18;
   object-fit: cover;
   background: #eef1f4;
+  touch-action: pan-x pan-y pinch-zoom;
 }
 
 .detail-body {
