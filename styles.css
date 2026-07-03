@@ -419,7 +419,7 @@ img {
 
 .detail-title h2 {
   margin: 4px 0 0;
-  font-size: 28px;
+  font-size: 24px;
   line-height: 1;
 }
 
@@ -436,6 +436,39 @@ img {
   gap: 8px;
 }
 
+.detail-order-row {
+  display: grid;
+  grid-template-columns: 1fr 104px;
+  gap: 10px;
+  align-items: end;
+}
+
+.detail-sku,
+.detail-qty {
+  display: grid;
+  gap: 6px;
+}
+
+.detail-sku span,
+.detail-qty {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.detail-sku strong {
+  display: flex;
+  align-items: center;
+  min-height: 46px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #f8fafc;
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.1;
+}
+
 .detail-controls label,
 .customer-panel label,
 .order-message {
@@ -448,6 +481,7 @@ img {
 
 .detail-controls select,
 .detail-controls input,
+.detail-qty input,
 .customer-panel input,
 .order-message textarea {
   width: 100%;
@@ -460,6 +494,7 @@ img {
 
 .detail-controls select,
 .detail-controls input,
+.detail-qty input,
 .customer-panel input {
   height: 46px;
   padding: 0 8px;

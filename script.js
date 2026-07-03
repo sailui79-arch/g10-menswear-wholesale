@@ -153,12 +153,15 @@ function openProduct(productId) {
       <div class="detail-title">
         <div>
           <span>${product.categoryLabel}</span>
-          <h2>${product.id}</h2>
+          <h2>${product.categoryEnglish}</h2>
         </div>
-        <strong>${product.categoryEnglish}</strong>
       </div>
-      <div class="detail-controls">
-        <label>
+      <div class="detail-order-row">
+        <div class="detail-sku">
+          <span>货号</span>
+          <strong>${product.id}</strong>
+        </div>
+        <label class="detail-qty">
           数量
           <input data-qty type="number" min="${product.minQty}" value="${product.minQty}" inputmode="numeric">
         </label>
