@@ -159,22 +159,6 @@ function openProduct(productId) {
       </div>
       <div class="detail-controls">
         <label>
-          颜色
-          <select data-color>
-            <option value="1色">1色</option>
-            <option value="2色">2色</option>
-            <option value="3色">3色</option>
-            <option value="4色">4色</option>
-            <option value="5色">5色</option>
-          </select>
-        </label>
-        <label>
-          尺码
-          <select data-size>
-            ${product.sizes.map((size) => `<option value="${size}">${size}</option>`).join("")}
-          </select>
-        </label>
-        <label>
           数量
           <input data-qty type="number" min="${product.minQty}" value="${product.minQty}" inputmode="numeric">
         </label>
@@ -189,25 +173,19 @@ function openProduct(productId) {
 function addToCart(productId) {
   const product = products.find((item) => item.id === productId);
   const detail = detailCard.querySelector(`[data-id="${productId}"]`);
-  const size = detail.querySelector("[data-size]").value;
-  const color = detail.querySelector("[data-color]").value;
-  const colorCount = getColorCount(color);
   const qtyValue = Number(detail.querySelector("[data-qty]").value);
   const qty = Number.isFinite(qtyValue) && qtyValue > 0 ? qtyValue : 1;
-  const existing = cart.find((item) => item.id === product.id && item.size === size && item.color === color);
+  const existing = cart.find((item) => item.id === product.id);
 
   if (existing) {
     existing.qty += qty;
-    existing.totalQty = existing.colorCount * existing.qty;
+    existing.totalQty = existing.qty;
   } else {
     cart.push({
       id: product.id,
       name: product.name,
       category: product.categoryLabel,
-      size,
-      color,
-      colorCount,
-      totalQty: colorCount * qty,
+      totalQty: qty,
       qty
     });
   }
@@ -223,11 +201,6 @@ function removeCartItem(index) {
 
 function getTotalQty() {
   return cart.reduce((total, item) => total + item.totalQty, 0);
-}
-
-function getColorCount(color) {
-  const count = Number.parseInt(color, 10);
-  return Number.isFinite(count) && count > 0 ? count : 1;
 }
 
 function createOrderId() {
@@ -247,10 +220,7 @@ function createOrderId() {
 
 function buildItemsText() {
   return cart
-    .map(
-      (item, index) =>
-        `${index + 1}. ${item.id} ${item.category} 颜色${item.color} 尺码${item.size} 每色${item.qty}件 总数${item.totalQty}件`
-    )
+    .map((item, index) => `${index + 1}. ${item.id} ${item.category} 数量${item.qty}件`)
     .join("; ");
 }
 
@@ -277,9 +247,7 @@ function buildOrderText() {
     lines.push("No products selected.");
   } else {
     cart.forEach((item, index) => {
-      lines.push(
-        `${index + 1}. ${item.id} | ${item.category} | Color ${item.color} | Size ${item.size} | Qty/Color ${item.qty} | Total ${item.totalQty}`
-      );
+      lines.push(`${index + 1}. ${item.id} | ${item.category} | Qty ${item.qty}`);
     });
   }
 
@@ -306,7 +274,7 @@ function renderCart() {
           <div class="cart-item">
             <div>
               <strong>${item.id}</strong>
-              <span>${item.category} · 颜色 ${item.color} · 尺码 ${item.size} · 每色 ${item.qty} · 总数 ${item.totalQty}</span>
+              <span>${item.category} · 数量 ${item.qty}</span>
             </div>
             <button type="button" data-remove="${index}">Remove</button>
           </div>
