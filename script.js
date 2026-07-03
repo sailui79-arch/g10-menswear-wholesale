@@ -32,6 +32,8 @@ let currentView = "home";
 let activeCategory = "";
 let activeProductId = "";
 let cart = [];
+let cartReturnView = "home";
+let cartReturnScroll = 0;
 let touchStartX = 0;
 let touchStartY = 0;
 let touchStartTime = 0;
@@ -39,7 +41,7 @@ let touchStartedOnControl = false;
 let touchSwipeLocked = false;
 let suppressNextClick = false;
 
-function showView(viewName) {
+function showView(viewName, options = {}) {
   currentView = viewName;
 
   Object.entries(views).forEach(([name, element]) => {
@@ -69,10 +71,25 @@ function showView(viewName) {
     pageTitle.textContent = "My Order";
   }
 
+  if (options.restoreScroll) {
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: options.scrollTop || 0, behavior: "auto" });
+    });
+    return;
+  }
+
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function goBack() {
+  if (currentView === "cart") {
+    showView(cartReturnView, {
+      restoreScroll: true,
+      scrollTop: cartReturnScroll
+    });
+    return;
+  }
+
   if (currentView === "detail") {
     openCategory(activeCategory);
     return;
@@ -81,6 +98,15 @@ function goBack() {
   if (currentView !== "home") {
     showView("home");
   }
+}
+
+function openCart() {
+  if (currentView !== "cart") {
+    cartReturnView = currentView;
+    cartReturnScroll = window.scrollY;
+  }
+
+  showView("cart");
 }
 
 function isSwipeBlockingElement(element) {
@@ -194,7 +220,7 @@ function addToCart(productId) {
   }
 
   renderCart();
-  showView("cart");
+  openCart();
 }
 
 function removeCartItem(index) {
@@ -422,8 +448,8 @@ document.addEventListener(
 );
 
 document.querySelector("#homeNav").addEventListener("click", () => showView("home"));
-document.querySelector("#cartNav").addEventListener("click", () => showView("cart"));
-document.querySelector("#headerCart").addEventListener("click", () => showView("cart"));
+document.querySelector("#cartNav").addEventListener("click", openCart);
+document.querySelector("#headerCart").addEventListener("click", openCart);
 document.querySelector("#clearCart").addEventListener("click", () => {
   cart = [];
   renderCart();
