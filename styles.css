@@ -587,6 +587,26 @@ img {
   background: rgba(255, 255, 255, 0.08);
 }
 
+.cart-product {
+  display: grid;
+  grid-template-columns: 54px 1fr;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+}
+
+.cart-product img {
+  width: 54px;
+  height: 54px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.cart-product div {
+  min-width: 0;
+}
+
 .cart-item strong,
 .cart-item span {
   display: block;
@@ -594,6 +614,9 @@ img {
 
 .cart-item strong {
   font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .cart-item span {

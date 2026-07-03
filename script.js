@@ -213,6 +213,7 @@ function addToCart(productId) {
     cart.push({
       id: product.id,
       name: product.name,
+      image: product.image,
       category: product.categoryLabel,
       totalQty: qty,
       qty
@@ -299,15 +300,23 @@ function renderCart() {
   } else {
     cartItems.innerHTML = cart
       .map(
-        (item, index) => `
+        (item, index) => {
+          const product = products.find((entry) => entry.id === item.id);
+          const image = item.image || (product ? product.image : "");
+
+          return `
           <div class="cart-item">
-            <div>
-              <strong>${item.id}</strong>
-              <span>${item.category} · 数量 ${item.qty}</span>
+            <div class="cart-product">
+              ${image ? `<img src="${image}" alt="${item.id}" loading="lazy">` : ""}
+              <div>
+                <strong>${item.id}</strong>
+                <span>${item.category} · 数量 ${item.qty}</span>
+              </div>
             </div>
             <button type="button" data-remove="${index}">Remove</button>
           </div>
-        `
+        `;
+        }
       )
       .join("");
   }
