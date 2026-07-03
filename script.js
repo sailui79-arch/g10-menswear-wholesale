@@ -7,7 +7,8 @@ const views = {
   home: document.querySelector("#homeView"),
   category: document.querySelector("#categoryView"),
   detail: document.querySelector("#detailView"),
-  cart: document.querySelector("#cartView")
+  cart: document.querySelector("#cartView"),
+  preview: document.querySelector("#previewView")
 };
 
 const pageKicker = document.querySelector("#pageKicker");
@@ -27,6 +28,8 @@ const customerPhone = document.querySelector("#customerPhone");
 const orderNote = document.querySelector("#orderNote");
 const sendWhatsapp = document.querySelector("#sendWhatsapp");
 const submitOrder = document.querySelector("#submitOrder");
+const previewPhoto = document.querySelector("#previewPhoto");
+const previewImage = document.querySelector("#previewImage");
 
 let currentView = "home";
 let activeCategory = "";
@@ -34,6 +37,7 @@ let activeProductId = "";
 let cart = [];
 let cartReturnView = "home";
 let cartReturnScroll = 0;
+let previewReturnScroll = 0;
 let touchStartX = 0;
 let touchStartY = 0;
 let touchStartTime = 0;
@@ -71,6 +75,11 @@ function showView(viewName, options = {}) {
     pageTitle.textContent = "My Order";
   }
 
+  if (viewName === "preview") {
+    pageKicker.textContent = "My Order";
+    pageTitle.textContent = "Product Photo";
+  }
+
   if (options.restoreScroll) {
     requestAnimationFrame(() => {
       window.scrollTo({ top: options.scrollTop || 0, behavior: "auto" });
@@ -82,6 +91,14 @@ function showView(viewName, options = {}) {
 }
 
 function goBack() {
+  if (currentView === "preview") {
+    showView("cart", {
+      restoreScroll: true,
+      scrollTop: previewReturnScroll
+    });
+    return;
+  }
+
   if (currentView === "cart") {
     showView(cartReturnView, {
       restoreScroll: true,
@@ -107,6 +124,13 @@ function openCart() {
   }
 
   showView("cart");
+}
+
+function openImagePreview(image, productId) {
+  previewReturnScroll = window.scrollY;
+  previewImage.src = image;
+  previewImage.alt = productId;
+  showView("preview");
 }
 
 function isSwipeBlockingElement(element) {
@@ -307,7 +331,13 @@ function renderCart() {
           return `
           <div class="cart-item">
             <div class="cart-product">
-              ${image ? `<img src="${image}" alt="${item.id}" loading="lazy">` : ""}
+              ${
+                image
+                  ? `<button class="cart-thumb" type="button" data-preview-image="${image}" data-preview-id="${item.id}" aria-label="View ${item.id}">
+                      <img src="${image}" alt="${item.id}" loading="lazy">
+                    </button>`
+                  : ""
+              }
               <div>
                 <strong>${item.id}</strong>
                 <span>${item.category} · 数量 ${item.qty}</span>
@@ -391,10 +421,23 @@ detailCard.addEventListener("click", (event) => {
 });
 
 cartItems.addEventListener("click", (event) => {
+  const previewButton = event.target.closest("[data-preview-image]");
+  if (previewButton) {
+    openImagePreview(previewButton.dataset.previewImage, previewButton.dataset.previewId);
+    return;
+  }
+
   const button = event.target.closest("[data-remove]");
   if (button) {
     removeCartItem(Number(button.dataset.remove));
   }
+});
+
+previewPhoto.addEventListener("click", () => {
+  showView("cart", {
+    restoreScroll: true,
+    scrollTop: previewReturnScroll
+  });
 });
 
 backButton.addEventListener("click", goBack);
