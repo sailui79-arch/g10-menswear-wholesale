@@ -44,6 +44,34 @@ let touchStartTime = 0;
 let touchStartedOnControl = false;
 let touchSwipeLocked = false;
 let suppressNextClick = false;
+let restoringHistory = false;
+
+function getAppHistoryState(viewName = currentView) {
+  return {
+    g10: true,
+    view: viewName,
+    activeCategory,
+    activeProductId,
+    cartReturnView,
+    cartReturnScroll,
+    previewReturnScroll,
+    previewImageUrl: previewImage ? previewImage.getAttribute("src") || "" : ""
+  };
+}
+
+function updateAppHistory(viewName, mode = "push") {
+  if (restoringHistory || !window.history) {
+    return;
+  }
+
+  const state = getAppHistoryState(viewName);
+  if (mode === "replace") {
+    window.history.replaceState(state, "", window.location.href);
+    return;
+  }
+
+  window.history.pushState(state, "", window.location.href);
+}
 
 function showView(viewName, options = {}) {
   currentView = viewName;
@@ -80,6 +108,10 @@ function showView(viewName, options = {}) {
     pageTitle.textContent = "Product Photo";
   }
 
+  if (options.history !== "skip") {
+    updateAppHistory(viewName, options.history);
+  }
+
   if (options.restoreScroll) {
     requestAnimationFrame(() => {
       window.scrollTo({ top: options.scrollTop || 0, behavior: "auto" });
@@ -90,9 +122,10 @@ function showView(viewName, options = {}) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function goBack() {
+function showPreviousView() {
   if (currentView === "preview") {
     showView("cart", {
+      history: "skip",
       restoreScroll: true,
       scrollTop: previewReturnScroll
     });
@@ -101,6 +134,7 @@ function goBack() {
 
   if (currentView === "cart") {
     showView(cartReturnView, {
+      history: "skip",
       restoreScroll: true,
       scrollTop: cartReturnScroll
     });
@@ -108,29 +142,67 @@ function goBack() {
   }
 
   if (currentView === "detail") {
-    openCategory(activeCategory);
+    openCategory(activeCategory, { history: "skip" });
     return;
   }
 
   if (currentView !== "home") {
-    showView("home");
+    showView("home", { history: "skip" });
   }
 }
 
-function openCart() {
+function goBack() {
+  if (currentView !== "home" && window.history && window.history.state && window.history.state.g10) {
+    window.history.back();
+    return;
+  }
+
+  showPreviousView();
+}
+
+function restoreHistoryState(state) {
+  if (!state || !state.g10) {
+    return;
+  }
+
+  restoringHistory = true;
+  activeCategory = state.activeCategory || "";
+  activeProductId = state.activeProductId || "";
+  cartReturnView = state.cartReturnView || "home";
+  cartReturnScroll = state.cartReturnScroll || 0;
+  previewReturnScroll = state.previewReturnScroll || 0;
+
+  if (state.view === "category" && activeCategory) {
+    openCategory(activeCategory, { history: "skip" });
+  } else if (state.view === "detail" && activeProductId) {
+    openProduct(activeProductId, { history: "skip" });
+  } else if (state.view === "cart") {
+    showView("cart", { history: "skip" });
+  } else if (state.view === "preview" && state.previewImageUrl) {
+    previewImage.src = state.previewImageUrl;
+    previewImage.alt = activeProductId || "Product photo";
+    showView("preview", { history: "skip" });
+  } else {
+    showView("home", { history: "skip" });
+  }
+
+  restoringHistory = false;
+}
+
+function openCart(options = {}) {
   if (currentView !== "cart") {
     cartReturnView = currentView;
     cartReturnScroll = window.scrollY;
   }
 
-  showView("cart");
+  showView("cart", options);
 }
 
-function openImagePreview(image, productId) {
+function openImagePreview(image, productId, options = {}) {
   previewReturnScroll = window.scrollY;
   previewImage.src = image;
   previewImage.alt = productId;
-  showView("preview");
+  showView("preview", options);
 }
 
 function isSwipeBlockingElement(element) {
@@ -170,7 +242,7 @@ function renderCategories() {
     .join("");
 }
 
-function openCategory(categoryId) {
+function openCategory(categoryId, options = {}) {
   activeCategory = categoryId;
   const category = getCategory(categoryId);
   const categoryProducts = getCategoryProducts(categoryId);
@@ -190,10 +262,10 @@ function openCategory(categoryId) {
           )
           .join("");
 
-  showView("category");
+  showView("category", options);
 }
 
-function openProduct(productId) {
+function openProduct(productId, options = {}) {
   activeProductId = productId;
   const product = products.find((item) => item.id === productId);
 
@@ -218,7 +290,7 @@ function openProduct(productId) {
     </div>
   `;
 
-  showView("detail");
+  showView("detail", options);
 }
 
 function addToCart(productId) {
@@ -446,6 +518,7 @@ cartItems.addEventListener("click", (event) => {
 
 previewPhoto.addEventListener("click", () => {
   showView("cart", {
+    history: "skip",
     restoreScroll: true,
     scrollTop: previewReturnScroll
   });
@@ -537,6 +610,18 @@ document.querySelector("#copyOrder").addEventListener("click", async () => {
   field.addEventListener("input", renderCart);
 });
 
+window.addEventListener("popstate", (event) => {
+  if (event.state && event.state.g10) {
+    restoreHistoryState(event.state);
+    return;
+  }
+
+  if (currentView !== "home") {
+    window.history.pushState(getAppHistoryState(currentView), "", window.location.href);
+    showPreviousView();
+  }
+});
+
 renderCategories();
 renderCart();
-showView("home");
+showView("home", { history: "replace" });
