@@ -272,7 +272,7 @@ function createOrderId() {
 
 function buildItemsText() {
   return cart
-    .map((item, index) => `${index + 1}. ${item.id} ${item.category} 数量${item.qty}件`)
+    .map((item, index) => `${index + 1}. ${item.id} ${item.category} set ${item.qty}`)
     .join("; ");
 }
 
@@ -338,7 +338,7 @@ function renderCart() {
               }
               <div>
                 <strong>${item.id}</strong>
-                <span>${item.category} · 数量 ${item.qty}</span>
+                <span>${item.category} · set ${item.qty}</span>
               </div>
             </div>
             <button type="button" data-remove="${index}">Remove</button>
