@@ -372,7 +372,7 @@ async function submitOrderToSheet() {
   }
 
   if (!customerName.value.trim() || !customerPhone.value.trim()) {
-    alert("请填写客户姓名和电话 / Please enter name and phone.");
+    alert("请填写客户姓名和电话\nPlease enter name and phone\nနာမည်နှင့် ဖုန်းနံပါတ် ဖြည့်ပါ");
     showView("cart");
     return;
   }
