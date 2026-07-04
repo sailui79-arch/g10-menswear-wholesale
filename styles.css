@@ -173,23 +173,6 @@ img {
   line-height: 1.55;
 }
 
-.order-steps {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin: 0 12px 14px;
-}
-
-.order-steps span {
-  padding: 10px;
-  border: 1px solid #ead7aa;
-  border-radius: 12px;
-  background: #fff8e8;
-  color: #6d5629;
-  font-size: 12px;
-  font-weight: 900;
-}
-
 .home-section,
 .category-summary {
   padding: 0 8px;
