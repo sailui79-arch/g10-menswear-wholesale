@@ -723,5 +723,65 @@ window.G10_PRODUCTS = [
     image: "./products/2026-07-04-jeans/G10-J015.JPG",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
+  },
+  {
+    id: "G10-C001",
+    name: "ပေါ့ပေါ့ပါးပါး ဘောင်းဘီ",
+    category: "casual",
+    categoryLabel: "ပေါ့ပေါ့ပါးပါး ဘောင်းဘီ",
+    categoryEnglish: "Casual Pants",
+    image: "./products/2026-07-04-casual/G10-C001.JPG",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-C002",
+    name: "ပေါ့ပေါ့ပါးပါး ဘောင်းဘီ",
+    category: "casual",
+    categoryLabel: "ပေါ့ပေါ့ပါးပါး ဘောင်းဘီ",
+    categoryEnglish: "Casual Pants",
+    image: "./products/2026-07-04-casual/G10-C002.JPG",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-C003",
+    name: "ပေါ့ပေါ့ပါးပါး ဘောင်းဘီ",
+    category: "casual",
+    categoryLabel: "ပေါ့ပေါ့ပါးပါး ဘောင်းဘီ",
+    categoryEnglish: "Casual Pants",
+    image: "./products/2026-07-04-casual/G10-C003.JPG",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-C004",
+    name: "ပေါ့ပေါ့ပါးပါး ဘောင်းဘီ",
+    category: "casual",
+    categoryLabel: "ပေါ့ပေါ့ပါးပါး ဘောင်းဘီ",
+    categoryEnglish: "Casual Pants",
+    image: "./products/2026-07-04-casual/G10-C004.JPG",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-C005",
+    name: "ပေါ့ပေါ့ပါးပါး ဘောင်းဘီ",
+    category: "casual",
+    categoryLabel: "ပေါ့ပေါ့ပါးပါး ဘောင်းဘီ",
+    categoryEnglish: "Casual Pants",
+    image: "./products/2026-07-04-casual/G10-C005.JPG",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-C006",
+    name: "ပေါ့ပေါ့ပါးပါး ဘောင်းဘီ",
+    category: "casual",
+    categoryLabel: "ပေါ့ပေါ့ပါးပါး ဘောင်းဘီ",
+    categoryEnglish: "Casual Pants",
+    image: "./products/2026-07-04-casual/G10-C006.JPG",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
   }
 ];
