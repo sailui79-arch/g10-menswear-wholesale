@@ -573,5 +573,155 @@ window.G10_PRODUCTS = [
     image: "./products/2026-06-29-model-style/IMG_2143_model_style.png",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
+  },
+  {
+    id: "G10-J001",
+    name: "ဂျင်းဘောင်းဘီ",
+    category: "jeans",
+    categoryLabel: "ဂျင်းဘောင်းဘီ",
+    categoryEnglish: "Jeans",
+    image: "./products/2026-07-04-jeans/G10-J001.JPG",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-J002",
+    name: "ဂျင်းဘောင်းဘီ",
+    category: "jeans",
+    categoryLabel: "ဂျင်းဘောင်းဘီ",
+    categoryEnglish: "Jeans",
+    image: "./products/2026-07-04-jeans/G10-J002.JPG",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-J003",
+    name: "ဂျင်းဘောင်းဘီ",
+    category: "jeans",
+    categoryLabel: "ဂျင်းဘောင်းဘီ",
+    categoryEnglish: "Jeans",
+    image: "./products/2026-07-04-jeans/G10-J003.JPG",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-J004",
+    name: "ဂျင်းဘောင်းဘီ",
+    category: "jeans",
+    categoryLabel: "ဂျင်းဘောင်းဘီ",
+    categoryEnglish: "Jeans",
+    image: "./products/2026-07-04-jeans/G10-J004.JPG",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-J005",
+    name: "ဂျင်းဘောင်းဘီ",
+    category: "jeans",
+    categoryLabel: "ဂျင်းဘောင်းဘီ",
+    categoryEnglish: "Jeans",
+    image: "./products/2026-07-04-jeans/G10-J005.JPG",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-J006",
+    name: "ဂျင်းဘောင်းဘီ",
+    category: "jeans",
+    categoryLabel: "ဂျင်းဘောင်းဘီ",
+    categoryEnglish: "Jeans",
+    image: "./products/2026-07-04-jeans/G10-J006.JPG",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-J007",
+    name: "ဂျင်းဘောင်းဘီ",
+    category: "jeans",
+    categoryLabel: "ဂျင်းဘောင်းဘီ",
+    categoryEnglish: "Jeans",
+    image: "./products/2026-07-04-jeans/G10-J007.JPG",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-J008",
+    name: "ဂျင်းဘောင်းဘီ",
+    category: "jeans",
+    categoryLabel: "ဂျင်းဘောင်းဘီ",
+    categoryEnglish: "Jeans",
+    image: "./products/2026-07-04-jeans/G10-J008.JPG",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-J009",
+    name: "ဂျင်းဘောင်းဘီ",
+    category: "jeans",
+    categoryLabel: "ဂျင်းဘောင်းဘီ",
+    categoryEnglish: "Jeans",
+    image: "./products/2026-07-04-jeans/G10-J009.JPG",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-J010",
+    name: "ဂျင်းဘောင်းဘီ",
+    category: "jeans",
+    categoryLabel: "ဂျင်းဘောင်းဘီ",
+    categoryEnglish: "Jeans",
+    image: "./products/2026-07-04-jeans/G10-J010.JPG",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-J011",
+    name: "ဂျင်းဘောင်းဘီ",
+    category: "jeans",
+    categoryLabel: "ဂျင်းဘောင်းဘီ",
+    categoryEnglish: "Jeans",
+    image: "./products/2026-07-04-jeans/G10-J011.JPG",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-J012",
+    name: "ဂျင်းဘောင်းဘီ",
+    category: "jeans",
+    categoryLabel: "ဂျင်းဘောင်းဘီ",
+    categoryEnglish: "Jeans",
+    image: "./products/2026-07-04-jeans/G10-J012.JPG",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-J013",
+    name: "ဂျင်းဘောင်းဘီ",
+    category: "jeans",
+    categoryLabel: "ဂျင်းဘောင်းဘီ",
+    categoryEnglish: "Jeans",
+    image: "./products/2026-07-04-jeans/G10-J013.JPG",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-J014",
+    name: "ဂျင်းဘောင်းဘီ",
+    category: "jeans",
+    categoryLabel: "ဂျင်းဘောင်းဘီ",
+    categoryEnglish: "Jeans",
+    image: "./products/2026-07-04-jeans/G10-J014.JPG",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  },
+  {
+    id: "G10-J015",
+    name: "ဂျင်းဘောင်းဘီ",
+    category: "jeans",
+    categoryLabel: "ဂျင်းဘောင်းဘီ",
+    categoryEnglish: "Jeans",
+    image: "./products/2026-07-04-jeans/G10-J015.JPG",
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
   }
 ];
