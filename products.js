@@ -6,7 +6,7 @@ const G10_CATEGORIES = [
   { id: "polo", label: "ပိုလိုရှပ်", english: "POLO" },
   { id: "shirt", label: "ရှပ်အင်္ကျီ", english: "Shirts" },
   { id: "outerwear", label: "အပေါ်ထပ်အင်္ကျီ", english: "Jackets" },
-  { id: "sweater", label: "ဆွယ်တာ", english: "Sweater" },
+  { id: "sweater", label: "ဘီတို", english: "Sweater" },
   { id: "winter", label: "ဆောင်းရာသီဝတ်စုံ", english: "Winter" },
   { id: "suit", label: "ဝတ်စုံ", english: "Suits" }
 ];
