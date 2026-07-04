@@ -548,7 +548,7 @@ img {
 }
 
 .cart-head button,
-.cart-item button {
+.cart-item [data-remove] {
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 999px;
   background: transparent;
@@ -596,6 +596,7 @@ img {
 }
 
 .cart-thumb {
+  flex: 0 0 54px;
   width: 54px;
   height: 54px;
   padding: 0;
@@ -634,7 +635,7 @@ img {
   font-size: 12px;
 }
 
-.cart-item button {
+.cart-item [data-remove] {
   flex: 0 0 auto;
   min-width: 64px;
   height: 32px;
