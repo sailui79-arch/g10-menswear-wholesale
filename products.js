@@ -890,5 +890,34 @@ window.G10_PRODUCTS = [
     image: `./products/2026-07-04-suit/${photoId}.JPG`,
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
+  })),
+  ...[
+    "22747",
+    "22748",
+    "22749",
+    "22750",
+    "22751",
+    "22752",
+    "22753",
+    "22754",
+    "22755",
+    "22756",
+    "22757",
+    "22758",
+    "22759",
+    "22760",
+    "22761",
+    "22762",
+    "22763",
+    "22764"
+  ].map((photoId, index) => ({
+    id: `G10-O${String(index + 1).padStart(3, "0")}`,
+    name: "အပေါ်ထပ်အင်္ကျီ",
+    category: "outerwear",
+    categoryLabel: "အပေါ်ထပ်အင်္ကျီ",
+    categoryEnglish: "Jackets",
+    image: `./products/2026-07-04-denim-jacket/${photoId}.JPG`,
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
   }))
 ];
