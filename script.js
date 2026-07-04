@@ -276,12 +276,25 @@ function buildItemsText() {
     .join("; ");
 }
 
+function getPublicImageUrl(imagePath) {
+  return new URL(imagePath, window.location.href).href;
+}
+
 function buildOrderPayload() {
+  const items = cart.map((item) => ({
+    id: item.id,
+    category: item.category,
+    qty: item.qty,
+    imageUrl: item.image ? getPublicImageUrl(item.image) : ""
+  }));
+
   return {
     orderId: createOrderId(),
     customerName: customerName.value.trim(),
     customerPhone: customerPhone.value.trim(),
     itemsText: buildItemsText(),
+    imageUrls: items.map((item) => item.imageUrl).filter(Boolean),
+    items,
     totalQty: getTotalQty(),
     note: orderNote.value.trim()
   };
