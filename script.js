@@ -200,19 +200,17 @@ function openProduct(productId) {
   detailCard.innerHTML = `
     <img class="detail-image" src="${product.image}" alt="${product.id}">
     <div class="detail-body" data-id="${product.id}">
-      <div class="detail-title">
-        <div>
-          <span>${product.categoryLabel}</span>
-          <h2>${product.categoryEnglish}</h2>
-        </div>
-      </div>
       <div class="detail-order-row">
+        <div class="detail-field">
+          <span>分类</span>
+          <strong>${product.categoryLabel}</strong>
+        </div>
         <div class="detail-sku">
-          <span>货号</span>
+          <span>Code</span>
           <strong>${product.id}</strong>
         </div>
         <label class="detail-qty">
-          数量
+          set
           <input data-qty type="number" min="${product.minQty}" value="${product.minQty}" inputmode="numeric">
         </label>
       </div>
