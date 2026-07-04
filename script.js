@@ -379,7 +379,7 @@ async function submitOrderToSheet() {
 
   const payload = buildOrderPayload();
   submitOrder.disabled = true;
-  submitOrder.textContent = "Submitting...";
+  submitOrder.textContent = "တင်နေသည်...";
 
   try {
     await fetch(ORDERS_API_URL, {
@@ -391,15 +391,15 @@ async function submitOrderToSheet() {
       body: JSON.stringify(payload)
     });
 
-    submitOrder.textContent = "Submitted";
+    submitOrder.textContent = "တင်ပြီးပါပြီ";
     alert("订单已提交 / Order submitted.");
   } catch {
-    submitOrder.textContent = "Submit Order";
+    submitOrder.textContent = "အော်ဒါတင်မည်";
     alert("提交失败，请复制订单发给我们 / Submit failed, please copy order text.");
   } finally {
     setTimeout(() => {
       submitOrder.disabled = false;
-      submitOrder.textContent = "Submit Order";
+      submitOrder.textContent = "အော်ဒါတင်မည်";
     }, 1800);
   }
 }
