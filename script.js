@@ -218,7 +218,7 @@ function getCategory(categoryId) {
 }
 
 function getCategoryProducts(categoryId) {
-  return products.filter((product) => product.category === categoryId);
+  return products.filter((product) => product.category === categoryId).reverse();
 }
 
 function renderCategories() {
