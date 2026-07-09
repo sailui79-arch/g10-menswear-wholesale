@@ -1024,5 +1024,21 @@ window.G10_PRODUCTS = [
     image: `./products/2026-07-04-outerwear-bb/${photoId}.JPG`,
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
+  })),
+  ...[
+    "IMG_2281",
+    "IMG_2285",
+    "IMG_2286",
+    "IMG_2288",
+    "IMG_2289"
+  ].map((photoId, index) => ({
+    id: `G10-O${String(index + 52).padStart(3, "0")}`,
+    name: "အပေါ်ထပ်အင်္ကျီ",
+    category: "outerwear",
+    categoryLabel: "အပေါ်ထပ်အင်္ကျီ",
+    categoryEnglish: "Jackets",
+    image: `./products/2026-07-08-outerwear/${photoId}.JPG`,
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
   }))
 ];
