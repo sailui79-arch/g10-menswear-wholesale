@@ -1059,5 +1059,77 @@ window.G10_PRODUCTS = [
     image: `./products/2026-07-08-polo/${photoId}.JPG`,
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
+  })),
+  ...[
+    "23102",
+    "23103",
+    "23104",
+    "23105",
+    "23106",
+    "23107",
+    "23126",
+    "23127",
+    "23128",
+    "23129",
+    "23130",
+    "23131",
+    "23132",
+    "23133"
+  ].map((photoId, index) => ({
+    id: `G10-T${String(index + 42).padStart(3, "0")}`,
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: `./products/2026-07-09-aa-tshirt/${photoId}.JPG`,
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  })),
+  ...[
+    "23108",
+    "23109",
+    "23110",
+    "23111",
+    "23112",
+    "23113",
+    "23114",
+    "23115",
+    "23116",
+    "23117",
+    "23118",
+    "23119",
+    "23120",
+    "23121",
+    "23122",
+    "23123",
+    "23124",
+    "23125"
+  ].map((photoId, index) => ({
+    id: `G10-P${String(index + 9).padStart(3, "0")}`,
+    name: "ပိုလိုရှပ်",
+    category: "polo",
+    categoryLabel: "ပိုလိုရှပ်",
+    categoryEnglish: "POLO",
+    image: `./products/2026-07-09-aa-polo/${photoId}.JPG`,
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  })),
+  ...[
+    "23134",
+    "23135",
+    "23136",
+    "23137",
+    "23138",
+    "23139",
+    "23140"
+  ].map((photoId, index) => ({
+    id: `G10-O${String(index + 57).padStart(3, "0")}`,
+    name: "အပေါ်ထပ်အင်္ကျီ",
+    category: "outerwear",
+    categoryLabel: "အပေါ်ထပ်အင်္ကျီ",
+    categoryEnglish: "Jackets",
+    image: `./products/2026-07-09-aa-outerwear/${photoId}.JPG`,
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
   }))
 ];
