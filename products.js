@@ -1040,5 +1040,24 @@ window.G10_PRODUCTS = [
     image: `./products/2026-07-08-outerwear/${photoId}.JPG`,
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
+  })),
+  ...[
+    "IMG_2272",
+    "IMG_2273",
+    "IMG_2274",
+    "IMG_2275",
+    "IMG_2277",
+    "IMG_2278",
+    "IMG_2279",
+    "IMG_2290"
+  ].map((photoId, index) => ({
+    id: `G10-P${String(index + 1).padStart(3, "0")}`,
+    name: "ပိုလိုရှပ်",
+    category: "polo",
+    categoryLabel: "ပိုလိုရှပ်",
+    categoryEnglish: "POLO",
+    image: `./products/2026-07-08-polo/${photoId}.JPG`,
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
   }))
 ];
