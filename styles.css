@@ -335,8 +335,8 @@ img {
 
 .original-photo {
   width: 100%;
-  max-height: calc(100svh - 165px);
-  object-fit: contain;
+  height: auto;
+  max-height: none;
   background: #0f1724;
 }
 
