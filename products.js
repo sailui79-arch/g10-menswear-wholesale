@@ -1177,5 +1177,25 @@ window.G10_PRODUCTS = [
     image: `./products/2026-07-09-bb-shorts/${photoId}.JPG`,
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
+  })),
+  ...Array.from({ length: 51 }, (_, index) => String(23155 + index)).map((photoId, index) => ({
+    id: `G10-T${String(index + 56).padStart(3, "0")}`,
+    name: "တီရှပ်",
+    category: "tshirt",
+    categoryLabel: "တီရှပ်",
+    categoryEnglish: "T-Shirts",
+    image: `./products/2026-07-11-11-tshirt/${photoId}.JPG`,
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  })),
+  ...Array.from({ length: 24 }, (_, index) => String(23206 + index)).map((photoId, index) => ({
+    id: `G10-P${String(index + 27).padStart(3, "0")}`,
+    name: "ပိုလိုရှပ်",
+    category: "polo",
+    categoryLabel: "ပိုလိုရှပ်",
+    categoryEnglish: "POLO",
+    image: `./products/2026-07-11-11-polo/${photoId}.JPG`,
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
   }))
 ];
