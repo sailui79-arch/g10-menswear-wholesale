@@ -169,13 +169,35 @@ function openCategory(categoryId, options = {}) {
     : '<p class="empty-products">Photos are currently off shelf. ဓာတ်ပုံများ ယာယီဖြုတ်ထားပါသည်။</p>';
 
   showView("category", options);
-  const targetCount = Math.max(PRODUCT_BATCH_SIZE, options.renderedCount || 0);
+  const focusIndex = options.focusProductId
+    ? activeCategoryProducts.findIndex((product) => product.id === options.focusProductId)
+    : -1;
+  const targetCount = Math.max(
+    PRODUCT_BATCH_SIZE,
+    options.renderedCount || 0,
+    focusIndex + 1
+  );
   do {
     appendProductBatch();
   } while (
     renderedProductCount < targetCount &&
     renderedProductCount < activeCategoryProducts.length
   );
+
+  if (focusIndex >= 0) {
+    requestAnimationFrame(() => {
+      const productCard = productList.querySelector(
+        `[data-product="${options.focusProductId}"]`
+      );
+      if (!productCard) {
+        return;
+      }
+
+      const headerHeight = document.querySelector(".app-header").offsetHeight;
+      const targetTop = productCard.getBoundingClientRect().top + window.scrollY - headerHeight - 10;
+      window.scrollTo({ top: Math.max(0, targetTop), behavior: "auto" });
+    });
+  }
 }
 
 function openPhoto(productId, options = {}) {
@@ -184,16 +206,49 @@ function openPhoto(productId, options = {}) {
     return;
   }
 
-  categoryScroll = window.scrollY;
+  const openedFromCategory = currentView === "category";
+  if (openedFromCategory) {
+    categoryScroll = window.scrollY;
+  }
   activeProductId = product.id;
   originalPhoto.src = product.image;
   originalPhoto.alt = product.id;
 
-  if (!restoringHistory && window.history) {
+  if (openedFromCategory && !restoringHistory && window.history) {
     window.history.replaceState(getHistoryState("category"), "", window.location.href);
   }
 
   showView("photo", options);
+  preloadAdjacentPhotos();
+}
+
+function preloadAdjacentPhotos() {
+  const currentIndex = activeCategoryProducts.findIndex(
+    (product) => product.id === activeProductId
+  );
+  if (currentIndex < 0 || activeCategoryProducts.length < 2) {
+    return;
+  }
+
+  [-1, 1].forEach((step) => {
+    const nextIndex =
+      (currentIndex + step + activeCategoryProducts.length) % activeCategoryProducts.length;
+    const preloadImage = new Image();
+    preloadImage.src = activeCategoryProducts[nextIndex].image;
+  });
+}
+
+function openAdjacentPhoto(step) {
+  const currentIndex = activeCategoryProducts.findIndex(
+    (product) => product.id === activeProductId
+  );
+  if (currentIndex < 0 || activeCategoryProducts.length < 2) {
+    return;
+  }
+
+  const nextIndex =
+    (currentIndex + step + activeCategoryProducts.length) % activeCategoryProducts.length;
+  openPhoto(activeCategoryProducts[nextIndex].id, { history: "replace" });
 }
 
 function showHome(options = {}) {
@@ -264,8 +319,12 @@ document.addEventListener(
     const deltaX = touch.clientX - touchStartX;
     const deltaY = Math.abs(touch.clientY - touchStartY);
     const allowedStartArea = touchStartX < Math.min(window.innerWidth * 0.82, 340);
+    const horizontalSwipe = Math.abs(deltaX) > 18 && Math.abs(deltaX) > deltaY * 1.15;
 
-    if (allowedStartArea && deltaX > 18 && deltaX > deltaY * 1.15) {
+    if (
+      horizontalSwipe &&
+      (currentView === "photo" || (allowedStartArea && deltaX > 0))
+    ) {
       touchSwipeLocked = true;
       event.preventDefault();
     }
@@ -286,6 +345,21 @@ document.addEventListener(
     const elapsed = Date.now() - touchStartTime;
     const allowedStartArea = touchStartX < Math.min(window.innerWidth * 0.82, 340);
 
+    if (
+      currentView === "photo" &&
+      touchSwipeLocked &&
+      Math.abs(deltaX) > 42 &&
+      deltaY < 96 &&
+      elapsed < 1200
+    ) {
+      suppressNextClick = true;
+      openAdjacentPhoto(deltaX < 0 ? 1 : -1);
+      setTimeout(() => {
+        suppressNextClick = false;
+      }, 250);
+      return;
+    }
+
     if (allowedStartArea && (touchSwipeLocked || deltaX > 42) && deltaY < 96 && elapsed < 1200) {
       suppressNextClick = true;
       goBack();
@@ -302,13 +376,15 @@ window.addEventListener("popstate", (event) => {
   restoringHistory = true;
 
   if (state && state.g10 && state.view === "category" && state.activeCategory) {
+    const viewedProductId = currentView === "photo" ? activeProductId : state.activeProductId;
     activeProductId = "";
     categoryScroll = state.categoryScroll || 0;
     openCategory(state.activeCategory, {
       history: "skip",
       renderedCount: state.renderedProductCount,
       restoreScroll: true,
-      scrollTop: categoryScroll
+      scrollTop: categoryScroll,
+      focusProductId: viewedProductId
     });
   } else if (state && state.g10 && state.view === "photo" && state.activeProductId) {
     activeCategory = state.activeCategory || "";

@@ -341,6 +341,7 @@ img {
   aspect-ratio: auto !important;
   object-fit: fill !important;
   background: #0f1724;
+  touch-action: pan-y pinch-zoom;
 }
 
 .product-card span,
