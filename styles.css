@@ -329,14 +329,17 @@ img {
 
 .photo-view {
   min-height: calc(100svh - 75px);
-  padding: 12px;
+  padding: 0 0 12px;
   background: #0f1724;
 }
 
 .original-photo {
+  display: block;
   width: 100%;
-  height: auto;
-  max-height: none;
+  height: auto !important;
+  max-height: none !important;
+  aspect-ratio: auto !important;
+  object-fit: fill !important;
   background: #0f1724;
 }
 
@@ -346,7 +349,7 @@ img {
   justify-content: center;
   gap: 10px;
   min-height: 52px;
-  margin-top: 12px;
+  margin: 12px 12px 0;
   border-radius: 8px;
   background: var(--green);
   color: white;
