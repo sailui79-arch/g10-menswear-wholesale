@@ -4,7 +4,8 @@ const PRODUCT_BATCH_SIZE = 24;
 
 const views = {
   home: document.querySelector("#homeView"),
-  category: document.querySelector("#categoryView")
+  category: document.querySelector("#categoryView"),
+  photo: document.querySelector("#photoView")
 };
 
 const pageKicker = document.querySelector("#pageKicker");
@@ -14,15 +15,21 @@ const categoryGrid = document.querySelector("#categoryGrid");
 const categoryName = document.querySelector("#categoryName");
 const categoryCount = document.querySelector("#categoryCount");
 const productList = document.querySelector("#productList");
+const originalPhoto = document.querySelector("#originalPhoto");
+const downloadPhoto = document.querySelector("#downloadPhoto");
 
 let currentView = "home";
 let activeCategory = "";
+let activeProductId = "";
 let activeCategoryProducts = [];
 let renderedProductCount = 0;
+let categoryScroll = 0;
 let touchStartX = 0;
 let touchStartY = 0;
 let touchStartTime = 0;
 let touchSwipeLocked = false;
+let touchStartedOnControl = false;
+let suppressNextClick = false;
 let restoringHistory = false;
 
 function getCategory(categoryId) {
@@ -37,7 +44,10 @@ function getHistoryState(viewName = currentView) {
   return {
     g10: true,
     view: viewName,
-    activeCategory
+    activeCategory,
+    activeProductId,
+    categoryScroll,
+    renderedProductCount
   };
 }
 
@@ -61,29 +71,37 @@ function showView(viewName, options = {}) {
     element.classList.toggle("active", name === viewName);
   });
 
-  backButton.classList.toggle("visible", viewName === "category");
+  backButton.classList.toggle("visible", viewName !== "home");
 
   if (viewName === "home") {
     pageKicker.textContent = "MEN'S WHOLESALE";
     pageTitle.textContent = "G-10";
-  } else {
+  } else if (viewName === "category") {
     const category = getCategory(activeCategory);
     pageKicker.textContent = "Products";
     pageTitle.textContent = category ? category.label : "Products";
+  } else {
+    pageKicker.textContent = "Original Photo";
+    pageTitle.textContent = activeProductId;
   }
 
   if (options.history !== "skip") {
     updateHistory(viewName, options.history);
   }
 
-  window.scrollTo({ top: 0, behavior: options.smooth ? "smooth" : "auto" });
+  requestAnimationFrame(() => {
+    window.scrollTo({
+      top: options.restoreScroll ? options.scrollTop || 0 : 0,
+      behavior: options.smooth ? "smooth" : "auto"
+    });
+  });
 }
 
 function createProductCard(product) {
   return `
-    <div class="product-card photo-only" aria-label="${product.id}">
+    <button class="product-card photo-only" type="button" data-product="${product.id}" aria-label="View ${product.id}">
       <img src="${product.image}" alt="${product.id}" loading="lazy" decoding="async" width="480" height="620">
-    </div>
+    </button>
   `;
 }
 
@@ -152,16 +170,43 @@ function openCategory(categoryId, options = {}) {
     : '<p class="empty-products">Photos are currently off shelf. ဓာတ်ပုံများ ယာယီဖြုတ်ထားပါသည်။</p>';
 
   showView("category", options);
-  appendProductBatch();
+  const targetCount = Math.max(PRODUCT_BATCH_SIZE, options.renderedCount || 0);
+  do {
+    appendProductBatch();
+  } while (
+    renderedProductCount < targetCount &&
+    renderedProductCount < activeCategoryProducts.length
+  );
+}
+
+function openPhoto(productId, options = {}) {
+  const product = products.find((item) => item.id === productId);
+  if (!product) {
+    return;
+  }
+
+  categoryScroll = window.scrollY;
+  activeProductId = product.id;
+  originalPhoto.src = product.image;
+  originalPhoto.alt = product.id;
+  downloadPhoto.href = product.image;
+  downloadPhoto.download = `${product.id}.jpg`;
+
+  if (!restoringHistory && window.history) {
+    window.history.replaceState(getHistoryState("category"), "", window.location.href);
+  }
+
+  showView("photo", options);
 }
 
 function showHome(options = {}) {
   activeCategory = "";
+  activeProductId = "";
   showView("home", options);
 }
 
 function goBack() {
-  if (currentView !== "category") {
+  if (currentView === "home") {
     return;
   }
 
@@ -179,12 +224,25 @@ categoryGrid.addEventListener("click", (event) => {
   }
 });
 
+productList.addEventListener("click", (event) => {
+  if (suppressNextClick) {
+    event.preventDefault();
+    suppressNextClick = false;
+    return;
+  }
+
+  const button = event.target.closest("[data-product]");
+  if (button) {
+    openPhoto(button.dataset.product);
+  }
+});
+
 backButton.addEventListener("click", goBack);
 
 document.addEventListener(
   "touchstart",
   (event) => {
-    if (currentView !== "category") {
+    if (currentView === "home") {
       return;
     }
 
@@ -193,6 +251,7 @@ document.addEventListener(
     touchStartY = touch.clientY;
     touchStartTime = Date.now();
     touchSwipeLocked = false;
+    touchStartedOnControl = Boolean(event.target.closest("a, .back-button"));
   },
   { passive: true }
 );
@@ -200,7 +259,7 @@ document.addEventListener(
 document.addEventListener(
   "touchmove",
   (event) => {
-    if (currentView !== "category") {
+    if (currentView === "home" || touchStartedOnControl) {
       return;
     }
 
@@ -220,7 +279,7 @@ document.addEventListener(
 document.addEventListener(
   "touchend",
   (event) => {
-    if (currentView !== "category") {
+    if (currentView === "home" || touchStartedOnControl) {
       return;
     }
 
@@ -231,7 +290,11 @@ document.addEventListener(
     const allowedStartArea = touchStartX < Math.min(window.innerWidth * 0.82, 340);
 
     if (allowedStartArea && (touchSwipeLocked || deltaX > 42) && deltaY < 96 && elapsed < 1200) {
+      suppressNextClick = true;
       goBack();
+      setTimeout(() => {
+        suppressNextClick = false;
+      }, 350);
     }
   },
   { passive: true }
@@ -242,7 +305,18 @@ window.addEventListener("popstate", (event) => {
   restoringHistory = true;
 
   if (state && state.g10 && state.view === "category" && state.activeCategory) {
-    openCategory(state.activeCategory, { history: "skip" });
+    activeProductId = "";
+    categoryScroll = state.categoryScroll || 0;
+    openCategory(state.activeCategory, {
+      history: "skip",
+      renderedCount: state.renderedProductCount,
+      restoreScroll: true,
+      scrollTop: categoryScroll
+    });
+  } else if (state && state.g10 && state.view === "photo" && state.activeProductId) {
+    activeCategory = state.activeCategory || "";
+    categoryScroll = state.categoryScroll || 0;
+    openPhoto(state.activeProductId, { history: "skip" });
   } else {
     showHome({ history: "skip" });
   }

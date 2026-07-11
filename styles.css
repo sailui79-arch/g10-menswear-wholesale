@@ -327,6 +327,39 @@ img {
   display: none !important;
 }
 
+.photo-view {
+  min-height: calc(100svh - 75px);
+  padding: 12px;
+  background: #0f1724;
+}
+
+.original-photo {
+  width: 100%;
+  max-height: calc(100svh - 165px);
+  object-fit: contain;
+  background: #0f1724;
+}
+
+.download-photo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  margin-top: 12px;
+  border-radius: 8px;
+  background: var(--green);
+  color: white;
+  font-size: 15px;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.download-photo span {
+  font-size: 24px;
+  line-height: 1;
+}
+
 .product-card span,
 .product-card strong,
 .product-card small {
