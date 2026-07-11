@@ -2,6 +2,7 @@ const categories = (window.G10_CATEGORIES || []).filter((category) => category.i
 const products = window.G10_PRODUCTS || [];
 const ORDERS_API_URL =
   "https://script.google.com/macros/s/AKfycbwJcVoujktzyHrm_u-cBlejopXlvLteavvvB6p4G2ZJUCmyHADi8MPah3GiRXDr-3Wr/exec";
+const PRODUCT_BATCH_SIZE = 24;
 
 const views = {
   home: document.querySelector("#homeView"),
@@ -34,6 +35,8 @@ const previewImage = document.querySelector("#previewImage");
 let currentView = "home";
 let activeCategory = "";
 let activeProductId = "";
+let activeCategoryProducts = [];
+let renderedProductCount = 0;
 let cart = [];
 let cartReturnView = "home";
 let cartReturnScroll = 0;
@@ -221,6 +224,41 @@ function getCategoryProducts(categoryId) {
   return products.filter((product) => product.category === categoryId).reverse();
 }
 
+function createProductCard(product) {
+  return `
+    <button class="product-card photo-only" type="button" data-product="${product.id}" aria-label="${product.id}">
+      <img src="${product.image}" alt="${product.id}" loading="lazy" width="480" height="620">
+    </button>
+  `;
+}
+
+function appendProductBatch() {
+  if (currentView !== "category" || renderedProductCount >= activeCategoryProducts.length) {
+    return;
+  }
+
+  const nextProducts = activeCategoryProducts.slice(
+    renderedProductCount,
+    renderedProductCount + PRODUCT_BATCH_SIZE
+  );
+
+  productList.insertAdjacentHTML("beforeend", nextProducts.map(createProductCard).join(""));
+  renderedProductCount += nextProducts.length;
+}
+
+function loadMoreProductsNearBottom() {
+  if (currentView !== "category") {
+    return;
+  }
+
+  const distanceToBottom =
+    document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
+
+  if (distanceToBottom < 900) {
+    appendProductBatch();
+  }
+}
+
 function renderCategories() {
   categoryGrid.innerHTML = categories
     .map((category) => {
@@ -245,24 +283,20 @@ function renderCategories() {
 function openCategory(categoryId, options = {}) {
   activeCategory = categoryId;
   const category = getCategory(categoryId);
-  const categoryProducts = getCategoryProducts(categoryId);
+  activeCategoryProducts = getCategoryProducts(categoryId);
+  renderedProductCount = 0;
 
   categoryName.textContent = category.label;
-  categoryCount.textContent = `${categoryProducts.length} products`;
+  categoryCount.textContent = `${activeCategoryProducts.length} products`;
   productList.innerHTML =
-    categoryProducts.length === 0
+    activeCategoryProducts.length === 0
       ? '<p class="empty-products">Photos are currently off shelf. ဓာတ်ပုံများ ယာယီဖြုတ်ထားပါသည်။</p>'
-      : categoryProducts
-          .map(
-            (product) => `
-        <button class="product-card photo-only" type="button" data-product="${product.id}" aria-label="${product.id}">
-          <img src="${product.image}" alt="${product.id}" loading="lazy" width="480" height="620">
-        </button>
-      `
-          )
-          .join("");
+      : "";
+
+  appendProductBatch();
 
   showView("category", options);
+  requestAnimationFrame(loadMoreProductsNearBottom);
 }
 
 function openProduct(productId, options = {}) {
@@ -621,6 +655,8 @@ window.addEventListener("popstate", (event) => {
     showPreviousView();
   }
 });
+
+window.addEventListener("scroll", loadMoreProductsNearBottom, { passive: true });
 
 renderCategories();
 renderCart();
