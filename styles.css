@@ -343,32 +343,6 @@ img {
   background: #0f1724;
 }
 
-.download-photo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  min-height: 52px;
-  width: calc(100% - 24px);
-  margin: 12px 12px 0;
-  border: 0;
-  border-radius: 8px;
-  background: var(--green);
-  color: white;
-  font-size: 15px;
-  font-weight: 900;
-  text-decoration: none;
-}
-
-.download-photo:disabled {
-  opacity: 0.68;
-}
-
-.download-photo span {
-  font-size: 24px;
-  line-height: 1;
-}
-
 .product-card span,
 .product-card strong,
 .product-card small {

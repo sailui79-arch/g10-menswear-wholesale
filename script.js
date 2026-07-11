@@ -16,7 +16,6 @@ const categoryName = document.querySelector("#categoryName");
 const categoryCount = document.querySelector("#categoryCount");
 const productList = document.querySelector("#productList");
 const originalPhoto = document.querySelector("#originalPhoto");
-const downloadPhoto = document.querySelector("#downloadPhoto");
 
 let currentView = "home";
 let activeCategory = "";
@@ -189,8 +188,6 @@ function openPhoto(productId, options = {}) {
   activeProductId = product.id;
   originalPhoto.src = product.image;
   originalPhoto.alt = product.id;
-  downloadPhoto.dataset.url = product.image;
-  downloadPhoto.dataset.filename = `${product.id}.jpg`;
 
   if (!restoringHistory && window.history) {
     window.history.replaceState(getHistoryState("category"), "", window.location.href);
@@ -237,44 +234,6 @@ productList.addEventListener("click", (event) => {
   }
 });
 
-downloadPhoto.addEventListener("click", async () => {
-  const imageUrl = downloadPhoto.dataset.url;
-  const filename = downloadPhoto.dataset.filename || "G10-product.jpg";
-  if (!imageUrl || downloadPhoto.disabled) {
-    return;
-  }
-
-  downloadPhoto.disabled = true;
-
-  try {
-    const response = await fetch(imageUrl, { cache: "force-cache" });
-    if (!response.ok) {
-      throw new Error("Image download failed");
-    }
-
-    const imageBlob = await response.blob();
-    const objectUrl = URL.createObjectURL(imageBlob);
-    const saveLink = document.createElement("a");
-    saveLink.href = objectUrl;
-    saveLink.download = filename;
-    saveLink.hidden = true;
-    document.body.appendChild(saveLink);
-    saveLink.click();
-    saveLink.remove();
-    setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
-  } catch {
-    const saveLink = document.createElement("a");
-    saveLink.href = imageUrl;
-    saveLink.download = filename;
-    saveLink.hidden = true;
-    document.body.appendChild(saveLink);
-    saveLink.click();
-    saveLink.remove();
-  } finally {
-    downloadPhoto.disabled = false;
-  }
-});
-
 backButton.addEventListener("click", goBack);
 
 document.addEventListener(
@@ -289,7 +248,7 @@ document.addEventListener(
     touchStartY = touch.clientY;
     touchStartTime = Date.now();
     touchSwipeLocked = false;
-    touchStartedOnControl = Boolean(event.target.closest("a, .back-button, #downloadPhoto"));
+    touchStartedOnControl = Boolean(event.target.closest("a, .back-button"));
   },
   { passive: true }
 );
