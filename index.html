@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta
       name="description"
-      content="G-10 menswear wholesale mobile order catalog for Myanmar buyers."
+      content="G-10 menswear wholesale mobile catalog for Myanmar buyers."
     />
-    <title>G-10 Mobile Order</title>
-    <link rel="stylesheet" href="./styles.css?v=20260704-remove-steps" />
+    <title>G-10 Menswear</title>
+    <link rel="stylesheet" href="./styles.css?v=20260711-catalog-only" />
   </head>
   <body>
     <main class="app-shell">
@@ -18,17 +18,15 @@
           <p id="pageKicker">MEN'S WHOLESALE</p>
           <h1 id="pageTitle">G-10</h1>
         </div>
-        <button class="cart-icon" id="headerCart" type="button" aria-label="Order list">
-          <span id="headerCartCount">0</span>
-        </button>
+        <div class="header-spacer" aria-hidden="true"></div>
       </header>
 
       <section class="view active" id="homeView" aria-label="Home">
         <div class="hero-card">
           <div class="brand-mark">G-10</div>
           <div>
-            <strong>Mobile Order Catalog</strong>
-            <span>မြန်မာလက်ကားဝယ်သူများအတွက် အမျိုးအစားရွေးပြီး အော်ဒါတင်ပါ</span>
+            <strong>Menswear Catalog</strong>
+            <span>မြန်မာလက်ကားဝယ်သူများအတွက် အမျိုးအစားရွေးပါ</span>
           </div>
         </div>
 
@@ -49,60 +47,9 @@
         <div class="product-list" id="productList"></div>
       </section>
 
-      <section class="view" id="detailView" aria-label="Product detail">
-        <article class="detail-card" id="detailCard"></article>
-      </section>
-
-      <section class="view" id="cartView" aria-label="Order cart">
-        <section class="customer-panel" aria-label="Customer information">
-          <label>
-            Customer name
-            <input id="customerName" type="text" autocomplete="name" placeholder="နာမည်" />
-          </label>
-          <label>
-            Phone
-            <input id="customerPhone" type="tel" autocomplete="tel" placeholder="ဖုန်းနံပါတ်" />
-          </label>
-        </section>
-
-        <section class="cart-panel" id="cartPanel" aria-label="Order cart">
-          <div class="cart-head">
-            <div>
-              <span>My Order</span>
-              <strong id="cartSummary">0 items</strong>
-            </div>
-            <button id="clearCart" type="button">Clear</button>
-          </div>
-          <div class="cart-items" id="cartItems">
-            <p class="empty-cart">Select products first. အရင်ဆုံး ပစ္စည်းရွေးပါ။</p>
-          </div>
-          <label class="order-message">
-            Note
-            <textarea id="orderNote" rows="3" placeholder="Color, address, delivery note..."></textarea>
-          </label>
-          <div class="send-actions">
-            <button id="submitOrder" type="button">အော်ဒါတင်မည်</button>
-            <a id="sendWhatsapp" href="#" target="_blank" rel="noreferrer">WhatsApp Send Order</a>
-            <button id="copyOrder" type="button">Copy Order Text</button>
-          </div>
-        </section>
-      </section>
-
-      <section class="view" id="previewView" aria-label="Product image preview">
-        <button class="preview-photo" id="previewPhoto" type="button" aria-label="Back to order">
-          <img id="previewImage" src="" alt="" />
-        </button>
-      </section>
-
-      <div class="bottom-spacer" aria-hidden="true"></div>
     </main>
 
-    <nav class="bottom-nav" aria-label="Main navigation">
-      <button id="homeNav" type="button">Home</button>
-      <button id="cartNav" type="button">Order <strong id="stickyCount">0</strong></button>
-    </nav>
-
     <script src="./products.js?v=20260711-folder-22"></script>
-    <script src="./script.js?v=20260711-product-batches"></script>
+    <script src="./script.js?v=20260711-catalog-only"></script>
   </body>
 </html>
