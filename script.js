@@ -2,6 +2,10 @@ const categories = (window.G10_CATEGORIES || []).filter((category) => category.i
 const products = window.G10_PRODUCTS || [];
 const PRODUCT_BATCH_SIZE = 24;
 
+if ("scrollRestoration" in window.history) {
+  window.history.scrollRestoration = "manual";
+}
+
 const views = {
   home: document.querySelector("#homeView"),
   category: document.querySelector("#categoryView"),
@@ -185,19 +189,23 @@ function openCategory(categoryId, options = {}) {
   );
 
   if (focusIndex >= 0) {
+    focusProductInList(options.focusProductId);
+  }
+}
+
+function focusProductInList(productId) {
+  requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      const productCard = productList.querySelector(
-        `[data-product="${options.focusProductId}"]`
-      );
+      const productCard = productList.querySelector(`[data-product="${productId}"]`);
       if (!productCard) {
         return;
       }
 
-      const headerHeight = document.querySelector(".app-header").offsetHeight;
-      const targetTop = productCard.getBoundingClientRect().top + window.scrollY - headerHeight - 10;
-      window.scrollTo({ top: Math.max(0, targetTop), behavior: "auto" });
+      productCard.scrollIntoView({ block: "center", behavior: "auto" });
+      productCard.classList.add("return-focus");
+      setTimeout(() => productCard.classList.remove("return-focus"), 1400);
     });
-  }
+  });
 }
 
 function openPhoto(productId, options = {}) {

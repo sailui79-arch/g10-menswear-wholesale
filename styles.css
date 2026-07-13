@@ -310,6 +310,13 @@ img {
   box-shadow: none;
 }
 
+.product-card.return-focus {
+  position: relative;
+  z-index: 2;
+  outline: 3px solid var(--gold);
+  outline-offset: -3px;
+}
+
 .product-card.photo-only img {
   height: auto;
   aspect-ratio: 3 / 4;
