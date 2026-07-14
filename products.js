@@ -20,7 +20,7 @@ window.G10_PRODUCTS = [
     category: "polo",
     categoryLabel: "ပိုလိုရှပ်",
     categoryEnglish: "POLO",
-    image: "./products/2026-06-29-model-style/IMG_2091_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2091_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -30,7 +30,7 @@ window.G10_PRODUCTS = [
     category: "polo",
     categoryLabel: "ပိုလိုရှပ်",
     categoryEnglish: "POLO",
-    image: "./products/2026-06-29-model-style/IMG_2092_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2092_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -40,7 +40,7 @@ window.G10_PRODUCTS = [
     category: "polo",
     categoryLabel: "ပိုလိုရှပ်",
     categoryEnglish: "POLO",
-    image: "./products/2026-06-29-model-style/IMG_2093_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2093_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -50,7 +50,7 @@ window.G10_PRODUCTS = [
     category: "polo",
     categoryLabel: "ပိုလိုရှပ်",
     categoryEnglish: "POLO",
-    image: "./products/2026-06-29-model-style/IMG_2094_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2094_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -60,7 +60,7 @@ window.G10_PRODUCTS = [
     category: "polo",
     categoryLabel: "ပိုလိုရှပ်",
     categoryEnglish: "POLO",
-    image: "./products/2026-06-29-model-style/IMG_2095_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2095_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -70,7 +70,7 @@ window.G10_PRODUCTS = [
     category: "polo",
     categoryLabel: "ပိုလိုရှပ်",
     categoryEnglish: "POLO",
-    image: "./products/2026-06-29-model-style/IMG_2096_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2096_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -80,7 +80,7 @@ window.G10_PRODUCTS = [
     category: "polo",
     categoryLabel: "ပိုလိုရှပ်",
     categoryEnglish: "POLO",
-    image: "./products/2026-06-29-model-style/IMG_2097_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2097_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -90,7 +90,7 @@ window.G10_PRODUCTS = [
     category: "polo",
     categoryLabel: "ပိုလိုရှပ်",
     categoryEnglish: "POLO",
-    image: "./products/2026-06-29-model-style/IMG_2098_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2098_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -100,7 +100,7 @@ window.G10_PRODUCTS = [
     category: "polo",
     categoryLabel: "ပိုလိုရှပ်",
     categoryEnglish: "POLO",
-    image: "./products/2026-06-29-model-style/IMG_2134_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2134_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -110,7 +110,7 @@ window.G10_PRODUCTS = [
     category: "polo",
     categoryLabel: "ပိုလိုရှပ်",
     categoryEnglish: "POLO",
-    image: "./products/2026-06-29-model-style/IMG_2135_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2135_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -120,7 +120,7 @@ window.G10_PRODUCTS = [
     category: "polo",
     categoryLabel: "ပိုလိုရှပ်",
     categoryEnglish: "POLO",
-    image: "./products/2026-06-29-model-style/IMG_2136_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2136_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -130,7 +130,7 @@ window.G10_PRODUCTS = [
     category: "polo",
     categoryLabel: "ပိုလိုရှပ်",
     categoryEnglish: "POLO",
-    image: "./products/2026-06-29-model-style/IMG_2137_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2137_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -140,7 +140,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2099_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2099_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -150,7 +150,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2100_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2100_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -160,7 +160,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2103_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2103_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -170,7 +170,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2104_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2104_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -180,7 +180,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2105_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2105_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -190,7 +190,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2106_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2106_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -200,7 +200,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2107_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2107_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -210,7 +210,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2110_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2110_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -220,7 +220,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2111_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2111_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -230,7 +230,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2112_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2112_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -240,7 +240,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2113_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2113_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -250,7 +250,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2114_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2114_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -260,7 +260,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2115_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2115_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -270,7 +270,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2116_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2116_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -280,7 +280,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2117_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2117_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -290,7 +290,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2118_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2118_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -300,7 +300,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2119_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2119_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -310,7 +310,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2120_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2120_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -320,7 +320,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2121_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2121_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -330,7 +330,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2122_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2122_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -340,7 +340,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2123_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2123_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -350,7 +350,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2124_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2124_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -360,7 +360,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2125_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2125_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -370,7 +370,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2126_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2126_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -380,7 +380,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2127_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2127_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -390,7 +390,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2128_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2128_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -400,7 +400,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2129_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2129_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -410,7 +410,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2130_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2130_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -420,7 +420,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2131_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2131_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -430,7 +430,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2132_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2132_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -440,7 +440,7 @@ window.G10_PRODUCTS = [
     category: "tshirt",
     categoryLabel: "တီရှပ်",
     categoryEnglish: "T-Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2133_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2133_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -450,7 +450,7 @@ window.G10_PRODUCTS = [
     category: "shirt",
     categoryLabel: "ရှပ်အင်္ကျီ",
     categoryEnglish: "Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2101_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2101_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -460,7 +460,7 @@ window.G10_PRODUCTS = [
     category: "shirt",
     categoryLabel: "ရှပ်အင်္ကျီ",
     categoryEnglish: "Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2102_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2102_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -470,7 +470,7 @@ window.G10_PRODUCTS = [
     category: "shirt",
     categoryLabel: "ရှပ်အင်္ကျီ",
     categoryEnglish: "Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2108_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2108_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -480,7 +480,7 @@ window.G10_PRODUCTS = [
     category: "shirt",
     categoryLabel: "ရှပ်အင်္ကျီ",
     categoryEnglish: "Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2109_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2109_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -490,7 +490,7 @@ window.G10_PRODUCTS = [
     category: "shirt",
     categoryLabel: "ရှပ်အင်္ကျီ",
     categoryEnglish: "Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2139_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2139_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -500,7 +500,7 @@ window.G10_PRODUCTS = [
     category: "shirt",
     categoryLabel: "ရှပ်အင်္ကျီ",
     categoryEnglish: "Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2141_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2141_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -510,7 +510,7 @@ window.G10_PRODUCTS = [
     category: "shirt",
     categoryLabel: "ရှပ်အင်္ကျီ",
     categoryEnglish: "Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2142_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2142_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -520,7 +520,7 @@ window.G10_PRODUCTS = [
     category: "shirt",
     categoryLabel: "ရှပ်အင်္ကျီ",
     categoryEnglish: "Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2144_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2144_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -530,7 +530,7 @@ window.G10_PRODUCTS = [
     category: "shirt",
     categoryLabel: "ရှပ်အင်္ကျီ",
     categoryEnglish: "Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2145_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2145_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -540,7 +540,7 @@ window.G10_PRODUCTS = [
     category: "shirt",
     categoryLabel: "ရှပ်အင်္ကျီ",
     categoryEnglish: "Shirts",
-    image: "./products/2026-06-29-model-style/IMG_2146_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2146_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -550,7 +550,7 @@ window.G10_PRODUCTS = [
     category: "outerwear",
     categoryLabel: "အပေါ်ထပ်အင်္ကျီ",
     categoryEnglish: "Jackets",
-    image: "./products/2026-06-29-model-style/IMG_2138_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2138_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -560,7 +560,7 @@ window.G10_PRODUCTS = [
     category: "outerwear",
     categoryLabel: "အပေါ်ထပ်အင်္ကျီ",
     categoryEnglish: "Jackets",
-    image: "./products/2026-06-29-model-style/IMG_2140_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2140_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
@@ -570,7 +570,7 @@ window.G10_PRODUCTS = [
     category: "outerwear",
     categoryLabel: "အပေါ်ထပ်အင်္ကျီ",
     categoryEnglish: "Jackets",
-    image: "./products/2026-06-29-model-style/IMG_2143_model_style.png",
+    image: "./products/2026-06-29-model-style/IMG_2143_model_style.webp",
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
   },
