@@ -208,6 +208,25 @@ function focusProductInList(productId) {
   });
 }
 
+function revealProductInList(productId) {
+  const productIndex = activeCategoryProducts.findIndex(
+    (product) => product.id === productId
+  );
+
+  if (productIndex < 0) {
+    return;
+  }
+
+  while (
+    renderedProductCount <= productIndex &&
+    renderedProductCount < activeCategoryProducts.length
+  ) {
+    appendProductBatch();
+  }
+
+  focusProductInList(productId);
+}
+
 function openPhoto(productId, options = {}) {
   const product = products.find((item) => item.id === productId);
   if (!product) {
@@ -396,12 +415,14 @@ window.addEventListener("popstate", (event) => {
 
     if (canRestoreFromMemory) {
       // The category page is still in the DOM behind the photo view. Reuse it so
-      // images, rendered batches and the exact scroll position remain untouched.
+      // images and rendered batches remain untouched, then return to the product
+      // matching the last original photo the customer viewed.
       showView("category", {
         history: "skip",
         restoreScroll: true,
         scrollTop: categoryScroll
       });
+      revealProductInList(viewedProductId);
     } else {
       // Rebuild only when this history entry cannot be recovered from memory,
       // for example after a full page reload.
