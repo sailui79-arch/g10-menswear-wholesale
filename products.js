@@ -1231,5 +1231,15 @@ window.G10_PRODUCTS = [
     image: `./products/2026-07-11-22-casual/${photoId}.JPG`,
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
+  })),
+  ...Array.from({ length: 16 }, (_, index) => String(23404 + index)).map((photoId, index) => ({
+    id: `G10-SH${String(index + 1).padStart(3, "0")}`,
+    name: "ရှပ်အင်္ကျီ",
+    category: "shirt",
+    categoryLabel: "ရှပ်အင်္ကျီ",
+    categoryEnglish: "Shirts",
+    image: `./products/2026-07-14-shirt/${photoId}.JPG`,
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
   }))
 ];
