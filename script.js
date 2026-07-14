@@ -385,15 +385,34 @@ window.addEventListener("popstate", (event) => {
 
   if (state && state.g10 && state.view === "category" && state.activeCategory) {
     const viewedProductId = currentView === "photo" ? activeProductId : state.activeProductId;
-    activeProductId = "";
     categoryScroll = state.categoryScroll || 0;
-    openCategory(state.activeCategory, {
-      history: "skip",
-      renderedCount: state.renderedProductCount,
-      restoreScroll: true,
-      scrollTop: categoryScroll,
-      focusProductId: viewedProductId
-    });
+    const canRestoreFromMemory =
+      currentView === "photo" &&
+      activeCategory === state.activeCategory &&
+      activeCategoryProducts.length > 0 &&
+      productList.childElementCount > 0;
+
+    activeProductId = "";
+
+    if (canRestoreFromMemory) {
+      // The category page is still in the DOM behind the photo view. Reuse it so
+      // images, rendered batches and the exact scroll position remain untouched.
+      showView("category", {
+        history: "skip",
+        restoreScroll: true,
+        scrollTop: categoryScroll
+      });
+    } else {
+      // Rebuild only when this history entry cannot be recovered from memory,
+      // for example after a full page reload.
+      openCategory(state.activeCategory, {
+        history: "skip",
+        renderedCount: state.renderedProductCount,
+        restoreScroll: true,
+        scrollTop: categoryScroll,
+        focusProductId: viewedProductId
+      });
+    }
   } else if (state && state.g10 && state.view === "photo" && state.activeProductId) {
     activeCategory = state.activeCategory || "";
     categoryScroll = state.categoryScroll || 0;
