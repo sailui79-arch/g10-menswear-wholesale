@@ -892,6 +892,30 @@ window.G10_PRODUCTS = [
     minQty: 1
   })),
   ...[
+    "5246",
+    "5247",
+    "5248",
+    "5250",
+    "5251",
+    "5252",
+    "5253",
+    "5254",
+    "5255",
+    "5256",
+    "5257",
+    "5258",
+    "5259"
+  ].map((photoId) => ({
+    id: `G10-S-20260714-${photoId}`,
+    name: "ဝတ်စုံ",
+    category: "suit",
+    categoryLabel: "ဝတ်စုံ",
+    categoryEnglish: "Suits",
+    image: `./products/2026-07-14-suit/${photoId}.JPG`,
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  })),
+  ...[
     "22747",
     "22748",
     "22749",
