@@ -277,8 +277,8 @@ img {
 .product-list {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 3px;
-  padding: 5px;
+  gap: 1.5px;
+  padding: 2.5px;
 }
 
 .empty-products {
