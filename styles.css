@@ -167,6 +167,14 @@ img {
   line-height: 1.55;
 }
 
+.hero-card .contact-line {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.35px;
+  white-space: nowrap;
+}
+
 .home-section,
 .category-summary {
   padding: 0 8px;
