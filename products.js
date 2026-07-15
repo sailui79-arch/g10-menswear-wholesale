@@ -1251,5 +1251,15 @@ window.G10_PRODUCTS = [
     image: `./products/2026-07-15-outerwear/${photoId}.webp`,
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
+  })),
+  ...Array.from({ length: 14 }, (_, index) => String(1249 + index)).map((photoId, index) => ({
+    id: `G10-L${String(index + 1).padStart(3, "0")}`,
+    name: "အနွေးပါး",
+    category: "winter",
+    categoryLabel: "အနွေးပါး",
+    categoryEnglish: "Light Outerwear",
+    image: `./products/2026-07-15-light-outerwear/${photoId}.webp`,
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
   }))
 ];
