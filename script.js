@@ -196,16 +196,14 @@ function openCategory(categoryId, options = {}) {
 
 function focusProductInList(productId) {
   requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      const productCard = productList.querySelector(`[data-product="${productId}"]`);
-      if (!productCard) {
-        return;
-      }
+    const productCard = productList.querySelector(`[data-product="${productId}"]`);
+    if (!productCard) {
+      return;
+    }
 
-      productCard.scrollIntoView({ block: "center", behavior: "auto" });
-      productCard.classList.add("return-focus");
-      setTimeout(() => productCard.classList.remove("return-focus"), 1400);
-    });
+    productCard.scrollIntoView({ block: "center", behavior: "auto" });
+    productCard.classList.add("return-focus");
+    setTimeout(() => productCard.classList.remove("return-focus"), 900);
   });
 }
 
