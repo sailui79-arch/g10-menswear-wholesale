@@ -34,6 +34,7 @@ let touchSwipeLocked = false;
 let touchStartedOnControl = false;
 let suppressNextClick = false;
 let restoringHistory = false;
+let pendingPhotoReturn = null;
 
 function getCategory(categoryId) {
   return categories.find((category) => category.id === categoryId);
@@ -289,8 +290,28 @@ function goBack() {
     return;
   }
 
+  if (currentView === "photo" && activeCategory) {
+    pendingPhotoReturn = {
+      categoryId: activeCategory,
+      productId: activeProductId,
+      scrollTop: categoryScroll,
+      renderedCount: renderedProductCount
+    };
+  }
+
   if (window.history && window.history.state && window.history.state.g10) {
     window.history.back();
+  } else if (pendingPhotoReturn) {
+    const target = pendingPhotoReturn;
+    pendingPhotoReturn = null;
+    activeProductId = "";
+    openCategory(target.categoryId, {
+      history: "replace",
+      renderedCount: target.renderedCount,
+      restoreScroll: true,
+      scrollTop: target.scrollTop,
+      focusProductId: target.productId
+    });
   } else {
     showHome({ history: "skip" });
   }
@@ -401,6 +422,40 @@ document.addEventListener(
 window.addEventListener("popstate", (event) => {
   const state = event.state;
   restoringHistory = true;
+
+  if (pendingPhotoReturn) {
+    const target = pendingPhotoReturn;
+    pendingPhotoReturn = null;
+    categoryScroll = target.scrollTop || 0;
+
+    const canRestoreFromMemory =
+      activeCategory === target.categoryId &&
+      activeCategoryProducts.length > 0 &&
+      productList.childElementCount > 0;
+
+    activeProductId = "";
+
+    if (canRestoreFromMemory) {
+      showView("category", {
+        history: "skip",
+        restoreScroll: true,
+        scrollTop: categoryScroll
+      });
+      revealProductInList(target.productId);
+    } else {
+      openCategory(target.categoryId, {
+        history: "skip",
+        renderedCount: target.renderedCount,
+        restoreScroll: true,
+        scrollTop: categoryScroll,
+        focusProductId: target.productId
+      });
+    }
+
+    window.history.replaceState(getHistoryState("category"), "", window.location.href);
+    restoringHistory = false;
+    return;
+  }
 
   if (state && state.g10 && state.view === "category" && state.activeCategory) {
     const viewedProductId = currentView === "photo" ? activeProductId : state.activeProductId;
