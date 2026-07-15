@@ -366,13 +366,9 @@ document.addEventListener(
     const touch = event.touches[0];
     const deltaX = touch.clientX - touchStartX;
     const deltaY = Math.abs(touch.clientY - touchStartY);
-    const allowedStartArea = touchStartX < Math.min(window.innerWidth * 0.82, 340);
     const horizontalSwipe = Math.abs(deltaX) > 18 && Math.abs(deltaX) > deltaY * 1.15;
 
-    if (
-      horizontalSwipe &&
-      (currentView === "photo" || (allowedStartArea && deltaX > 0))
-    ) {
+    if (horizontalSwipe && currentView === "photo") {
       touchSwipeLocked = true;
       event.preventDefault();
     }
@@ -391,8 +387,6 @@ document.addEventListener(
     const deltaX = touch.clientX - touchStartX;
     const deltaY = Math.abs(touch.clientY - touchStartY);
     const elapsed = Date.now() - touchStartTime;
-    const allowedStartArea = touchStartX < Math.min(window.innerWidth * 0.82, 340);
-
     if (
       currentView === "photo" &&
       touchSwipeLocked &&
@@ -401,19 +395,15 @@ document.addEventListener(
       elapsed < 1200
     ) {
       suppressNextClick = true;
-      openAdjacentPhoto(deltaX < 0 ? 1 : -1);
-      setTimeout(() => {
-        suppressNextClick = false;
-      }, 250);
-      return;
-    }
-
-    if (allowedStartArea && (touchSwipeLocked || deltaX > 42) && deltaY < 96 && elapsed < 1200) {
-      suppressNextClick = true;
-      goBack();
+      if (deltaX > 0) {
+        goBack();
+      } else {
+        openAdjacentPhoto(1);
+      }
       setTimeout(() => {
         suppressNextClick = false;
       }, 350);
+      return;
     }
   },
   { passive: true }
