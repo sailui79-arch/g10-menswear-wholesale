@@ -1241,5 +1241,15 @@ window.G10_PRODUCTS = [
     image: `./products/2026-07-14-shirt/${photoId}.JPG`,
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
+  })),
+  ...Array.from({ length: 13 }, (_, index) => String(1236 + index)).map((photoId, index) => ({
+    id: `G10-O${String(index + 64).padStart(3, "0")}`,
+    name: "အပေါ်ထပ်အင်္ကျီ",
+    category: "outerwear",
+    categoryLabel: "အပေါ်ထပ်အင်္ကျီ",
+    categoryEnglish: "Jackets",
+    image: `./products/2026-07-15-outerwear/${photoId}.webp`,
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
   }))
 ];
