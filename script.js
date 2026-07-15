@@ -34,7 +34,7 @@ let touchSwipeLocked = false;
 let touchStartedOnControl = false;
 let suppressNextClick = false;
 let restoringHistory = false;
-let pendingPhotoReturn = null;
+let ignoreNextPopstate = false;
 
 function getCategory(categoryId) {
   return categories.find((category) => category.id === categoryId);
@@ -289,29 +289,31 @@ function goBack() {
   }
 
   if (currentView === "photo" && activeCategory) {
-    pendingPhotoReturn = {
-      categoryId: activeCategory,
-      productId: activeProductId,
-      scrollTop: categoryScroll,
-      renderedCount: renderedProductCount
-    };
+    const viewedProductId = activeProductId;
+    activeProductId = "";
+
+    // Restore the category immediately so the customer does not have to wait
+    // for the browser's asynchronous history event before seeing the page.
+    showView("category", {
+      history: "skip",
+      restoreScroll: true,
+      scrollTop: categoryScroll
+    });
+    revealProductInList(viewedProductId);
+
+    if (window.history && window.history.state && window.history.state.g10) {
+      ignoreNextPopstate = true;
+      window.history.back();
+    } else if (window.history) {
+      window.history.replaceState(getHistoryState("category"), "", window.location.href);
+    }
+    return;
   }
 
   if (window.history && window.history.state && window.history.state.g10) {
     window.history.back();
-  } else if (pendingPhotoReturn) {
-    const target = pendingPhotoReturn;
-    pendingPhotoReturn = null;
-    activeProductId = "";
-    openCategory(target.categoryId, {
-      history: "replace",
-      renderedCount: target.renderedCount,
-      restoreScroll: true,
-      scrollTop: target.scrollTop,
-      focusProductId: target.productId
-    });
   } else {
-    showHome({ history: "skip" });
+    showHome({ history: "replace" });
   }
 }
 
@@ -421,36 +423,8 @@ window.addEventListener("popstate", (event) => {
   const state = event.state;
   restoringHistory = true;
 
-  if (pendingPhotoReturn) {
-    const target = pendingPhotoReturn;
-    pendingPhotoReturn = null;
-    categoryScroll = target.scrollTop || 0;
-
-    const canRestoreFromMemory =
-      activeCategory === target.categoryId &&
-      activeCategoryProducts.length > 0 &&
-      productList.childElementCount > 0;
-
-    activeProductId = "";
-
-    if (canRestoreFromMemory) {
-      showView("category", {
-        history: "skip",
-        restoreScroll: true,
-        scrollTop: categoryScroll
-      });
-      revealProductInList(target.productId);
-    } else {
-      openCategory(target.categoryId, {
-        history: "skip",
-        renderedCount: target.renderedCount,
-        restoreScroll: true,
-        scrollTop: categoryScroll,
-        focusProductId: target.productId
-      });
-    }
-
-    window.history.replaceState(getHistoryState("category"), "", window.location.href);
+  if (ignoreNextPopstate) {
+    ignoreNextPopstate = false;
     restoringHistory = false;
     return;
   }
