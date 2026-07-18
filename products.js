@@ -1277,3 +1277,6 @@ window.G10_PRODUCTS = [
     minQty: 1
   }))
 ];
+
+// Jeans are currently off shelf. Keep the records so they can be restored later.
+window.G10_PRODUCTS = window.G10_PRODUCTS.filter((product) => product.category !== "jeans");
