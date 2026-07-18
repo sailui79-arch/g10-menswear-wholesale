@@ -620,9 +620,13 @@ document.addEventListener(
     const deltaY = Math.abs(touch.clientY - touchStartY);
     const horizontalSwipe = Math.abs(deltaX) > 18 && Math.abs(deltaX) > deltaY * 1.15;
 
-    // Only take over a left swipe for browsing the next photo. A right-edge
-    // swipe belongs to the phone browser, which already performs history back.
-    if (horizontalSwipe && currentView === "photo" && deltaX < 0) {
+    // Swipe either direction inside the photo: left for next, right for previous.
+    // Keep a narrow left-edge area for the phone browser's native back gesture.
+    const isPhotoSwipe =
+      currentView === "photo" &&
+      horizontalSwipe &&
+      (deltaX < 0 || touchStartX > 28);
+    if (isPhotoSwipe) {
       touchSwipeLocked = true;
       event.preventDefault();
     }
@@ -644,12 +648,12 @@ document.addEventListener(
     if (
       currentView === "photo" &&
       touchSwipeLocked &&
-      deltaX < -42 &&
+      Math.abs(deltaX) > 42 &&
       deltaY < 96 &&
       elapsed < 1200
     ) {
       suppressNextClick = true;
-      openAdjacentPhoto(1);
+      openAdjacentPhoto(deltaX < 0 ? 1 : -1);
       setTimeout(() => {
         suppressNextClick = false;
       }, 250);
