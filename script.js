@@ -1,6 +1,10 @@
 const categories = (window.G10_CATEGORIES || []).filter((category) => category.id !== "all");
 const products = window.G10_PRODUCTS || [];
 const PRODUCT_BATCH_SIZE = 24;
+const ORDERS_API_URL =
+  "https://script.google.com/macros/s/AKfycbwJcVoujktzyHrm_u-cBlejopXlvLteavvvB6p4G2ZJUCmyHADi8MPah3GiRXDr-3Wr/exec";
+const ORDER_NOTIFICATION_EMAIL = "sailui79@gmail.com";
+const CART_STORAGE_KEY = "g10-selected-products";
 
 if ("scrollRestoration" in window.history) {
   window.history.scrollRestoration = "manual";
@@ -9,7 +13,8 @@ if ("scrollRestoration" in window.history) {
 const views = {
   home: document.querySelector("#homeView"),
   category: document.querySelector("#categoryView"),
-  photo: document.querySelector("#photoView")
+  photo: document.querySelector("#photoView"),
+  cart: document.querySelector("#cartView")
 };
 
 const pageKicker = document.querySelector("#pageKicker");
@@ -20,6 +25,17 @@ const categoryName = document.querySelector("#categoryName");
 const categoryCount = document.querySelector("#categoryCount");
 const productList = document.querySelector("#productList");
 const originalPhoto = document.querySelector("#originalPhoto");
+const photoSelectButton = document.querySelector("#photoSelectButton");
+const headerCart = document.querySelector("#headerCart");
+const headerCartCount = document.querySelector("#headerCartCount");
+const stickyCount = document.querySelector("#stickyCount");
+const cartItems = document.querySelector("#cartItems");
+const cartSummary = document.querySelector("#cartSummary");
+const customerName = document.querySelector("#customerName");
+const customerPhone = document.querySelector("#customerPhone");
+const orderNote = document.querySelector("#orderNote");
+const submitOrder = document.querySelector("#submitOrder");
+const orderStatus = document.querySelector("#orderStatus");
 
 let currentView = "home";
 let activeCategory = "";
@@ -35,6 +51,9 @@ let touchStartedOnControl = false;
 let suppressNextClick = false;
 let restoringHistory = false;
 let ignoreNextPopstate = false;
+let cartReturnView = "home";
+let cartReturnScroll = 0;
+let cart = loadCart();
 
 function getCategory(categoryId) {
   return categories.find((category) => category.id === categoryId);
@@ -44,6 +63,25 @@ function getCategoryProducts(categoryId) {
   return products.filter((product) => product.category === categoryId).reverse();
 }
 
+function loadCart() {
+  try {
+    const savedIds = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || "[]");
+    return Array.isArray(savedIds)
+      ? savedIds.filter((id) => products.some((product) => product.id === id))
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveCart() {
+  localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+}
+
+function isSelected(productId) {
+  return cart.includes(productId);
+}
+
 function getHistoryState(viewName = currentView) {
   return {
     g10: true,
@@ -51,7 +89,9 @@ function getHistoryState(viewName = currentView) {
     activeCategory,
     activeProductId,
     categoryScroll,
-    renderedProductCount
+    renderedProductCount,
+    cartReturnView,
+    cartReturnScroll
   };
 }
 
@@ -84,9 +124,12 @@ function showView(viewName, options = {}) {
     const category = getCategory(activeCategory);
     pageKicker.textContent = "Products";
     pageTitle.textContent = category ? category.label : "Products";
-  } else {
+  } else if (viewName === "photo") {
     pageKicker.textContent = "Original Photo";
     pageTitle.textContent = activeProductId;
+  } else {
+    pageKicker.textContent = "Selected Products";
+    pageTitle.textContent = "My Selection";
   }
 
   if (options.history !== "skip") {
@@ -102,10 +145,14 @@ function showView(viewName, options = {}) {
 }
 
 function createProductCard(product) {
+  const selected = isSelected(product.id);
   return `
-    <button class="product-card photo-only" type="button" data-product="${product.id}" aria-label="View ${product.id}">
-      <img src="${product.image}" alt="${product.id}" loading="lazy" decoding="async" width="480" height="620">
-    </button>
+    <div class="product-card photo-only${selected ? " selected" : ""}" data-card="${product.id}">
+      <button class="product-photo-button" type="button" data-product="${product.id}" aria-label="View ${product.id}">
+        <img src="${product.image}" alt="${product.id}" loading="lazy" decoding="async" width="480" height="620">
+      </button>
+      <button class="select-product" type="button" data-select="${product.id}" aria-label="${selected ? "Remove" : "Select"} ${product.id}">${selected ? "✓" : "+"}</button>
+    </div>
   `;
 }
 
@@ -196,7 +243,7 @@ function openCategory(categoryId, options = {}) {
 
 function focusProductInList(productId) {
   requestAnimationFrame(() => {
-    const productCard = productList.querySelector(`[data-product="${productId}"]`);
+    const productCard = productList.querySelector(`[data-card="${productId}"]`);
     if (!productCard) {
       return;
     }
@@ -205,6 +252,55 @@ function focusProductInList(productId) {
     productCard.classList.add("return-focus");
     setTimeout(() => productCard.classList.remove("return-focus"), 900);
   });
+}
+
+function updateSelectionControls(productId) {
+  const selected = isSelected(productId);
+  const card = productList.querySelector(`[data-card="${productId}"]`);
+  const selectButton = card ? card.querySelector("[data-select]") : null;
+
+  if (card) {
+    card.classList.toggle("selected", selected);
+  }
+  if (selectButton) {
+    selectButton.textContent = selected ? "✓" : "+";
+    selectButton.setAttribute("aria-label", `${selected ? "Remove" : "Select"} ${productId}`);
+  }
+
+  if (activeProductId === productId) {
+    photoSelectButton.classList.toggle("selected", selected);
+    photoSelectButton.textContent = selected
+      ? "ရွေးပြီး · Selected"
+      : "ရွေးမည် · Select";
+  }
+}
+
+function toggleSelection(productId) {
+  if (!products.some((product) => product.id === productId)) {
+    return;
+  }
+
+  cart = isSelected(productId)
+    ? cart.filter((id) => id !== productId)
+    : [...cart, productId];
+  saveCart();
+  updateSelectionControls(productId);
+  renderCart();
+}
+
+function getSelectedProducts() {
+  return cart
+    .map((id) => products.find((product) => product.id === id))
+    .filter(Boolean);
+}
+
+function openCart(options = {}) {
+  if (currentView !== "cart") {
+    cartReturnView = currentView;
+    cartReturnScroll = window.scrollY;
+  }
+  renderCart();
+  showView("cart", options);
 }
 
 function revealProductInList(productId) {
@@ -239,6 +335,7 @@ function openPhoto(productId, options = {}) {
   activeProductId = product.id;
   originalPhoto.src = product.image;
   originalPhoto.alt = product.id;
+  updateSelectionControls(product.id);
 
   if (openedFromCategory && !restoringHistory && window.history) {
     window.history.replaceState(getHistoryState("category"), "", window.location.href);
@@ -275,6 +372,127 @@ function openAdjacentPhoto(step) {
   const nextIndex =
     (currentIndex + step + activeCategoryProducts.length) % activeCategoryProducts.length;
   openPhoto(activeCategoryProducts[nextIndex].id, { history: "replace" });
+}
+
+function createOrderId() {
+  const now = new Date();
+  const pad = (value) => String(value).padStart(2, "0");
+  return `G10-${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+}
+
+function getPublicImageUrl(imagePath) {
+  return new URL(imagePath, window.location.href).href;
+}
+
+function buildOrderText() {
+  const lines = [
+    "G-10 Selected Products",
+    `Customer: ${customerName.value.trim() || "-"}`,
+    `Phone / WeChat: ${customerPhone.value.trim() || "-"}`,
+    ""
+  ];
+
+  getSelectedProducts().forEach((product, index) => {
+    lines.push(`${index + 1}. ${product.id} | ${product.categoryLabel}`);
+    lines.push(getPublicImageUrl(product.image));
+  });
+
+  if (orderNote.value.trim()) {
+    lines.push("", `Note: ${orderNote.value.trim()}`);
+  }
+
+  return lines.join("\n");
+}
+
+function buildOrderPayload() {
+  const selectedProducts = getSelectedProducts();
+  const items = selectedProducts.map((product) => ({
+    id: product.id,
+    category: product.categoryLabel,
+    imageUrl: getPublicImageUrl(product.image)
+  }));
+
+  return {
+    orderId: createOrderId(),
+    notificationEmail: ORDER_NOTIFICATION_EMAIL,
+    customerName: customerName.value.trim(),
+    customerPhone: customerPhone.value.trim(),
+    itemsText: items.map((item, index) => `${index + 1}. ${item.id} ${item.category}`).join("; "),
+    imageUrls: items.map((item) => item.imageUrl),
+    items,
+    totalQty: items.length,
+    note: orderNote.value.trim(),
+    submittedAt: new Date().toISOString()
+  };
+}
+
+function renderCart() {
+  const selectedProducts = getSelectedProducts();
+  const count = selectedProducts.length;
+  headerCartCount.textContent = count;
+  stickyCount.textContent = count;
+  cartSummary.textContent = `${count} products`;
+
+  if (count === 0) {
+    cartItems.innerHTML = '<p class="empty-cart">Select product photos first. အရင်ဆုံး ပစ္စည်းဓာတ်ပုံရွေးပါ။</p>';
+    return;
+  }
+
+  cartItems.innerHTML = selectedProducts
+    .map(
+      (product) => `
+        <div class="cart-item">
+          <div class="cart-product">
+            <div class="cart-thumb">
+              <img src="${product.image}" alt="${product.id}" loading="lazy" decoding="async">
+            </div>
+            <div>
+              <strong>${product.id}</strong>
+              <span>${product.categoryLabel}</span>
+            </div>
+          </div>
+          <button type="button" data-remove="${product.id}">Remove</button>
+        </div>
+      `
+    )
+    .join("");
+}
+
+async function submitOrderToSheet() {
+  if (cart.length === 0) {
+    orderStatus.textContent = "请先选择商品照片 · Please select products first.";
+    return;
+  }
+
+  if (!customerName.value.trim() || !customerPhone.value.trim()) {
+    orderStatus.textContent = "请填写姓名和电话 / WeChat · Please enter name and contact.";
+    return;
+  }
+
+  const payload = buildOrderPayload();
+  submitOrder.disabled = true;
+  submitOrder.textContent = "တင်နေသည်... · Submitting...";
+  orderStatus.textContent = "";
+
+  try {
+    await fetch(ORDERS_API_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    });
+
+    orderStatus.textContent = `提交成功 · Order ${payload.orderId} submitted.`;
+    submitOrder.textContent = "တင်ပြီးပါပြီ · Submitted";
+  } catch {
+    orderStatus.textContent = "提交失败，请复制选货单发到 WeChat。";
+    submitOrder.textContent = "ရွေးထားသည်များ ပို့မည် · Submit";
+  } finally {
+    setTimeout(() => {
+      submitOrder.disabled = false;
+      submitOrder.textContent = "ရွေးထားသည်များ ပို့မည် · Submit";
+    }, 1800);
+  }
 }
 
 function showHome(options = {}) {
@@ -331,13 +549,43 @@ productList.addEventListener("click", (event) => {
     return;
   }
 
-  const button = event.target.closest("[data-product]");
-  if (button) {
-    openPhoto(button.dataset.product);
+  const selectButton = event.target.closest("[data-select]");
+  if (selectButton) {
+    toggleSelection(selectButton.dataset.select);
+    return;
+  }
+
+  const photoButton = event.target.closest("[data-product]");
+  if (photoButton) {
+    openPhoto(photoButton.dataset.product);
   }
 });
 
 backButton.addEventListener("click", goBack);
+headerCart.addEventListener("click", openCart);
+photoSelectButton.addEventListener("click", () => toggleSelection(activeProductId));
+document.querySelector("#homeNav").addEventListener("click", () => showHome());
+document.querySelector("#cartNav").addEventListener("click", openCart);
+document.querySelector("#clearCart").addEventListener("click", () => {
+  const removedIds = [...cart];
+  cart = [];
+  saveCart();
+  removedIds.forEach(updateSelectionControls);
+  renderCart();
+});
+submitOrder.addEventListener("click", submitOrderToSheet);
+document.querySelector("#copyOrder").addEventListener("click", async (event) => {
+  const button = event.currentTarget;
+  try {
+    await navigator.clipboard.writeText(buildOrderText());
+    button.textContent = "Copied";
+    setTimeout(() => {
+      button.textContent = "Copy for WeChat";
+    }, 1400);
+  } catch {
+    window.prompt("Copy selected products", buildOrderText());
+  }
+});
 
 document.addEventListener(
   "touchstart",
@@ -351,7 +599,11 @@ document.addEventListener(
     touchStartY = touch.clientY;
     touchStartTime = Date.now();
     touchSwipeLocked = false;
-    touchStartedOnControl = Boolean(event.target.closest("a, .back-button"));
+    touchStartedOnControl = Boolean(
+      event.target.closest(
+        "a, input, textarea, .back-button, .cart-icon, .select-product, .photo-select-button, .bottom-nav button, [data-remove], #clearCart, #submitOrder, #copyOrder"
+      )
+    );
   },
   { passive: true }
 );
@@ -453,6 +705,11 @@ window.addEventListener("popstate", (event) => {
     activeCategory = state.activeCategory || "";
     categoryScroll = state.categoryScroll || 0;
     openPhoto(state.activeProductId, { history: "skip" });
+  } else if (state && state.g10 && state.view === "cart") {
+    cartReturnView = state.cartReturnView || "home";
+    cartReturnScroll = state.cartReturnScroll || 0;
+    renderCart();
+    showView("cart", { history: "skip" });
   } else {
     showHome({ history: "skip" });
   }
@@ -463,4 +720,5 @@ window.addEventListener("popstate", (event) => {
 window.addEventListener("scroll", loadMoreProductsNearBottom, { passive: true });
 
 renderCategories();
+renderCart();
 showHome({ history: "replace" });

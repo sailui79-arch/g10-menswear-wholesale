@@ -105,6 +105,38 @@ img {
   height: 44px;
 }
 
+.cart-icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  font-weight: 900;
+}
+
+.cart-icon::before {
+  content: "✓";
+  font-size: 18px;
+}
+
+.cart-icon span {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  display: grid;
+  place-items: center;
+  min-width: 21px;
+  height: 21px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--green);
+  font-size: 10px;
+}
+
 .back-button {
   visibility: hidden;
   font-size: 34px;
@@ -302,7 +334,44 @@ img {
 }
 
 .product-card {
+  position: relative;
   padding: 0;
+}
+
+.product-photo-button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.select-product {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 2px solid white;
+  border-radius: 999px;
+  background: rgba(17, 24, 39, 0.72);
+  color: white;
+  font-size: 16px;
+  font-weight: 900;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.product-card.selected {
+  outline: 3px solid var(--green);
+  outline-offset: -3px;
+}
+
+.product-card.selected .select-product {
+  background: var(--green);
 }
 
 .product-card img {
@@ -357,6 +426,26 @@ img {
   object-fit: fill !important;
   background: #0f1724;
   touch-action: pan-y pinch-zoom;
+}
+
+.photo-select-button {
+  position: sticky;
+  bottom: calc(74px + env(safe-area-inset-bottom));
+  display: block;
+  width: calc(100% - 24px);
+  min-height: 50px;
+  margin: 12px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--green);
+  color: white;
+  font-weight: 900;
+  box-shadow: 0 10px 24px rgba(15, 143, 125, 0.3);
+}
+
+.photo-select-button.selected {
+  background: var(--gold);
+  color: var(--dark);
 }
 
 .product-card span,
@@ -715,6 +804,15 @@ img {
 
 .send-actions #submitOrder:disabled {
   opacity: 0.68;
+}
+
+.order-status {
+  min-height: 20px;
+  margin: 10px 0 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
 }
 
 .send-actions button {

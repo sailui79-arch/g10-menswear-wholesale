@@ -9,7 +9,7 @@
       content="G-10 menswear wholesale mobile catalog for Myanmar buyers."
     />
     <title>G-10 Menswear</title>
-    <link rel="stylesheet" href="./styles.css?v=20260715-contact-line" />
+    <link rel="stylesheet" href="./styles.css?v=20260718-order-selection" />
   </head>
   <body>
     <main class="app-shell">
@@ -19,7 +19,9 @@
           <p id="pageKicker">MEN'S WHOLESALE</p>
           <h1 id="pageTitle">G-10</h1>
         </div>
-        <div class="header-spacer" aria-hidden="true"></div>
+        <button class="cart-icon" id="headerCart" type="button" aria-label="Selected products">
+          <span id="headerCartCount">0</span>
+        </button>
       </header>
 
       <section class="view active" id="homeView" aria-label="Home">
@@ -50,11 +52,51 @@
 
       <section class="view photo-view" id="photoView" aria-label="Original product photo">
         <img class="original-photo" id="originalPhoto" src="" alt="" />
+        <button class="photo-select-button" id="photoSelectButton" type="button">ရွေးမည် · Select</button>
       </section>
 
+      <section class="view" id="cartView" aria-label="Selected products">
+        <section class="customer-panel" aria-label="Customer information">
+          <label>
+            Customer name · နာမည်
+            <input id="customerName" type="text" autocomplete="name" placeholder="Name" />
+          </label>
+          <label>
+            Phone / WeChat
+            <input id="customerPhone" type="text" autocomplete="tel" placeholder="Phone / WeChat" />
+          </label>
+        </section>
+
+        <section class="cart-panel" aria-label="Selection list">
+          <div class="cart-head">
+            <div>
+              <span>Selected Products</span>
+              <strong id="cartSummary">0 products</strong>
+            </div>
+            <button id="clearCart" type="button">Clear</button>
+          </div>
+          <div class="cart-items" id="cartItems"></div>
+          <label class="order-message">
+            Note · မှတ်ချက်
+            <textarea id="orderNote" rows="3" placeholder="Color, quantity, delivery note..."></textarea>
+          </label>
+          <div class="send-actions">
+            <button id="submitOrder" type="button">ရွေးထားသည်များ ပို့မည် · Submit</button>
+            <button id="copyOrder" type="button">Copy for WeChat</button>
+          </div>
+          <p class="order-status" id="orderStatus" role="status" aria-live="polite"></p>
+        </section>
+      </section>
+
+      <div class="bottom-spacer" aria-hidden="true"></div>
     </main>
 
+    <nav class="bottom-nav" aria-label="Main navigation">
+      <button id="homeNav" type="button">Home</button>
+      <button id="cartNav" type="button">Selected <strong id="stickyCount">0</strong></button>
+    </nav>
+
     <script src="./products.js?v=20260718-light-outerwear-1306-1411"></script>
-    <script src="./script.js?v=20260715-native-swipe-back"></script>
+    <script src="./script.js?v=20260718-order-selection"></script>
   </body>
 </html>
