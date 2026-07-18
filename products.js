@@ -1261,5 +1261,19 @@ window.G10_PRODUCTS = [
     image: `./products/2026-07-15-light-outerwear/${photoId}.webp`,
     sizes: ["M", "L", "XL", "2XL", "3XL"],
     minQty: 1
+  })),
+  ...[
+    ...Array.from({ length: 53 }, (_, index) => String(1306 + index)),
+    "1365",
+    ...Array.from({ length: 44 }, (_, index) => String(1368 + index))
+  ].map((photoId, index) => ({
+    id: `G10-L${String(index + 15).padStart(3, "0")}`,
+    name: "အနွေးပါး",
+    category: "winter",
+    categoryLabel: "အနွေးပါး",
+    categoryEnglish: "Light Outerwear",
+    image: `./products/2026-07-18-light-outerwear/${photoId}.webp`,
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
   }))
 ];
