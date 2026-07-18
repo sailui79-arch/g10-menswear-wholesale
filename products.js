@@ -1278,5 +1278,23 @@ window.G10_PRODUCTS = [
   }))
 ];
 
-// Jeans are currently off shelf. Keep the records so they can be restored later.
-window.G10_PRODUCTS = window.G10_PRODUCTS.filter((product) => product.category !== "jeans");
+// Remove the old jeans records whose original photos were permanently deleted.
+window.G10_PRODUCTS = window.G10_PRODUCTS.filter(
+  (product) => !product.image.includes("2026-07-04-jeans")
+);
+
+// New jeans uploaded on 2026-07-18.
+window.G10_PRODUCTS.push(
+  ...[
+    ...Array.from({ length: 47 }, (_, index) => String(23482 + index))
+  ].map((photoId, index) => ({
+    id: `G10-J${String(index + 16).padStart(3, "0")}`,
+    name: "ဂျင်းဘောင်းဘီ",
+    category: "jeans",
+    categoryLabel: "ဂျင်းဘောင်းဘီ",
+    categoryEnglish: "Jeans",
+    image: `./products/2026-07-18-jeans/${photoId}.webp`,
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  }))
+);
