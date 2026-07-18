@@ -1298,3 +1298,8 @@ window.G10_PRODUCTS.push(
     minQty: 1
   }))
 );
+
+// Casual pants are permanently off shelf and their original photos were deleted.
+window.G10_PRODUCTS = window.G10_PRODUCTS.filter(
+  (product) => product.category !== "casual"
+);
