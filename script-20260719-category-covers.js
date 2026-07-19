@@ -184,10 +184,21 @@ function loadMoreProductsNearBottom() {
 }
 
 function renderCategories() {
+  const categoryCovers = {
+    jeans: "./assets/category-covers-20260719/jeans.webp",
+    tshirt: "./assets/category-covers-20260719/tshirt.webp",
+    polo: "./assets/category-covers-20260719/polo.webp",
+    shirt: "./assets/category-covers-20260719/shirt.webp",
+    outerwear: "./assets/category-covers-20260719/outerwear.webp",
+    sweater: "./assets/category-covers-20260719/sweater.webp",
+    winter: "./assets/category-covers-20260719/winter.webp",
+    suit: "./assets/category-covers-20260719/suit.webp"
+  };
+
   categoryGrid.innerHTML = categories
     .map((category) => {
       const categoryProducts = getCategoryProducts(category.id);
-      const cover = categoryProducts[0] ? categoryProducts[0].image : "";
+      const cover = categoryProducts.length > 0 ? categoryCovers[category.id] || categoryProducts[0].image : "";
 
       return `
         <button class="category-card" type="button" data-category="${category.id}">
