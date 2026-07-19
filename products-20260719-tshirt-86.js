@@ -1303,3 +1303,14 @@ window.G10_PRODUCTS.push(
 window.G10_PRODUCTS = window.G10_PRODUCTS.filter(
   (product) => product.category !== "casual"
 );
+
+// T-shirts G10-T056 through G10-T106 are permanently off shelf and their originals were deleted.
+window.G10_PRODUCTS = window.G10_PRODUCTS.filter((product) => {
+  const match = /^G10-T(\d{3})$/.exec(product.id);
+  if (!match) {
+    return true;
+  }
+
+  const productNumber = Number(match[1]);
+  return productNumber < 56 || productNumber > 106;
+});
