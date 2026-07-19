@@ -1318,3 +1318,9 @@ window.G10_PRODUCTS = window.G10_PRODUCTS.filter((product) => {
     (productNumber >= 56 && productNumber <= 106);
   return !isDeletedRange;
 });
+
+// POLO G10-P001 through G10-P008 are permanently off shelf and their originals were deleted.
+window.G10_PRODUCTS = window.G10_PRODUCTS.filter((product) => {
+  const match = /^G10-P(\d{3})$/.exec(product.id);
+  return !match || Number(match[1]) > 8;
+});
