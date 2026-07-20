@@ -5,6 +5,7 @@ const ORDERS_API_URL =
   "https://script.google.com/macros/s/AKfycbwJcVoujktzyHrm_u-cBlejopXlvLteavvvB6p4G2ZJUCmyHADi8MPah3GiRXDr-3Wr/exec";
 const ORDER_NOTIFICATION_EMAIL = "sailui79@gmail.com";
 const CART_STORAGE_KEY = "g10-selected-products";
+const IOS_DEVICE = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
 if ("scrollRestoration" in window.history) {
   window.history.scrollRestoration = "manual";
@@ -650,7 +651,8 @@ document.addEventListener(
 
     // In WeChat, a right swipe beginning at the left edge closes the whole
     // webview. Capture it on internal pages and use it as the site's Back.
-    const isEdgeBack = horizontalSwipe && deltaX > 0 && touchStartX <= 44;
+    const isEdgeBack =
+      !IOS_DEVICE && horizontalSwipe && deltaX > 0 && touchStartX <= 44;
     if (isEdgeBack) {
       touchEdgeBack = true;
       touchSwipeLocked = true;
@@ -662,7 +664,8 @@ document.addEventListener(
     const isPhotoSwipe =
       currentView === "photo" &&
       horizontalSwipe &&
-      !touchEdgeBack;
+      !touchEdgeBack &&
+      !(IOS_DEVICE && deltaX > 0 && touchStartX <= 44);
     if (isPhotoSwipe) {
       touchSwipeLocked = true;
       event.preventDefault();
