@@ -1299,6 +1299,21 @@ window.G10_PRODUCTS.push(
   }))
 );
 
+// BY jeans uploaded on 2026-07-20.
+window.G10_PRODUCTS.push(
+  ...Array.from({ length: 17 }, (_, index) => `G10-BY${String(index + 1).padStart(3, "0")}`)
+    .map((photoId) => ({
+      id: photoId,
+      name: "ဂျင်းဘောင်းဘီ",
+      category: "jeans",
+      categoryLabel: "ဂျင်းဘောင်းဘီ",
+      categoryEnglish: "Jeans",
+      image: `./products/2026-07-20-jeans-by/${photoId}.webp`,
+      sizes: ["M", "L", "XL", "2XL", "3XL"],
+      minQty: 1
+    }))
+);
+
 // T-shirts 23553-23580 uploaded on 2026-07-20.
 window.G10_PRODUCTS.push(
   ...Array.from({ length: 28 }, (_, index) => String(23553 + index))
