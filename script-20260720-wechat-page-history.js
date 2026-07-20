@@ -5,6 +5,8 @@ const ORDERS_API_URL =
   "https://script.google.com/macros/s/AKfycbwJcVoujktzyHrm_u-cBlejopXlvLteavvvB6p4G2ZJUCmyHADi8MPah3GiRXDr-3Wr/exec";
 const ORDER_NOTIFICATION_EMAIL = "sailui79@gmail.com";
 const CART_STORAGE_KEY = "g10-selected-products";
+const WECHAT_BROWSER = /MicroMessenger/i.test(navigator.userAgent);
+const WECHAT_SCROLL_KEY = "g10-wechat-category-scroll";
 
 if ("scrollRestoration" in window.history) {
   window.history.scrollRestoration = "manual";
@@ -108,6 +110,21 @@ function getHistoryUrl(viewName) {
     return `${baseUrl}#selected`;
   }
   return `${baseUrl}#home`;
+}
+
+function navigateWechat(viewName, values = {}) {
+  const url = new URL(window.location.href);
+  url.search = "";
+  url.hash = "";
+  if (viewName !== "home") {
+    url.searchParams.set("view", viewName);
+  }
+  Object.entries(values).forEach(([key, value]) => {
+    if (value) {
+      url.searchParams.set(key, value);
+    }
+  });
+  window.location.assign(url.href);
 }
 
 function updateHistory(viewName, mode = "push") {
@@ -356,7 +373,7 @@ function openPhoto(productId, options = {}) {
   }
 
   const openedFromCategory = currentView === "category";
-  if (openedFromCategory) {
+  if (openedFromCategory && !options.preserveCategoryScroll) {
     categoryScroll = window.scrollY;
   }
   activeProductId = product.id;
@@ -533,6 +550,11 @@ function goBack() {
     return;
   }
 
+  if (WECHAT_BROWSER) {
+    window.history.back();
+    return;
+  }
+
   if (currentView === "photo" && activeCategory) {
     const viewedProductId = activeProductId;
     activeProductId = "";
@@ -565,6 +587,10 @@ function goBack() {
 categoryGrid.addEventListener("click", (event) => {
   const button = event.target.closest("[data-category]");
   if (button) {
+    if (WECHAT_BROWSER) {
+      navigateWechat("category", { category: button.dataset.category });
+      return;
+    }
     openCategory(button.dataset.category);
   }
 });
@@ -584,6 +610,14 @@ productList.addEventListener("click", (event) => {
 
   const photoButton = event.target.closest("[data-product]");
   if (photoButton) {
+    if (WECHAT_BROWSER) {
+      sessionStorage.setItem(WECHAT_SCROLL_KEY, String(window.scrollY));
+      navigateWechat("photo", {
+        category: activeCategory,
+        product: photoButton.dataset.product
+      });
+      return;
+    }
     openPhoto(photoButton.dataset.product);
   }
 });
@@ -650,7 +684,8 @@ document.addEventListener(
 
     // In WeChat, a right swipe beginning at the left edge closes the whole
     // webview. Capture it on internal pages and use it as the site's Back.
-    const isEdgeBack = horizontalSwipe && deltaX > 0 && touchStartX <= 44;
+    const isEdgeBack =
+      !WECHAT_BROWSER && horizontalSwipe && deltaX > 0 && touchStartX <= 44;
     if (isEdgeBack) {
       touchEdgeBack = true;
       touchSwipeLocked = true;
@@ -662,7 +697,8 @@ document.addEventListener(
     const isPhotoSwipe =
       currentView === "photo" &&
       horizontalSwipe &&
-      !touchEdgeBack;
+      !touchEdgeBack &&
+      !(WECHAT_BROWSER && deltaX > 0 && touchStartX <= 44);
     if (isPhotoSwipe) {
       touchSwipeLocked = true;
       event.preventDefault();
@@ -774,6 +810,47 @@ window.addEventListener("popstate", (event) => {
 
 window.addEventListener("scroll", loadMoreProductsNearBottom, { passive: true });
 
-renderCategories();
-renderCart();
-showHome({ history: "replace" });
+function initializePage() {
+  renderCategories();
+  renderCart();
+
+  if (!WECHAT_BROWSER) {
+    showHome({ history: "replace" });
+    return;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const requestedView = params.get("view");
+  const requestedCategory = params.get("category") || "";
+  const requestedProduct = params.get("product") || "";
+  const savedScroll = Number(sessionStorage.getItem(WECHAT_SCROLL_KEY) || 0);
+
+  if (requestedView === "category" && getCategory(requestedCategory)) {
+    openCategory(requestedCategory, {
+      history: "skip",
+      restoreScroll: true,
+      scrollTop: savedScroll
+    });
+    return;
+  }
+
+  if (
+    requestedView === "photo" &&
+    getCategory(requestedCategory) &&
+    products.some(
+      (product) => product.id === requestedProduct && product.category === requestedCategory
+    )
+  ) {
+    openCategory(requestedCategory, { history: "skip" });
+    categoryScroll = savedScroll;
+    openPhoto(requestedProduct, {
+      history: "skip",
+      preserveCategoryScroll: true
+    });
+    return;
+  }
+
+  showHome({ history: "replace" });
+}
+
+initializePage();
