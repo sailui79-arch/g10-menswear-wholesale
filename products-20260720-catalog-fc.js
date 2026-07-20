@@ -1299,6 +1299,21 @@ window.G10_PRODUCTS.push(
   }))
 );
 
+// FC jeans uploaded on 2026-07-20.
+window.G10_PRODUCTS.push(
+  ...Array.from({ length: 13 }, (_, index) => `G10-FC${String(index + 1).padStart(3, "0")}`)
+    .map((photoId) => ({
+      id: photoId,
+      name: "ဂျင်းဘောင်းဘီ",
+      category: "jeans",
+      categoryLabel: "ဂျင်းဘောင်းဘီ",
+      categoryEnglish: "Jeans",
+      image: `./products/2026-07-20-jeans-fc/${photoId}.webp`,
+      sizes: ["M", "L", "XL", "2XL", "3XL"],
+      minQty: 1
+    }))
+);
+
 // Casual pants are permanently off shelf and their original photos were deleted.
 window.G10_PRODUCTS = window.G10_PRODUCTS.filter(
   (product) => product.category !== "casual"
