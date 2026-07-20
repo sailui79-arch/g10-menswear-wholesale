@@ -1299,6 +1299,21 @@ window.G10_PRODUCTS.push(
   }))
 );
 
+// Outerwear 1439-1458 uploaded on 2026-07-20.
+window.G10_PRODUCTS.push(
+  ...Array.from({ length: 20 }, (_, index) => String(1439 + index))
+    .map((photoId, index) => ({
+      id: `G10-O${String(index + 77).padStart(3, "0")}`,
+      name: "အပေါ်ထပ်အင်္ကျီ",
+      category: "outerwear",
+      categoryLabel: "အပေါ်ထပ်အင်္ကျီ",
+      categoryEnglish: "Jackets",
+      image: `./products/2026-07-20-outerwear-1439-1458/${photoId}.webp`,
+      sizes: ["M", "L", "XL", "2XL", "3XL"],
+      minQty: 1
+    }))
+);
+
 // FC jeans uploaded on 2026-07-20.
 window.G10_PRODUCTS.push(
   ...Array.from({ length: 13 }, (_, index) => `G10-FC${String(index + 1).padStart(3, "0")}`)
