@@ -9,7 +9,7 @@
       content="G-10 menswear wholesale mobile catalog for Myanmar buyers."
     />
     <title>G-10 Menswear</title>
-    <link rel="stylesheet" href="./styles.css?v=20260720-inset-back-button" />
+    <link rel="stylesheet" href="./styles.css?v=20260720-photo-viewer" />
   </head>
   <body>
     <main class="app-shell">
@@ -51,7 +51,13 @@
       </section>
 
       <section class="view photo-view" id="photoView" aria-label="Original product photo">
-        <img class="original-photo" id="originalPhoto" src="" alt="" />
+        <div class="photo-stage" id="photoStage">
+          <img class="original-photo" id="originalPhoto" src="" alt="" />
+          <button class="photo-arrow photo-arrow-prev" id="photoPrevious" type="button" aria-label="Previous photo">‹</button>
+          <button class="photo-arrow photo-arrow-next" id="photoNext" type="button" aria-label="Next photo">›</button>
+          <span class="photo-counter" id="photoCounter" aria-live="polite"></span>
+          <span class="photo-hint" id="photoHint">左右滑动看照片 · Swipe</span>
+        </div>
         <button class="photo-select-button" id="photoSelectButton" type="button">ရွေးမည် · Select</button>
       </section>
 
@@ -97,6 +103,6 @@
     </nav>
 
   <script src="./products-20260720-catalog-by.js"></script>
-    <script src="./script-20260720-back-swipe-100.js"></script>
+    <script src="./script-20260720-back-swipe-100.js?v=20260720-photo-viewer"></script>
   </body>
 </html>

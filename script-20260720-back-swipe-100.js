@@ -26,6 +26,11 @@ const categoryName = document.querySelector("#categoryName");
 const categoryCount = document.querySelector("#categoryCount");
 const productList = document.querySelector("#productList");
 const originalPhoto = document.querySelector("#originalPhoto");
+const photoStage = document.querySelector("#photoStage");
+const photoPrevious = document.querySelector("#photoPrevious");
+const photoNext = document.querySelector("#photoNext");
+const photoCounter = document.querySelector("#photoCounter");
+const photoHint = document.querySelector("#photoHint");
 const photoSelectButton = document.querySelector("#photoSelectButton");
 const headerCart = document.querySelector("#headerCart");
 const headerCartCount = document.querySelector("#headerCartCount");
@@ -55,6 +60,9 @@ let restoringHistory = false;
 let ignoreNextPopstate = false;
 let cartReturnView = "home";
 let cartReturnScroll = 0;
+let photoZoomed = false;
+let lastPhotoTap = 0;
+let photoHintTimer = 0;
 let cart = loadCart();
 
 function getCategory(categoryId) {
@@ -361,8 +369,10 @@ function openPhoto(productId, options = {}) {
     categoryScroll = window.scrollY;
   }
   activeProductId = product.id;
+  setPhotoZoom(false);
   originalPhoto.src = product.image;
   originalPhoto.alt = product.id;
+  updatePhotoViewer();
   updateSelectionControls(product.id);
 
   if (openedFromCategory && !restoringHistory && window.history) {
@@ -370,7 +380,47 @@ function openPhoto(productId, options = {}) {
   }
 
   showView("photo", options);
+  showPhotoHint();
   preloadAdjacentPhotos();
+}
+
+function updatePhotoViewer() {
+  const currentIndex = activeCategoryProducts.findIndex(
+    (product) => product.id === activeProductId
+  );
+  const hasMultiple = currentIndex >= 0 && activeCategoryProducts.length > 1;
+  photoCounter.textContent = currentIndex >= 0
+    ? `${currentIndex + 1} / ${activeCategoryProducts.length}`
+    : "";
+  photoPrevious.hidden = !hasMultiple;
+  photoNext.hidden = !hasMultiple;
+}
+
+function showPhotoHint() {
+  if (sessionStorage.getItem("g10-photo-hint-seen")) {
+    return;
+  }
+  photoHint.classList.add("visible");
+  clearTimeout(photoHintTimer);
+  photoHintTimer = setTimeout(() => {
+    photoHint.classList.remove("visible");
+    sessionStorage.setItem("g10-photo-hint-seen", "1");
+  }, 2200);
+}
+
+function setPhotoZoom(zoomed, event) {
+  photoZoomed = zoomed;
+  originalPhoto.classList.toggle("zoomed", zoomed);
+  if (zoomed && event) {
+    const rect = originalPhoto.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+    originalPhoto.style.transformOrigin = `${x}% ${y}%`;
+  } else {
+    originalPhoto.style.transformOrigin = "50% 50%";
+  }
+  photoPrevious.classList.toggle("hidden-while-zoomed", zoomed);
+  photoNext.classList.toggle("hidden-while-zoomed", zoomed);
 }
 
 function preloadAdjacentPhotos() {
@@ -592,6 +642,17 @@ productList.addEventListener("click", (event) => {
 backButton.addEventListener("click", goBack);
 headerCart.addEventListener("click", openCart);
 photoSelectButton.addEventListener("click", () => toggleSelection(activeProductId));
+photoPrevious.addEventListener("click", () => openAdjacentPhoto(-1));
+photoNext.addEventListener("click", () => openAdjacentPhoto(1));
+originalPhoto.addEventListener("click", (event) => {
+  const now = Date.now();
+  if (now - lastPhotoTap < 320) {
+    setPhotoZoom(!photoZoomed, event);
+    lastPhotoTap = 0;
+    return;
+  }
+  lastPhotoTap = now;
+});
 document.querySelector("#homeNav").addEventListener("click", () => showHome());
 document.querySelector("#cartNav").addEventListener("click", openCart);
 document.querySelector("#clearCart").addEventListener("click", () => {
@@ -630,7 +691,7 @@ document.addEventListener(
     touchEdgeBack = false;
     touchStartedOnControl = Boolean(
       event.target.closest(
-        "a, input, textarea, .back-button, .cart-icon, .select-product, .photo-select-button, .bottom-nav button, [data-remove], #clearCart, #submitOrder, #copyOrder"
+        "a, input, textarea, .back-button, .cart-icon, .select-product, .photo-arrow, .photo-select-button, .bottom-nav button, [data-remove], #clearCart, #submitOrder, #copyOrder"
       )
     );
   },
@@ -667,6 +728,7 @@ document.addEventListener(
     const isPhotoSwipe =
       currentView === "photo" &&
       horizontalSwipe &&
+      !photoZoomed &&
       !touchEdgeBack &&
       !(IOS_DEVICE && deltaX > 0 && touchStartX <= 44);
     if (isPhotoSwipe) {
