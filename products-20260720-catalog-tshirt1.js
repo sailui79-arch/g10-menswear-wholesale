@@ -1299,6 +1299,21 @@ window.G10_PRODUCTS.push(
   }))
 );
 
+// T-shirts 23553-23580 uploaded on 2026-07-20.
+window.G10_PRODUCTS.push(
+  ...Array.from({ length: 28 }, (_, index) => String(23553 + index))
+    .map((photoId, index) => ({
+      id: `G10-T${String(index + 138).padStart(3, "0")}`,
+      name: "တီရှပ်",
+      category: "tshirt",
+      categoryLabel: "တီရှပ်",
+      categoryEnglish: "T-Shirts",
+      image: `./products/2026-07-20-tshirt-23553-23580/${photoId}.webp`,
+      sizes: ["M", "L", "XL", "2XL", "3XL"],
+      minQty: 1
+    }))
+);
+
 // CGT T-shirts uploaded on 2026-07-20.
 window.G10_PRODUCTS.push(
   ...Array.from({ length: 10 }, (_, index) => `G10-CGT${String(index + 1).padStart(3, "0")}`)
