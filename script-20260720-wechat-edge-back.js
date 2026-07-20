@@ -47,6 +47,7 @@ let touchStartX = 0;
 let touchStartY = 0;
 let touchStartTime = 0;
 let touchSwipeLocked = false;
+let touchEdgeBack = false;
 let touchStartedOnControl = false;
 let suppressNextClick = false;
 let restoringHistory = false;
@@ -625,6 +626,7 @@ document.addEventListener(
     touchStartY = touch.clientY;
     touchStartTime = Date.now();
     touchSwipeLocked = false;
+    touchEdgeBack = false;
     touchStartedOnControl = Boolean(
       event.target.closest(
         "a, input, textarea, .back-button, .cart-icon, .select-product, .photo-select-button, .bottom-nav button, [data-remove], #clearCart, #submitOrder, #copyOrder"
@@ -646,12 +648,21 @@ document.addEventListener(
     const deltaY = Math.abs(touch.clientY - touchStartY);
     const horizontalSwipe = Math.abs(deltaX) > 18 && Math.abs(deltaX) > deltaY * 1.15;
 
+    // In WeChat, a right swipe beginning at the left edge closes the whole
+    // webview. Capture it on internal pages and use it as the site's Back.
+    const isEdgeBack = horizontalSwipe && deltaX > 0 && touchStartX <= 44;
+    if (isEdgeBack) {
+      touchEdgeBack = true;
+      touchSwipeLocked = true;
+      event.preventDefault();
+      return;
+    }
+
     // Swipe either direction inside the photo: left for next, right for previous.
-    // Keep a narrow left-edge area for the phone browser's native back gesture.
     const isPhotoSwipe =
       currentView === "photo" &&
       horizontalSwipe &&
-      (deltaX < 0 || touchStartX > 28);
+      !touchEdgeBack;
     if (isPhotoSwipe) {
       touchSwipeLocked = true;
       event.preventDefault();
@@ -671,6 +682,20 @@ document.addEventListener(
     const deltaX = touch.clientX - touchStartX;
     const deltaY = Math.abs(touch.clientY - touchStartY);
     const elapsed = Date.now() - touchStartTime;
+    if (
+      touchEdgeBack &&
+      deltaX > 42 &&
+      deltaY < 96 &&
+      elapsed < 1200
+    ) {
+      suppressNextClick = true;
+      goBack();
+      setTimeout(() => {
+        suppressNextClick = false;
+      }, 250);
+      return;
+    }
+
     if (
       currentView === "photo" &&
       touchSwipeLocked &&
