@@ -95,16 +95,31 @@ function getHistoryState(viewName = currentView) {
   };
 }
 
+function getHistoryUrl(viewName) {
+  const baseUrl = `${window.location.pathname}${window.location.search}`;
+  if (viewName === "category" && activeCategory) {
+    return `${baseUrl}#category/${encodeURIComponent(activeCategory)}`;
+  }
+  if (viewName === "photo" && activeProductId) {
+    return `${baseUrl}#photo/${encodeURIComponent(activeProductId)}`;
+  }
+  if (viewName === "cart") {
+    return `${baseUrl}#selected`;
+  }
+  return `${baseUrl}#home`;
+}
+
 function updateHistory(viewName, mode = "push") {
   if (restoringHistory || !window.history) {
     return;
   }
 
   const state = getHistoryState(viewName);
+  const url = getHistoryUrl(viewName);
   if (mode === "replace") {
-    window.history.replaceState(state, "", window.location.href);
+    window.history.replaceState(state, "", url);
   } else {
-    window.history.pushState(state, "", window.location.href);
+    window.history.pushState(state, "", url);
   }
 }
 
@@ -349,7 +364,7 @@ function openPhoto(productId, options = {}) {
   updateSelectionControls(product.id);
 
   if (openedFromCategory && !restoringHistory && window.history) {
-    window.history.replaceState(getHistoryState("category"), "", window.location.href);
+    window.history.replaceState(getHistoryState("category"), "", getHistoryUrl("category"));
   }
 
   showView("photo", options);
@@ -534,7 +549,7 @@ function goBack() {
       ignoreNextPopstate = true;
       window.history.back();
     } else if (window.history) {
-      window.history.replaceState(getHistoryState("category"), "", window.location.href);
+      window.history.replaceState(getHistoryState("category"), "", getHistoryUrl("category"));
     }
     return;
   }
