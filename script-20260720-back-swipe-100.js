@@ -654,7 +654,7 @@ document.addEventListener(
     const isEdgeBack =
       horizontalSwipe &&
       deltaX > 0 &&
-      touchStartX <= 140 &&
+      touchStartX <= 100 &&
       (!IOS_DEVICE || touchStartX > 44);
     if (isEdgeBack) {
       touchEdgeBack = true;
