@@ -652,7 +652,10 @@ document.addEventListener(
     // In WeChat, a right swipe beginning at the left edge closes the whole
     // webview. Capture it on internal pages and use it as the site's Back.
     const isEdgeBack =
-      !IOS_DEVICE && horizontalSwipe && deltaX > 0 && touchStartX <= 44;
+      horizontalSwipe &&
+      deltaX > 0 &&
+      touchStartX <= 140 &&
+      (!IOS_DEVICE || touchStartX > 44);
     if (isEdgeBack) {
       touchEdgeBack = true;
       touchSwipeLocked = true;
