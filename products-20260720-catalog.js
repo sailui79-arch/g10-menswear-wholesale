@@ -1324,3 +1324,22 @@ window.G10_PRODUCTS = window.G10_PRODUCTS.filter((product) => {
   const match = /^G10-P(\d{3})$/.exec(product.id);
   return !match || Number(match[1]) > 8;
 });
+
+// CG light outerwear uploaded on 2026-07-20, including five vest photos.
+window.G10_PRODUCTS.push(
+  ...[
+    ...Array.from({ length: 53 }, (_, index) => index + 1)
+      .filter((number) => ![13, 18, 20, 22, 45].includes(number))
+      .map((number) => `G10-CG${String(number).padStart(3, "0")}`),
+    ...Array.from({ length: 5 }, (_, index) => `G10-CG-MJ${String(index + 1).padStart(3, "0")}`)
+  ].map((photoId) => ({
+    id: photoId,
+    name: "အနွေးပါး",
+    category: "winter",
+    categoryLabel: "အနွေးပါး",
+    categoryEnglish: "Light Outerwear",
+    image: `./products/2026-07-20-light-outerwear-cg/${photoId}.webp`,
+    sizes: ["M", "L", "XL", "2XL", "3XL"],
+    minQty: 1
+  }))
+);
