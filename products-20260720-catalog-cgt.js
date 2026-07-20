@@ -1299,6 +1299,21 @@ window.G10_PRODUCTS.push(
   }))
 );
 
+// CGT T-shirts uploaded on 2026-07-20.
+window.G10_PRODUCTS.push(
+  ...Array.from({ length: 10 }, (_, index) => `G10-CGT${String(index + 1).padStart(3, "0")}`)
+    .map((photoId) => ({
+      id: photoId,
+      name: "တီရှပ်",
+      category: "tshirt",
+      categoryLabel: "တီရှပ်",
+      categoryEnglish: "T-Shirts",
+      image: `./products/2026-07-20-tshirt-cg/${photoId}.webp`,
+      sizes: ["M", "L", "XL", "2XL", "3XL"],
+      minQty: 1
+    }))
+);
+
 // Outerwear 1439-1458 uploaded on 2026-07-20.
 window.G10_PRODUCTS.push(
   ...Array.from({ length: 20 }, (_, index) => String(1439 + index))
