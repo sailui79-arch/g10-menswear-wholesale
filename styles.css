@@ -59,10 +59,10 @@ img {
   top: 0;
   z-index: 20;
   display: grid;
-  grid-template-columns: 44px 1fr 44px;
+  grid-template-columns: 52px 1fr 44px;
   gap: 10px;
   align-items: center;
-  padding: calc(10px + env(safe-area-inset-top)) 12px 10px;
+  padding: calc(10px + env(safe-area-inset-top)) 12px 10px 26px;
   color: white;
   background: var(--dark);
 }
@@ -91,11 +91,11 @@ img {
 .back-button {
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: 52px;
+  height: 52px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.14);
   color: white;
   font-weight: 900;
 }
