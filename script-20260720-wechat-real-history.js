@@ -119,7 +119,11 @@ function updateHistory(viewName, mode = "push") {
   if (mode === "replace") {
     window.history.replaceState(state, "", url);
   } else {
-    window.history.pushState(state, "", url);
+    // WeChat's iOS webview can ignore same-document pushState entries when its
+    // native Back button is used. Changing the hash first creates a navigation
+    // entry that the webview recognises, then attach our restoration state.
+    window.location.hash = url.slice(url.indexOf("#"));
+    window.history.replaceState(state, "", url);
   }
 }
 
