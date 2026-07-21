@@ -471,7 +471,6 @@ img {
   align-items: center;
 }
 
-.photo-download-button,
 .photo-select-button {
   display: grid;
   width: 45px;

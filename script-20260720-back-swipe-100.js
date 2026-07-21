@@ -27,7 +27,6 @@ const categoryCount = document.querySelector("#categoryCount");
 const productList = document.querySelector("#productList");
 let originalPhoto = document.querySelector("#originalPhoto");
 const photoStage = document.querySelector("#photoStage");
-const photoDownloadButton = document.querySelector("#photoDownloadButton");
 const photoSelectButton = document.querySelector("#photoSelectButton");
 const headerCart = document.querySelector("#headerCart");
 const headerCartCount = document.querySelector("#headerCartCount");
@@ -428,7 +427,6 @@ function finishNativePhotoScroll() {
 }
 
 function updatePhotoViewer() {
-  photoDownloadButton.disabled = !activeProductId;
 }
 
 function setPhotoZoom(zoomed, event) {
@@ -442,20 +440,6 @@ function setPhotoZoom(zoomed, event) {
   } else {
     originalPhoto.style.transformOrigin = "50% 50%";
   }
-}
-
-function downloadActivePhoto() {
-  const product = products.find((item) => item.id === activeProductId);
-  if (!product) {
-    return;
-  }
-  const link = document.createElement("a");
-  link.href = product.image;
-  link.download = `${product.id}.jpg`;
-  link.rel = "noopener";
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
 }
 
 function createOrderId() {
@@ -648,7 +632,6 @@ productList.addEventListener("click", (event) => {
 backButton.addEventListener("click", goBack);
 headerCart.addEventListener("click", openCart);
 photoSelectButton.addEventListener("click", () => toggleSelection(activeProductId));
-photoDownloadButton.addEventListener("click", downloadActivePhoto);
 photoStage.addEventListener("click", (event) => {
   const tappedPhoto = event.target.closest(".original-photo");
   if (!tappedPhoto) {
@@ -706,7 +689,7 @@ document.addEventListener(
     touchEdgeBack = false;
     touchStartedOnControl = Boolean(
       event.target.closest(
-        "a, input, textarea, .back-button, .cart-icon, .select-product, .photo-download-button, .photo-select-button, .bottom-nav button, [data-remove], #clearCart, #submitOrder, #copyOrder"
+        "a, input, textarea, .back-button, .cart-icon, .select-product, .photo-select-button, .bottom-nav button, [data-remove], #clearCart, #submitOrder, #copyOrder"
       )
     );
   },
