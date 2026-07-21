@@ -61,6 +61,8 @@ let cartReturnScroll = 0;
 let photoZoomed = false;
 let lastPhotoTap = 0;
 let photoTransitioning = false;
+let photoDrag = null;
+const photoPreloadCache = new Map();
 let cart = loadCart();
 
 function getCategory(categoryId) {
@@ -398,61 +400,170 @@ function setPhotoZoom(zoomed, event) {
   }
 }
 
-function preloadAdjacentPhotos() {
+function getAdjacentProduct(step) {
   const currentIndex = activeCategoryProducts.findIndex(
     (product) => product.id === activeProductId
   );
   if (currentIndex < 0 || activeCategoryProducts.length < 2) {
-    return;
-  }
-
-  [-1, 1].forEach((step) => {
-    const nextIndex =
-      (currentIndex + step + activeCategoryProducts.length) % activeCategoryProducts.length;
-    const preloadImage = new Image();
-    preloadImage.src = activeCategoryProducts[nextIndex].image;
-  });
-}
-
-function openAdjacentPhoto(step) {
-  if (photoTransitioning || photoZoomed) {
-    return;
-  }
-  const currentIndex = activeCategoryProducts.findIndex(
-    (product) => product.id === activeProductId
-  );
-  if (currentIndex < 0 || activeCategoryProducts.length < 2) {
-    return;
+    return null;
   }
 
   const nextIndex =
     (currentIndex + step + activeCategoryProducts.length) % activeCategoryProducts.length;
-  const nextProduct = activeCategoryProducts[nextIndex];
+  return activeCategoryProducts[nextIndex];
+}
+
+function preloadPhoto(url) {
+  if (photoPreloadCache.has(url)) {
+    return photoPreloadCache.get(url);
+  }
+
+  const image = new Image();
+  image.decoding = "async";
+  image.src = url;
+  const entry = { image, ready: null, readyToShow: false };
+  entry.ready = new Promise((resolve) => {
+    if (image.complete && image.naturalWidth > 0) {
+      resolve();
+      return;
+    }
+    image.addEventListener("load", resolve, { once: true });
+    image.addEventListener("error", resolve, { once: true });
+  }).then(async () => {
+    if (typeof image.decode === "function") {
+      try {
+        await image.decode();
+      } catch {
+        // The load event is enough when a WebView does not support decode reliably.
+      }
+    }
+    entry.readyToShow = image.naturalWidth > 0;
+  });
+
+  photoPreloadCache.set(url, entry);
+  return entry;
+}
+
+function preloadAdjacentPhotos() {
+  [-1, 1].forEach((step) => {
+    const product = getAdjacentProduct(step);
+    if (product) {
+      preloadPhoto(product.image);
+    }
+  });
+}
+
+function resetPhotoTransition() {
+  photoStage.classList.remove("dragging");
+  originalPhoto.style.transform = "";
+  transitionPhoto.style.transform = "";
+  transitionPhoto.className = "original-photo photo-transition-image";
+  transitionPhoto.removeAttribute("src");
+  transitionPhoto.alt = "";
+  photoDrag = null;
+  photoTransitioning = false;
+}
+
+function preparePhotoDrag(step) {
+  if (photoTransitioning || photoZoomed) {
+    return false;
+  }
+
+  const product = getAdjacentProduct(step);
+  if (!product) {
+    return false;
+  }
+
+  const cached = preloadPhoto(product.image);
+  if (!cached.readyToShow) {
+    return false;
+  }
+
   photoTransitioning = true;
-  transitionPhoto.src = nextProduct.image;
-  transitionPhoto.alt = nextProduct.id;
-  transitionPhoto.className = `original-photo photo-transition-image ${step > 0 ? "from-right" : "from-left"}`;
+  photoDrag = { step, product };
+  transitionPhoto.src = product.image;
+  transitionPhoto.alt = product.id;
+  transitionPhoto.className = "original-photo photo-transition-image active";
+  photoStage.classList.add("dragging");
+  return true;
+}
+
+function renderPhotoDrag(deltaX) {
+  if (!photoDrag) {
+    return;
+  }
+
+  const width = Math.max(1, photoStage.clientWidth);
+  const limitedDelta = Math.max(-width, Math.min(width, deltaX));
+  const incomingOffset = photoDrag.step > 0 ? width : -width;
+  originalPhoto.style.transform = `translate3d(${limitedDelta}px, 0, 0)`;
+  transitionPhoto.style.transform = `translate3d(${limitedDelta + incomingOffset}px, 0, 0)`;
+}
+
+function finishPhotoChange(product) {
+  activeProductId = product.id;
+  originalPhoto.src = product.image;
+  originalPhoto.alt = product.id;
+  resetPhotoTransition();
+  updatePhotoViewer();
+  updateSelectionControls(product.id);
+  updateHistory("photo", "replace");
+  preloadAdjacentPhotos();
+}
+
+function settlePhotoDrag(commit) {
+  if (!photoDrag) {
+    return;
+  }
+
+  const { step, product } = photoDrag;
+  const width = Math.max(1, photoStage.clientWidth);
+  photoStage.classList.remove("dragging");
 
   requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      originalPhoto.classList.add(step > 0 ? "slide-out-left" : "slide-out-right");
-      transitionPhoto.classList.add("slide-in");
-    });
+    originalPhoto.style.transform = commit
+      ? `translate3d(${step > 0 ? -width : width}px, 0, 0)`
+      : "translate3d(0, 0, 0)";
+    transitionPhoto.style.transform = commit
+      ? "translate3d(0, 0, 0)"
+      : `translate3d(${step > 0 ? width : -width}px, 0, 0)`;
   });
 
   setTimeout(() => {
-    activeProductId = nextProduct.id;
-    originalPhoto.src = nextProduct.image;
-    originalPhoto.alt = nextProduct.id;
-    originalPhoto.classList.remove("slide-out-left", "slide-out-right");
-    transitionPhoto.className = "original-photo photo-transition-image";
-    transitionPhoto.removeAttribute("src");
-    updatePhotoViewer();
-    updateSelectionControls(nextProduct.id);
-    updateHistory("photo", "replace");
-    preloadAdjacentPhotos();
-    photoTransitioning = false;
-  }, 230);
+    if (commit) {
+      finishPhotoChange(product);
+    } else {
+      resetPhotoTransition();
+    }
+  }, 300);
+}
+
+async function openAdjacentPhoto(step) {
+  if (photoTransitioning || photoZoomed) {
+    return;
+  }
+
+  const product = getAdjacentProduct(step);
+  if (!product) {
+    return;
+  }
+
+  photoTransitioning = true;
+  const cached = preloadPhoto(product.image);
+  await cached.ready;
+
+  photoDrag = { step, product };
+  transitionPhoto.src = product.image;
+  transitionPhoto.alt = product.id;
+  transitionPhoto.className = "original-photo photo-transition-image active";
+  photoStage.classList.add("dragging");
+  renderPhotoDrag(0);
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      settlePhotoDrag(true);
+    });
+  });
 }
 
 function downloadActivePhoto() {
@@ -705,6 +816,9 @@ document.addEventListener(
     touchStartTime = Date.now();
     touchSwipeLocked = false;
     touchEdgeBack = false;
+    if (photoDrag) {
+      resetPhotoTransition();
+    }
     touchStartedOnControl = Boolean(
       event.target.closest(
         "a, input, textarea, .back-button, .cart-icon, .select-product, .photo-download-button, .photo-select-button, .bottom-nav button, [data-remove], #clearCart, #submitOrder, #copyOrder"
@@ -749,6 +863,13 @@ document.addEventListener(
       !(IOS_DEVICE && deltaX > 0 && touchStartX <= 44);
     if (isPhotoSwipe) {
       touchSwipeLocked = true;
+      const step = deltaX < 0 ? 1 : -1;
+      if (!photoDrag) {
+        preparePhotoDrag(step);
+      }
+      if (photoDrag && photoDrag.step === step) {
+        renderPhotoDrag(deltaX);
+      }
       event.preventDefault();
     }
   },
@@ -783,16 +904,32 @@ document.addEventListener(
     if (
       currentView === "photo" &&
       touchSwipeLocked &&
-      Math.abs(deltaX) > 42 &&
       deltaY < 96 &&
       elapsed < 1200
     ) {
+      const width = Math.max(1, photoStage.clientWidth);
+      const velocity = Math.abs(deltaX) / Math.max(1, elapsed);
+      const shouldChange = Math.abs(deltaX) > width * 0.18 || velocity > 0.42;
       suppressNextClick = true;
-      openAdjacentPhoto(deltaX < 0 ? 1 : -1);
+      if (photoDrag) {
+        settlePhotoDrag(shouldChange);
+      } else if (shouldChange) {
+        openAdjacentPhoto(deltaX < 0 ? 1 : -1);
+      }
       setTimeout(() => {
         suppressNextClick = false;
-      }, 250);
+      }, 320);
       return;
+    }
+  },
+  { passive: true }
+);
+
+document.addEventListener(
+  "touchcancel",
+  () => {
+    if (photoDrag) {
+      settlePhotoDrag(false);
     }
   },
   { passive: true }

@@ -439,7 +439,7 @@ img {
   object-fit: contain !important;
   background: #000;
   touch-action: none;
-  transition: transform 210ms cubic-bezier(.22, .72, .25, 1);
+  transition: transform 280ms cubic-bezier(.22, .72, .25, 1);
   transform-origin: 50% 50%;
   will-change: transform;
 }
@@ -450,11 +450,8 @@ img {
 }
 
 .photo-transition-image { z-index: 2; pointer-events: none; visibility: hidden; }
-.photo-transition-image.from-right { visibility: visible; transform: translateX(100%); }
-.photo-transition-image.from-left { visibility: visible; transform: translateX(-100%); }
-.photo-transition-image.slide-in { transform: translateX(0); }
-.original-photo.slide-out-left { transform: translateX(-100%); }
-.original-photo.slide-out-right { transform: translateX(100%); }
+.photo-transition-image.active { visibility: visible; }
+.photo-stage.dragging .original-photo { transition: none; }
 
 .photo-actions {
   position: absolute;
