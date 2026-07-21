@@ -59,6 +59,7 @@ let cartReturnScroll = 0;
 let photoZoomed = false;
 let lastPhotoTap = 0;
 let photoScrollTimer = 0;
+let photoScrollFrame = 0;
 let photoScrollProgrammatic = false;
 let cart = loadCart();
 
@@ -401,7 +402,7 @@ function renderNativePhotoGallery(productId) {
   });
 }
 
-function finishNativePhotoScroll() {
+function syncNativePhotoFromPosition(commitHistory = false) {
   if (currentView !== "photo" || photoScrollProgrammatic || !photoStage.clientWidth) {
     return;
   }
@@ -414,16 +415,24 @@ function finishNativePhotoScroll() {
     )
   );
   const product = activeCategoryProducts[index];
-  if (!product || product.id === activeProductId) {
+  if (!product) {
     return;
   }
 
-  setPhotoZoom(false);
-  activeProductId = product.id;
-  originalPhoto = photoStage.querySelector(`[data-photo-id="${product.id}"]`);
-  updatePhotoViewer();
-  updateSelectionControls(product.id);
-  updateHistory("photo", "replace");
+  if (product.id !== activeProductId) {
+    setPhotoZoom(false);
+    activeProductId = product.id;
+    originalPhoto = photoStage.querySelector(`[data-photo-id="${product.id}"]`);
+    updateSelectionControls(product.id);
+  }
+
+  if (commitHistory) {
+    updateHistory("photo", "replace");
+  }
+}
+
+function finishNativePhotoScroll() {
+  syncNativePhotoFromPosition(true);
 }
 
 function updatePhotoViewer() {
@@ -647,8 +656,14 @@ photoStage.addEventListener("click", (event) => {
   lastPhotoTap = now;
 });
 photoStage.addEventListener("scroll", () => {
+  if (!photoScrollFrame) {
+    photoScrollFrame = requestAnimationFrame(() => {
+      photoScrollFrame = 0;
+      syncNativePhotoFromPosition(false);
+    });
+  }
   clearTimeout(photoScrollTimer);
-  photoScrollTimer = setTimeout(finishNativePhotoScroll, 90);
+  photoScrollTimer = setTimeout(finishNativePhotoScroll, 60);
 }, { passive: true });
 photoStage.addEventListener("scrollend", finishNativePhotoScroll);
 document.querySelector("#homeNav").addEventListener("click", () => showHome());
