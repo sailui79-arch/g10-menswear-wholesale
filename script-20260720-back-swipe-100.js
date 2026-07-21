@@ -57,7 +57,7 @@ let ignoreNextPopstate = false;
 let cartReturnView = "home";
 let cartReturnScroll = 0;
 let photoZoomed = false;
-let lastPhotoTap = 0;
+let photoTapMoved = false;
 let photoScrollTimer = 0;
 let photoScrollFrame = 0;
 let photoScrollProgrammatic = false;
@@ -646,14 +646,10 @@ photoStage.addEventListener("click", (event) => {
   if (!tappedPhoto) {
     return;
   }
-  originalPhoto = tappedPhoto;
-  const now = Date.now();
-  if (now - lastPhotoTap < 320) {
-    setPhotoZoom(!photoZoomed, event);
-    lastPhotoTap = 0;
+  if (suppressNextClick || photoTapMoved) {
     return;
   }
-  lastPhotoTap = now;
+  goBack();
 });
 photoStage.addEventListener("scroll", () => {
   if (!photoScrollFrame) {
@@ -700,6 +696,7 @@ document.addEventListener(
     touchStartX = touch.clientX;
     touchStartY = touch.clientY;
     touchStartTime = Date.now();
+    photoTapMoved = false;
     touchSwipeLocked = false;
     touchEdgeBack = false;
     touchStartedOnControl = Boolean(
@@ -721,6 +718,9 @@ document.addEventListener(
     const touch = event.touches[0];
     const deltaX = touch.clientX - touchStartX;
     const deltaY = Math.abs(touch.clientY - touchStartY);
+    if (currentView === "photo" && (Math.abs(deltaX) > 10 || deltaY > 10)) {
+      photoTapMoved = true;
+    }
     const horizontalSwipe = Math.abs(deltaX) > 18 && Math.abs(deltaX) > deltaY * 1.15;
 
     // In WeChat, a right swipe beginning at the left edge closes the whole
