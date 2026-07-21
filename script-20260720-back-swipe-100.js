@@ -25,9 +25,8 @@ const categoryGrid = document.querySelector("#categoryGrid");
 const categoryName = document.querySelector("#categoryName");
 const categoryCount = document.querySelector("#categoryCount");
 const productList = document.querySelector("#productList");
-const originalPhoto = document.querySelector("#originalPhoto");
+let originalPhoto = document.querySelector("#originalPhoto");
 const photoStage = document.querySelector("#photoStage");
-const transitionPhoto = document.querySelector("#transitionPhoto");
 const photoDownloadButton = document.querySelector("#photoDownloadButton");
 const photoSelectButton = document.querySelector("#photoSelectButton");
 const headerCart = document.querySelector("#headerCart");
@@ -60,9 +59,8 @@ let cartReturnView = "home";
 let cartReturnScroll = 0;
 let photoZoomed = false;
 let lastPhotoTap = 0;
-let photoTransitioning = false;
-let photoDrag = null;
-const photoPreloadCache = new Map();
+let photoScrollTimer = 0;
+let photoScrollProgrammatic = false;
 let cart = loadCart();
 
 function getCategory(categoryId) {
@@ -370,8 +368,7 @@ function openPhoto(productId, options = {}) {
   }
   activeProductId = product.id;
   setPhotoZoom(false);
-  originalPhoto.src = product.image;
-  originalPhoto.alt = product.id;
+  renderNativePhotoGallery(product.id);
   updatePhotoViewer();
   updateSelectionControls(product.id);
 
@@ -380,7 +377,54 @@ function openPhoto(productId, options = {}) {
   }
 
   showView("photo", options);
-  preloadAdjacentPhotos();
+}
+
+function renderNativePhotoGallery(productId) {
+  const activeIndex = Math.max(
+    0,
+    activeCategoryProducts.findIndex((product) => product.id === productId)
+  );
+
+  photoStage.innerHTML = activeCategoryProducts
+    .map((product, index) => {
+      const priority = Math.abs(index - activeIndex) <= 1 ? "eager" : "lazy";
+      return `<img class="original-photo" data-photo-id="${product.id}" src="${product.image}" alt="${product.id}" loading="${priority}" decoding="async" />`;
+    })
+    .join("");
+
+  originalPhoto = photoStage.querySelector(`[data-photo-id="${productId}"]`);
+  photoScrollProgrammatic = true;
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      photoStage.scrollLeft = activeIndex * photoStage.clientWidth;
+      photoScrollProgrammatic = false;
+    });
+  });
+}
+
+function finishNativePhotoScroll() {
+  if (currentView !== "photo" || photoScrollProgrammatic || !photoStage.clientWidth) {
+    return;
+  }
+
+  const index = Math.max(
+    0,
+    Math.min(
+      activeCategoryProducts.length - 1,
+      Math.round(photoStage.scrollLeft / photoStage.clientWidth)
+    )
+  );
+  const product = activeCategoryProducts[index];
+  if (!product || product.id === activeProductId) {
+    return;
+  }
+
+  setPhotoZoom(false);
+  activeProductId = product.id;
+  originalPhoto = photoStage.querySelector(`[data-photo-id="${product.id}"]`);
+  updatePhotoViewer();
+  updateSelectionControls(product.id);
+  updateHistory("photo", "replace");
 }
 
 function updatePhotoViewer() {
@@ -398,172 +442,6 @@ function setPhotoZoom(zoomed, event) {
   } else {
     originalPhoto.style.transformOrigin = "50% 50%";
   }
-}
-
-function getAdjacentProduct(step) {
-  const currentIndex = activeCategoryProducts.findIndex(
-    (product) => product.id === activeProductId
-  );
-  if (currentIndex < 0 || activeCategoryProducts.length < 2) {
-    return null;
-  }
-
-  const nextIndex =
-    (currentIndex + step + activeCategoryProducts.length) % activeCategoryProducts.length;
-  return activeCategoryProducts[nextIndex];
-}
-
-function preloadPhoto(url) {
-  if (photoPreloadCache.has(url)) {
-    return photoPreloadCache.get(url);
-  }
-
-  const image = new Image();
-  image.decoding = "async";
-  image.src = url;
-  const entry = { image, ready: null, readyToShow: false };
-  entry.ready = new Promise((resolve) => {
-    if (image.complete && image.naturalWidth > 0) {
-      resolve();
-      return;
-    }
-    image.addEventListener("load", resolve, { once: true });
-    image.addEventListener("error", resolve, { once: true });
-  }).then(async () => {
-    if (typeof image.decode === "function") {
-      try {
-        await image.decode();
-      } catch {
-        // The load event is enough when a WebView does not support decode reliably.
-      }
-    }
-    entry.readyToShow = image.naturalWidth > 0;
-  });
-
-  photoPreloadCache.set(url, entry);
-  return entry;
-}
-
-function preloadAdjacentPhotos() {
-  [-1, 1].forEach((step) => {
-    const product = getAdjacentProduct(step);
-    if (product) {
-      preloadPhoto(product.image);
-    }
-  });
-}
-
-function resetPhotoTransition() {
-  photoStage.classList.remove("dragging");
-  originalPhoto.style.transform = "";
-  transitionPhoto.style.transform = "";
-  transitionPhoto.className = "original-photo photo-transition-image";
-  transitionPhoto.removeAttribute("src");
-  transitionPhoto.alt = "";
-  photoDrag = null;
-  photoTransitioning = false;
-}
-
-function preparePhotoDrag(step) {
-  if (photoTransitioning || photoZoomed) {
-    return false;
-  }
-
-  const product = getAdjacentProduct(step);
-  if (!product) {
-    return false;
-  }
-
-  const cached = preloadPhoto(product.image);
-  if (!cached.readyToShow) {
-    return false;
-  }
-
-  photoTransitioning = true;
-  photoDrag = { step, product };
-  transitionPhoto.src = product.image;
-  transitionPhoto.alt = product.id;
-  transitionPhoto.className = "original-photo photo-transition-image active";
-  photoStage.classList.add("dragging");
-  return true;
-}
-
-function renderPhotoDrag(deltaX) {
-  if (!photoDrag) {
-    return;
-  }
-
-  const width = Math.max(1, photoStage.clientWidth);
-  const limitedDelta = Math.max(-width, Math.min(width, deltaX));
-  const incomingOffset = photoDrag.step > 0 ? width : -width;
-  originalPhoto.style.transform = `translate3d(${limitedDelta}px, 0, 0)`;
-  transitionPhoto.style.transform = `translate3d(${limitedDelta + incomingOffset}px, 0, 0)`;
-}
-
-function finishPhotoChange(product) {
-  activeProductId = product.id;
-  originalPhoto.src = product.image;
-  originalPhoto.alt = product.id;
-  resetPhotoTransition();
-  updatePhotoViewer();
-  updateSelectionControls(product.id);
-  updateHistory("photo", "replace");
-  preloadAdjacentPhotos();
-}
-
-function settlePhotoDrag(commit) {
-  if (!photoDrag) {
-    return;
-  }
-
-  const { step, product } = photoDrag;
-  const width = Math.max(1, photoStage.clientWidth);
-  photoStage.classList.remove("dragging");
-
-  requestAnimationFrame(() => {
-    originalPhoto.style.transform = commit
-      ? `translate3d(${step > 0 ? -width : width}px, 0, 0)`
-      : "translate3d(0, 0, 0)";
-    transitionPhoto.style.transform = commit
-      ? "translate3d(0, 0, 0)"
-      : `translate3d(${step > 0 ? width : -width}px, 0, 0)`;
-  });
-
-  setTimeout(() => {
-    if (commit) {
-      finishPhotoChange(product);
-    } else {
-      resetPhotoTransition();
-    }
-  }, 300);
-}
-
-async function openAdjacentPhoto(step) {
-  if (photoTransitioning || photoZoomed) {
-    return;
-  }
-
-  const product = getAdjacentProduct(step);
-  if (!product) {
-    return;
-  }
-
-  photoTransitioning = true;
-  const cached = preloadPhoto(product.image);
-  await cached.ready;
-
-  photoDrag = { step, product };
-  transitionPhoto.src = product.image;
-  transitionPhoto.alt = product.id;
-  transitionPhoto.className = "original-photo photo-transition-image active";
-  photoStage.classList.add("dragging");
-  renderPhotoDrag(0);
-
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      settlePhotoDrag(true);
-    });
-  });
 }
 
 function downloadActivePhoto() {
@@ -771,7 +649,12 @@ backButton.addEventListener("click", goBack);
 headerCart.addEventListener("click", openCart);
 photoSelectButton.addEventListener("click", () => toggleSelection(activeProductId));
 photoDownloadButton.addEventListener("click", downloadActivePhoto);
-originalPhoto.addEventListener("click", (event) => {
+photoStage.addEventListener("click", (event) => {
+  const tappedPhoto = event.target.closest(".original-photo");
+  if (!tappedPhoto) {
+    return;
+  }
+  originalPhoto = tappedPhoto;
   const now = Date.now();
   if (now - lastPhotoTap < 320) {
     setPhotoZoom(!photoZoomed, event);
@@ -780,6 +663,11 @@ originalPhoto.addEventListener("click", (event) => {
   }
   lastPhotoTap = now;
 });
+photoStage.addEventListener("scroll", () => {
+  clearTimeout(photoScrollTimer);
+  photoScrollTimer = setTimeout(finishNativePhotoScroll, 90);
+}, { passive: true });
+photoStage.addEventListener("scrollend", finishNativePhotoScroll);
 document.querySelector("#homeNav").addEventListener("click", () => showHome());
 document.querySelector("#cartNav").addEventListener("click", openCart);
 document.querySelector("#clearCart").addEventListener("click", () => {
@@ -816,9 +704,6 @@ document.addEventListener(
     touchStartTime = Date.now();
     touchSwipeLocked = false;
     touchEdgeBack = false;
-    if (photoDrag) {
-      resetPhotoTransition();
-    }
     touchStartedOnControl = Boolean(
       event.target.closest(
         "a, input, textarea, .back-button, .cart-icon, .select-product, .photo-download-button, .photo-select-button, .bottom-nav button, [data-remove], #clearCart, #submitOrder, #copyOrder"
@@ -854,24 +739,8 @@ document.addEventListener(
       return;
     }
 
-    // Swipe either direction inside the photo: left for next, right for previous.
-    const isPhotoSwipe =
-      currentView === "photo" &&
-      horizontalSwipe &&
-      !photoZoomed &&
-      !touchEdgeBack &&
-      !(IOS_DEVICE && deltaX > 0 && touchStartX <= 44);
-    if (isPhotoSwipe) {
-      touchSwipeLocked = true;
-      const step = deltaX < 0 ? 1 : -1;
-      if (!photoDrag) {
-        preparePhotoDrag(step);
-      }
-      if (photoDrag && photoDrag.step === step) {
-        renderPhotoDrag(deltaX);
-      }
-      event.preventDefault();
-    }
+    // The original-photo gallery uses the browser's native horizontal scroll.
+    // Do not prevent it here; WeChat/Safari handles tracking and inertia itself.
   },
   { passive: false }
 );
@@ -901,37 +770,13 @@ document.addEventListener(
       return;
     }
 
-    if (
-      currentView === "photo" &&
-      touchSwipeLocked &&
-      deltaY < 96 &&
-      elapsed < 1200
-    ) {
-      const width = Math.max(1, photoStage.clientWidth);
-      const velocity = Math.abs(deltaX) / Math.max(1, elapsed);
-      const shouldChange = Math.abs(deltaX) > width * 0.18 || velocity > 0.42;
-      suppressNextClick = true;
-      if (photoDrag) {
-        settlePhotoDrag(shouldChange);
-      } else if (shouldChange) {
-        openAdjacentPhoto(deltaX < 0 ? 1 : -1);
-      }
-      setTimeout(() => {
-        suppressNextClick = false;
-      }, 320);
-      return;
-    }
   },
   { passive: true }
 );
 
 document.addEventListener(
   "touchcancel",
-  () => {
-    if (photoDrag) {
-      settlePhotoDrag(false);
-    }
-  },
+  () => {},
   { passive: true }
 );
 

@@ -421,16 +421,25 @@ img {
 
 .photo-stage {
   position: relative;
-  overflow: hidden;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
   width: 100%;
   height: 100%;
   background: #000;
-  touch-action: none;
+  touch-action: pan-x pinch-zoom;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
 
+.photo-stage::-webkit-scrollbar { display: none; }
+
 .original-photo {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  flex: 0 0 100%;
   display: block;
   width: 100%;
   height: 100% !important;
@@ -438,8 +447,10 @@ img {
   aspect-ratio: auto !important;
   object-fit: contain !important;
   background: #000;
-  touch-action: none;
-  transition: transform 280ms cubic-bezier(.22, .72, .25, 1);
+  touch-action: pan-x pinch-zoom;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  transition: transform 180ms ease;
   transform-origin: 50% 50%;
   will-change: transform;
 }
@@ -449,9 +460,6 @@ img {
   cursor: zoom-out;
 }
 
-.photo-transition-image { z-index: 2; pointer-events: none; visibility: hidden; }
-.photo-transition-image.active { visibility: visible; }
-.photo-stage.dragging .original-photo { transition: none; }
 
 .photo-actions {
   position: absolute;
