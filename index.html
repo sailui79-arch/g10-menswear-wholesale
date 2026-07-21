@@ -9,7 +9,13 @@
       content="G-10 menswear wholesale mobile catalog for Myanmar buyers."
     />
     <title>G-10 Menswear</title>
-    <link rel="stylesheet" href="./styles.css?v=20260720-photo-viewer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,600,0,0"
+    />
+    <link rel="stylesheet" href="./styles.css?v=20260721-photo-action-icons-45" />
   </head>
   <body>
     <main class="app-shell">
@@ -53,12 +59,16 @@
       <section class="view photo-view" id="photoView" aria-label="Original product photo">
         <div class="photo-stage" id="photoStage">
           <img class="original-photo" id="originalPhoto" src="" alt="" />
-          <button class="photo-arrow photo-arrow-prev" id="photoPrevious" type="button" aria-label="Previous photo">‹</button>
-          <button class="photo-arrow photo-arrow-next" id="photoNext" type="button" aria-label="Next photo">›</button>
-          <span class="photo-counter" id="photoCounter" aria-live="polite"></span>
-          <span class="photo-hint" id="photoHint">左右滑动看照片 · Swipe</span>
+          <img class="original-photo photo-transition-image" id="transitionPhoto" src="" alt="" aria-hidden="true" />
         </div>
-        <button class="photo-select-button" id="photoSelectButton" type="button">ရွေးမည် · Select</button>
+        <div class="photo-actions">
+          <button class="photo-download-button" id="photoDownloadButton" type="button" aria-label="Download photo" title="Download photo">
+            <span class="material-symbols-rounded" aria-hidden="true">download</span>
+          </button>
+          <button class="photo-select-button" id="photoSelectButton" type="button" aria-label="Select product" title="Select product">
+            <span class="material-symbols-rounded" aria-hidden="true">check</span>
+          </button>
+        </div>
       </section>
 
       <section class="view" id="cartView" aria-label="Selected products">
@@ -103,6 +113,6 @@
     </nav>
 
   <script src="./products-20260720-catalog-by.js"></script>
-    <script src="./script-20260720-back-swipe-100.js?v=20260720-photo-viewer"></script>
+    <script src="./script-20260720-back-swipe-100.js?v=20260721-photo-action-icons"></script>
   </body>
 </html>

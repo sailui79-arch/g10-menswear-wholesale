@@ -27,10 +27,8 @@ const categoryCount = document.querySelector("#categoryCount");
 const productList = document.querySelector("#productList");
 const originalPhoto = document.querySelector("#originalPhoto");
 const photoStage = document.querySelector("#photoStage");
-const photoPrevious = document.querySelector("#photoPrevious");
-const photoNext = document.querySelector("#photoNext");
-const photoCounter = document.querySelector("#photoCounter");
-const photoHint = document.querySelector("#photoHint");
+const transitionPhoto = document.querySelector("#transitionPhoto");
+const photoDownloadButton = document.querySelector("#photoDownloadButton");
 const photoSelectButton = document.querySelector("#photoSelectButton");
 const headerCart = document.querySelector("#headerCart");
 const headerCartCount = document.querySelector("#headerCartCount");
@@ -62,7 +60,7 @@ let cartReturnView = "home";
 let cartReturnScroll = 0;
 let photoZoomed = false;
 let lastPhotoTap = 0;
-let photoHintTimer = 0;
+let photoTransitioning = false;
 let cart = loadCart();
 
 function getCategory(categoryId) {
@@ -135,6 +133,7 @@ function updateHistory(viewName, mode = "push") {
 
 function showView(viewName, options = {}) {
   currentView = viewName;
+  document.body.classList.toggle("photo-mode", viewName === "photo");
 
   Object.entries(views).forEach(([name, element]) => {
     element.classList.toggle("active", name === viewName);
@@ -305,9 +304,8 @@ function updateSelectionControls(productId) {
 
   if (activeProductId === productId) {
     photoSelectButton.classList.toggle("selected", selected);
-    photoSelectButton.textContent = selected
-      ? "ရွေးပြီး · Selected"
-      : "ရွေးမည် · Select";
+    photoSelectButton.setAttribute("aria-label", selected ? "Remove selected product" : "Select product");
+    photoSelectButton.setAttribute("title", selected ? "Remove selected product" : "Select product");
   }
 }
 
@@ -380,32 +378,11 @@ function openPhoto(productId, options = {}) {
   }
 
   showView("photo", options);
-  showPhotoHint();
   preloadAdjacentPhotos();
 }
 
 function updatePhotoViewer() {
-  const currentIndex = activeCategoryProducts.findIndex(
-    (product) => product.id === activeProductId
-  );
-  const hasMultiple = currentIndex >= 0 && activeCategoryProducts.length > 1;
-  photoCounter.textContent = currentIndex >= 0
-    ? `${currentIndex + 1} / ${activeCategoryProducts.length}`
-    : "";
-  photoPrevious.hidden = !hasMultiple;
-  photoNext.hidden = !hasMultiple;
-}
-
-function showPhotoHint() {
-  if (sessionStorage.getItem("g10-photo-hint-seen")) {
-    return;
-  }
-  photoHint.classList.add("visible");
-  clearTimeout(photoHintTimer);
-  photoHintTimer = setTimeout(() => {
-    photoHint.classList.remove("visible");
-    sessionStorage.setItem("g10-photo-hint-seen", "1");
-  }, 2200);
+  photoDownloadButton.disabled = !activeProductId;
 }
 
 function setPhotoZoom(zoomed, event) {
@@ -419,8 +396,6 @@ function setPhotoZoom(zoomed, event) {
   } else {
     originalPhoto.style.transformOrigin = "50% 50%";
   }
-  photoPrevious.classList.toggle("hidden-while-zoomed", zoomed);
-  photoNext.classList.toggle("hidden-while-zoomed", zoomed);
 }
 
 function preloadAdjacentPhotos() {
@@ -440,6 +415,9 @@ function preloadAdjacentPhotos() {
 }
 
 function openAdjacentPhoto(step) {
+  if (photoTransitioning || photoZoomed) {
+    return;
+  }
   const currentIndex = activeCategoryProducts.findIndex(
     (product) => product.id === activeProductId
   );
@@ -449,7 +427,46 @@ function openAdjacentPhoto(step) {
 
   const nextIndex =
     (currentIndex + step + activeCategoryProducts.length) % activeCategoryProducts.length;
-  openPhoto(activeCategoryProducts[nextIndex].id, { history: "replace" });
+  const nextProduct = activeCategoryProducts[nextIndex];
+  photoTransitioning = true;
+  transitionPhoto.src = nextProduct.image;
+  transitionPhoto.alt = nextProduct.id;
+  transitionPhoto.className = `original-photo photo-transition-image ${step > 0 ? "from-right" : "from-left"}`;
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      originalPhoto.classList.add(step > 0 ? "slide-out-left" : "slide-out-right");
+      transitionPhoto.classList.add("slide-in");
+    });
+  });
+
+  setTimeout(() => {
+    activeProductId = nextProduct.id;
+    originalPhoto.src = nextProduct.image;
+    originalPhoto.alt = nextProduct.id;
+    originalPhoto.classList.remove("slide-out-left", "slide-out-right");
+    transitionPhoto.className = "original-photo photo-transition-image";
+    transitionPhoto.removeAttribute("src");
+    updatePhotoViewer();
+    updateSelectionControls(nextProduct.id);
+    updateHistory("photo", "replace");
+    preloadAdjacentPhotos();
+    photoTransitioning = false;
+  }, 230);
+}
+
+function downloadActivePhoto() {
+  const product = products.find((item) => item.id === activeProductId);
+  if (!product) {
+    return;
+  }
+  const link = document.createElement("a");
+  link.href = product.image;
+  link.download = `${product.id}.jpg`;
+  link.rel = "noopener";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
 }
 
 function createOrderId() {
@@ -642,8 +659,7 @@ productList.addEventListener("click", (event) => {
 backButton.addEventListener("click", goBack);
 headerCart.addEventListener("click", openCart);
 photoSelectButton.addEventListener("click", () => toggleSelection(activeProductId));
-photoPrevious.addEventListener("click", () => openAdjacentPhoto(-1));
-photoNext.addEventListener("click", () => openAdjacentPhoto(1));
+photoDownloadButton.addEventListener("click", downloadActivePhoto);
 originalPhoto.addEventListener("click", (event) => {
   const now = Date.now();
   if (now - lastPhotoTap < 320) {
@@ -691,7 +707,7 @@ document.addEventListener(
     touchEdgeBack = false;
     touchStartedOnControl = Boolean(
       event.target.closest(
-        "a, input, textarea, .back-button, .cart-icon, .select-product, .photo-arrow, .photo-select-button, .bottom-nav button, [data-remove], #clearCart, #submitOrder, #copyOrder"
+        "a, input, textarea, .back-button, .cart-icon, .select-product, .photo-download-button, .photo-select-button, .bottom-nav button, [data-remove], #clearCart, #submitOrder, #copyOrder"
       )
     );
   },
